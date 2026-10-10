@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 3,
+    "advanced": false,
+    "idiom": "Stacked bar (basic chart: does NOT count towards the 8 advanced)",
+    "data": ["data/threatened_marine_by_group.csv"],
+    "todo": [
+      "Output of scripts/prep_threatened.py: columns group, status, n.",
+      "Check the status labels match the three in the colour domain below exactly (case matters). Add 'Extinct in the wild' or 'Conservation Dependent' if your data has them and you want them.",
+      "Sorted so the biggest group is first. Consider horizontal bars if group names are long."
+    ]
+  },
+  "title": {
+    "text": "Most threatened marine species are fish, birds and reptiles",
+    "subtitle": "EPBC-listed threatened marine species by group and threat category. (Placeholder headline: check it against your data.)"
+  },
+  "width": 560,
+  "height": 320,
+  "data": { "url": "data/threatened_marine_by_group.csv" },
+  "mark": { "type": "bar", "stroke": "#ffffff", "strokeWidth": 0.6 },
+  "encoding": {
+    "x": { "field": "group", "type": "nominal", "title": null, "sort": "-y", "axis": { "labelAngle": -30 } },
+    "y": { "field": "n", "type": "quantitative", "aggregate": "sum", "title": "Number of species" },
+    "color": {
+      "field": "status",
+      "type": "nominal",
+      "title": "Threat category",
+      "scale": {
+        "domain": ["Vulnerable", "Endangered", "Critically Endangered"],
+        "range": ["#f2cc8f", "#e07a5f", "#8c2d19"]
+      }
+    },
+    "order": { "field": "status", "type": "nominal", "sort": "ascending" },
+    "tooltip": [
+      { "field": "group", "type": "nominal", "title": "Group" },
+      { "field": "status", "type": "nominal", "title": "Category" },
+      { "field": "n", "type": "quantitative", "title": "Species" }
+    ]
+  }
+}

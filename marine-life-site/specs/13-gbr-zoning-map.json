@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 1,
+    "advanced": true,
+    "idiom": "Map: categorical polygons, zoomed on the GBR (optional fourth map; insurance if another map is rejected)",
+    "data": ["data/aus_states.geojson", "data/gbr_zoning.geojson"],
+    "todo": [
+      "Get the GBR Marine Park Zoning layer as GeoJSON (README, step 1b). The Reef Authority's FeatureServer supports GeoJSON queries; check their data-use terms first.",
+      "The TYPE property name is taken from the layer's field list; confirm it in your download.",
+      "Zone colours follow the usual Reef Authority convention (light blue general use, dark blue habitat protection, yellow conservation park, olive buffer, orange scientific research, green marine national park, pink preservation). Compare against the official zoning map and fix any mismatch.",
+      "Tune center/scale to frame the reef. Delete the block in index.html if you drop this chart."
+    ]
+  },
+  "title": {
+    "text": "The Great Barrier Reef Marine Park is zoned by how much activity is allowed",
+    "subtitle": "Marine Park zones. Hover for zone type."
+  },
+  "width": 600,
+  "height": 650,
+  "projection": { "type": "mercator", "center": [148.2, -17.6], "scale": 1900 },
+  "layer": [
+    {
+      "data": { "url": "data/aus_states.geojson", "format": { "property": "features" } },
+      "mark": { "type": "geoshape", "fill": "#eceae3", "stroke": "#c9c6bc", "strokeWidth": 0.4 }
+    },
+    {
+      "data": { "url": "data/gbr_zoning.geojson", "format": { "property": "features" } },
+      "mark": { "type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.15 },
+      "encoding": {
+        "color": {
+          "field": "properties.TYPE",
+          "type": "nominal",
+          "title": "Zone",
+          "scale": {
+            "domain": [
+              "General Use Zone",
+              "Habitat Protection Zone",
+              "Conservation Park Zone",
+              "Buffer Zone",
+              "Scientific Research Zone",
+              "Marine National Park Zone",
+              "Preservation Zone",
+              "Commonwealth Islands"
+            ],
+            "range": ["#9fd4ee", "#2a6fb0", "#f4d35e", "#8a9a3b", "#e8913a", "#4a9d5b", "#e07aa5", "#bdbdbd"]
+          }
+        },
+        "tooltip": [{ "field": "properties.TYPE", "type": "nominal", "title": "Zone" }]
+      }
+    }
+  ]
+}

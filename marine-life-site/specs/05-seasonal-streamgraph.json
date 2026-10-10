@@ -1,0 +1,50 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 2,
+    "advanced": true,
+    "idiom": "Streamgraph (stacked area, centre offset)",
+    "data": ["data/ala_occurrences.csv"],
+    "todo": [
+      "Each species is converted to its share of its own annual total so a very common species does not drown out the rest. Say this in the caption.",
+      "The y axis is deliberately hidden (centre-offset stacks have no meaningful baseline); the tooltip carries the numbers.",
+      "Check the colours are distinguishable for all five species. Edit THEME.range.category in js/main.js if not.",
+      "Optional: add a legend selection (bind: legend) so readers can isolate one species."
+    ]
+  },
+  "title": {
+    "text": "Seasons of sightings, species by species",
+    "subtitle": "Each band is one species' monthly share of its yearly records. Band thickness = how typical that month is for the species."
+  },
+  "width": 640,
+  "height": 300,
+  "data": { "url": "data/ala_occurrences.csv" },
+  "transform": [
+    { "filter": "isValid(datum.month)" },
+    { "aggregate": [{ "op": "count", "as": "n" }], "groupby": ["species", "month"] },
+    { "joinaggregate": [{ "op": "sum", "field": "n", "as": "total" }], "groupby": ["species"] },
+    { "calculate": "datum.n / datum.total", "as": "share" }
+  ],
+  "mark": { "type": "area", "interpolate": "monotone", "opacity": 0.9 },
+  "encoding": {
+    "x": {
+      "field": "month",
+      "type": "quantitative",
+      "title": null,
+      "scale": { "domain": [1, 12], "nice": false },
+      "axis": {
+        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        "labelExpr": "['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.value - 1]",
+        "grid": false
+      }
+    },
+    "y": { "field": "share", "type": "quantitative", "stack": "center", "axis": null },
+    "color": { "field": "species", "type": "nominal", "title": "Species" },
+    "tooltip": [
+      { "field": "species", "type": "nominal", "title": "Species" },
+      { "field": "month", "type": "ordinal", "title": "Month" },
+      { "field": "n", "type": "quantitative", "title": "Records" },
+      { "field": "share", "type": "quantitative", "title": "Share of species' year", "format": ".0%" }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 2,
+    "advanced": true,
+    "idiom": "Boxplot (composite mark) with regions ordered by latitude",
+    "data": ["data/reef_fish_transects.csv"],
+    "todo": [
+      "Build data/reef_fish_transects.csv from the IMOS NRMN reef fish abundance and biomass download joined to site info (README, step 4). Required columns: region, latitude, biomass_kg (one row per transect).",
+      "Choose regions you can name sensibly (e.g. Great Barrier Reef, Ningaloo, Sydney, Port Phillip, Tasmania). Keep it to about 6-10 or the plot gets cramped.",
+      "Biomass is heavily skewed, so the axis is log. Zero-biomass transects are filtered out; mention that in the caption.",
+      "The 'sort' list on the y encoding sets the order of regions (north to south). Replace the example names with YOUR region names, exactly as they appear in the CSV. Sorting by a latitude field did not work for boxplots when tested, hence the explicit list."
+    ]
+  },
+  "title": {
+    "text": "How much fish is there on reefs around the country?",
+    "subtitle": "Reef fish biomass per survey transect, by region (log scale), regions ordered north to south."
+  },
+  "width": 640,
+  "height": 320,
+  "data": { "url": "data/reef_fish_transects.csv" },
+  "transform": [{ "filter": "datum.biomass_kg > 0" }],
+  "mark": { "type": "boxplot", "extent": 1.5, "median": { "color": "#0b2e3f" } },
+  "encoding": {
+    "y": {
+      "field": "region",
+      "type": "nominal",
+      "title": null,
+      "sort": ["Great Barrier Reef", "Ningaloo", "Sydney", "Port Phillip", "Tasmania"]
+    },
+    "x": {
+      "field": "biomass_kg",
+      "type": "quantitative",
+      "title": "Fish biomass per transect (kg, log scale)",
+      "scale": { "type": "log" }
+    },
+    "color": { "field": "region", "type": "nominal", "legend": null }
+  }
+}

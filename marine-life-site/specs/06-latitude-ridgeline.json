@@ -1,0 +1,45 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 2,
+    "advanced": true,
+    "idiom": "Ridgeline plot (density transform + row facet)",
+    "data": ["data/ala_occurrences.csv"],
+    "todo": [
+      "Each ridge is a smoothed density of sighting latitudes (south left, north right). Check the extent below covers your data.",
+      "Tune 'steps' (smoothness) and 'bandwidth' (set it explicitly if ridges look too spiky or too flat).",
+      "Row height and the y range control how much ridges overlap; adjust until labels stay readable.",
+      "If you switch to 'counts': true the ridges show volume, not just shape. Decide which story you want."
+    ]
+  },
+  "title": {
+    "text": "Warm-water and cold-water species live at different latitudes",
+    "subtitle": "Density of sightings by latitude, one ridge per species. Latitude runs from southern Tasmania to Cape York."
+  },
+  "width": 640,
+  "height": 32,
+  "data": { "url": "data/ala_occurrences.csv" },
+  "transform": [
+    { "filter": "isValid(datum.lat)" },
+    { "density": "lat", "groupby": ["species"], "extent": [-45, -8], "steps": 90 }
+  ],
+  "mark": {
+    "type": "area",
+    "interpolate": "monotone",
+    "fillOpacity": 0.85,
+    "stroke": "#ffffff",
+    "strokeWidth": 0.8
+  },
+  "encoding": {
+    "x": { "field": "value", "type": "quantitative", "title": "Latitude (°)", "scale": { "nice": false } },
+    "y": { "field": "density", "type": "quantitative", "scale": { "range": [32, -40] }, "axis": null },
+    "fill": { "field": "species", "type": "nominal", "legend": null },
+    "row": {
+      "field": "species",
+      "type": "nominal",
+      "title": null,
+      "header": { "labelAngle": 0, "labelAlign": "left", "labelPadding": 8, "labelFontSize": 12 }
+    }
+  },
+  "config": { "view": { "stroke": null }, "facet": { "spacing": -28 } }
+}

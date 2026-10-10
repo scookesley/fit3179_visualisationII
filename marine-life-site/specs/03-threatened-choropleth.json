@@ -1,0 +1,48 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 3,
+    "advanced": true,
+    "idiom": "Map: choropleth with a lookup join (required map #3)",
+    "data": ["data/aus_states.geojson", "data/threatened_marine_by_state.csv"],
+    "todo": [
+      "Download the EPBC threatened species list and run scripts/prep_threatened.py (README, step 3).",
+      "The lookup joins on properties.name in your states file. Check what the state-name property is called (Natural Earth uses 'name'; ABS files use STE_NAME21 or similar) and make sure it matches the 'state' column in the CSV.",
+      "States with no marine species (e.g. ACT) come through as null; they are drawn in light grey via the 'invalid' colour below.",
+      "Note the data is 'indicative occurrence' per state, so counts overlap between states: a species can appear in several. Say so in the caption.",
+      "Consider adding offshore territories if your states file includes them."
+    ]
+  },
+  "title": {
+    "text": "Threatened marine species by state and territory",
+    "subtitle": "Number of EPBC-listed threatened marine species with indicative occurrence in each jurisdiction. A species can count in more than one."
+  },
+  "width": 700,
+  "height": 560,
+  "projection": { "type": "mercator", "center": [134, -27], "scale": 800 },
+  "data": { "url": "data/aus_states.geojson", "format": { "property": "features" } },
+  "transform": [
+    {
+      "lookup": "properties.name",
+      "from": {
+        "data": { "url": "data/threatened_marine_by_state.csv" },
+        "key": "state",
+        "fields": ["n_species"]
+      }
+    }
+  ],
+  "mark": { "type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.8 },
+  "encoding": {
+    "color": {
+      "field": "n_species",
+      "type": "quantitative",
+      "title": "Threatened marine species",
+      "scale": { "scheme": "oranges" }
+    },
+    "tooltip": [
+      { "field": "properties.name", "type": "nominal", "title": "State" },
+      { "field": "n_species", "type": "quantitative", "title": "Threatened marine species" }
+    ]
+  },
+  "config": { "mark": { "invalid": null } }
+}

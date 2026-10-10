@@ -1,0 +1,74 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 2,
+    "advanced": "borderline: confirm with your tutor that a radial (polar) chart counts as advanced",
+    "idiom": "Radial chart (arc marks with polar scale)",
+    "data": ["data/ala_occurrences.csv"],
+    "todo": [
+      "Driven by the global species dropdown ('species_sel').",
+      "Arc length is one month (30 degrees); arc radius is the record count on a sqrt scale. Check January sits at the top.",
+      "Month labels are a second layer generated from a sequence; adjust the label radius (value 205) if they collide with arcs.",
+      "If you decide this is too gimmicky, delete the chart and its block in index.html. The other 8 advanced charts still satisfy the brief."
+    ]
+  },
+  "title": {
+    "text": "A year in sightings",
+    "subtitle": "Records by month for the selected species. January at the top, moving clockwise."
+  },
+  "width": 440,
+  "height": 440,
+  "params": [{ "name": "species_sel", "value": "Humpback Whale" }],
+  "layer": [
+    {
+      "data": { "url": "data/ala_occurrences.csv" },
+      "transform": [
+        { "filter": "datum.species === species_sel && isValid(datum.month)" },
+        { "aggregate": [{ "op": "count", "as": "n" }], "groupby": ["month"] },
+        { "calculate": "datum.month - 1", "as": "m0" },
+        { "calculate": "datum.month", "as": "m1" }
+      ],
+      "mark": { "type": "arc", "innerRadius": 20, "stroke": "#ffffff", "strokeWidth": 1 },
+      "encoding": {
+        "theta": {
+          "field": "m0",
+          "type": "quantitative",
+          "scale": { "domain": [0, 12], "range": [0, 6.283185307179586] }
+        },
+        "theta2": { "field": "m1" },
+        "radius": {
+          "field": "n",
+          "type": "quantitative",
+          "scale": { "type": "sqrt", "zero": true, "range": [20, 180] }
+        },
+        "color": {
+          "field": "n",
+          "type": "quantitative",
+          "legend": null,
+          "scale": { "scheme": "teals" }
+        },
+        "tooltip": [
+          { "field": "month", "type": "ordinal", "title": "Month" },
+          { "field": "n", "type": "quantitative", "title": "Records" }
+        ]
+      }
+    },
+    {
+      "data": { "sequence": { "start": 0, "stop": 12, "as": "m0" } },
+      "transform": [
+        { "calculate": "datum.m0 + 0.5", "as": "mc" },
+        { "calculate": "['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.m0]", "as": "label" }
+      ],
+      "mark": { "type": "text", "fontSize": 11, "color": "#3d4f5c" },
+      "encoding": {
+        "theta": {
+          "field": "mc",
+          "type": "quantitative",
+          "scale": { "domain": [0, 12], "range": [0, 6.283185307179586] }
+        },
+        "radius": { "value": 205 },
+        "text": { "field": "label", "type": "nominal" }
+      }
+    }
+  ]
+}

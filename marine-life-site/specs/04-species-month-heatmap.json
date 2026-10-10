@@ -1,0 +1,54 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 2,
+    "advanced": true,
+    "idiom": "Heatmap (rect marks) with per-species normalisation",
+    "data": ["data/ala_occurrences.csv"],
+    "todo": [
+      "Needs the 'species' and 'month' columns from fetch_ala.py.",
+      "Each row is scaled to that species' own peak month so rare species are readable next to common ones. Raw counts are in the tooltip.",
+      "Records are citizen-science heavy: more sightings in summer can reflect more observers, not more animals. Say that in the caption.",
+      "If a species has very few records, drop it or add more species in fetch_ala.py."
+    ]
+  },
+  "title": {
+    "text": "When is each species seen?",
+    "subtitle": "Share of each species' busiest month, by calendar month. Darker = closer to that species' peak."
+  },
+  "width": 640,
+  "height": 220,
+  "data": { "url": "data/ala_occurrences.csv" },
+  "transform": [
+    { "filter": "isValid(datum.month)" },
+    { "aggregate": [{ "op": "count", "as": "n" }], "groupby": ["species", "month"] },
+    { "joinaggregate": [{ "op": "max", "field": "n", "as": "peak" }], "groupby": ["species"] },
+    { "calculate": "datum.n / datum.peak", "as": "relative" }
+  ],
+  "mark": { "type": "rect", "stroke": "#ffffff", "strokeWidth": 1 },
+  "encoding": {
+    "x": {
+      "field": "month",
+      "type": "ordinal",
+      "title": null,
+      "axis": {
+        "labelAngle": 0,
+        "labelExpr": "['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.value - 1]"
+      }
+    },
+    "y": { "field": "species", "type": "nominal", "title": null },
+    "color": {
+      "field": "relative",
+      "type": "quantitative",
+      "title": "Share of peak month",
+      "scale": { "scheme": "teals", "domain": [0, 1] },
+      "legend": { "format": "%" }
+    },
+    "tooltip": [
+      { "field": "species", "type": "nominal", "title": "Species" },
+      { "field": "month", "type": "ordinal", "title": "Month" },
+      { "field": "n", "type": "quantitative", "title": "Records" },
+      { "field": "relative", "type": "quantitative", "title": "Share of peak", "format": ".0%" }
+    ]
+  }
+}

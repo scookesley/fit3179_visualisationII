@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 2,
+    "advanced": true,
+    "idiom": "Map: binned density grid over marine park outlines (required map #2)",
+    "data": ["data/aus_states.geojson", "data/australian_marine_parks.geojson", "data/ala_occurrences.csv"],
+    "todo": [
+      "Run scripts/fetch_ala.py to create data/ala_occurrences.csv (README, step 2).",
+      "The 'species_sel' parameter is driven by the global dropdown in index.html; the default below must be one of the names in js/main.js SPECIES.",
+      "Pick a cell size: step 0.5 degrees is a reasonable start. Smaller = finer but noisier.",
+      "Colour scale is sqrt so single sightings stay visible; switch to log if one hotspot swamps everything.",
+      "Overlay is the story: how much of this species' range sits inside a park? Write that into the caption once you can see it.",
+      "Same projection as chart 1; keep them identical so readers can flip between the two."
+    ]
+  },
+  "title": {
+    "text": "Where is this species seen, and how much of that falls inside a marine park?",
+    "subtitle": "Records per 0.5° cell (Atlas of Living Australia). Park outlines overlaid. Change species with the dropdown at the top of the page."
+  },
+  "width": 800,
+  "height": 650,
+  "params": [{ "name": "species_sel", "value": "Humpback Whale" }],
+  "projection": { "type": "mercator", "center": [134, -27], "scale": 900 },
+  "layer": [
+    {
+      "data": { "url": "data/aus_states.geojson", "format": { "property": "features" } },
+      "mark": { "type": "geoshape", "fill": "#eceae3", "stroke": "#c9c6bc", "strokeWidth": 0.4 }
+    },
+    {
+      "data": { "url": "data/ala_occurrences.csv" },
+      "transform": [
+        { "filter": "datum.species === species_sel" },
+        { "bin": { "step": 0.5 }, "field": "lon", "as": ["lon0", "lon1"] },
+        { "bin": { "step": 0.5 }, "field": "lat", "as": ["lat0", "lat1"] },
+        { "aggregate": [{ "op": "count", "as": "n" }], "groupby": ["lon0", "lon1", "lat0", "lat1"] }
+      ],
+      "mark": { "type": "rect", "opacity": 0.85 },
+      "encoding": {
+        "longitude": { "field": "lon0", "type": "quantitative" },
+        "longitude2": { "field": "lon1" },
+        "latitude": { "field": "lat0", "type": "quantitative" },
+        "latitude2": { "field": "lat1" },
+        "color": {
+          "field": "n",
+          "type": "quantitative",
+          "title": "Records per cell",
+          "scale": { "type": "sqrt", "scheme": "viridis" }
+        },
+        "tooltip": [{ "field": "n", "type": "quantitative", "title": "Records in cell" }]
+      }
+    },
+    {
+      "data": { "url": "data/australian_marine_parks.geojson", "format": { "property": "features" } },
+      "mark": { "type": "geoshape", "fill": null, "stroke": "#0b2e3f", "strokeWidth": 0.6, "strokeOpacity": 0.55 }
+    }
+  ]
+}

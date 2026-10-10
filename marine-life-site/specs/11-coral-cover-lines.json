@@ -1,0 +1,40 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 4,
+    "advanced": false,
+    "idiom": "Multi-line chart (basic chart: does NOT count towards the 8 advanced)",
+    "data": ["data/aims_ltmp_reef_year.csv"],
+    "todo": [
+      "Same CSV as chart 8 (README, step 5). Values are the mean hard coral cover across surveyed reefs in each sector and year.",
+      "Eleven sectors is a lot of lines. Click a legend entry to isolate a sector. If it is still spaghetti, facet by sector or pick 3-4 sectors.",
+      "Look for the dips and write down the years; they should line up with outbreaks and bleaching events in the story. Check any claim against AIMS reports before putting it in a caption.",
+      "Placeholder headline: replace with what the data actually shows."
+    ]
+  },
+  "title": {
+    "text": "Hard coral cover has risen and fallen over four decades",
+    "subtitle": "Mean hard coral cover by sector and year (AIMS Long-term Monitoring Program). Click a legend entry to isolate a sector."
+  },
+  "width": 640,
+  "height": 360,
+  "data": { "url": "data/aims_ltmp_reef_year.csv" },
+  "params": [
+    { "name": "sector_hl", "select": { "type": "point", "fields": ["sector"] }, "bind": "legend" }
+  ],
+  "transform": [
+    { "aggregate": [{ "op": "mean", "field": "hard_coral", "as": "cover" }], "groupby": ["sector", "year"] }
+  ],
+  "mark": { "type": "line", "strokeWidth": 2, "point": { "size": 28 } },
+  "encoding": {
+    "x": { "field": "year", "type": "quantitative", "title": null, "axis": { "format": "d" }, "scale": { "zero": false } },
+    "y": { "field": "cover", "type": "quantitative", "title": "Mean hard coral cover (%)", "scale": { "zero": true } },
+    "color": { "field": "sector", "type": "nominal", "title": "Sector", "scale": { "scheme": "tableau20" } },
+    "opacity": { "condition": { "param": "sector_hl", "value": 1 }, "value": 0.15 },
+    "tooltip": [
+      { "field": "sector", "type": "nominal", "title": "Sector" },
+      { "field": "year", "type": "quantitative", "title": "Year", "format": "d" },
+      { "field": "cover", "type": "quantitative", "title": "Mean hard coral cover (%)", "format": ".1f" }
+    ]
+  }
+}

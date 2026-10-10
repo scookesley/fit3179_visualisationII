@@ -1,0 +1,103 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 4,
+    "advanced": true,
+    "idiom": "Parallel coordinates (fold + joinaggregate normalisation)",
+    "data": ["data/aims_ltmp_reef_year.csv"],
+    "todo": [
+      "Needs data/aims_ltmp_reef_year.csv with columns: reef, sector, year, hard_coral, soft_coral, dead_coral, cots_per_tow (README, step 5).",
+      "Each line is a reef, averaged over years since the slider value. Each axis is rescaled 0-1; the numbers at the top and bottom of each axis show the real max and min.",
+      "If lines are too many to read, filter to one or two sectors or lower the opacity.",
+      "Axis order matters in parallel coordinates. Try putting the two variables you want readers to compare next to each other.",
+      "If the 'datum' y placement for min/max labels misbehaves in your Vega-Lite version, remove those two text layers and rely on tooltips."
+    ]
+  },
+  "title": {
+    "text": "Reefs that lose coral tend to share a profile",
+    "subtitle": "One line per reef (mean since the chosen year). Axes rescaled to 0-1; labels show the real max (top) and min (bottom)."
+  },
+  "width": 640,
+  "height": 360,
+  "params": [
+    {
+      "name": "recent_from",
+      "value": 2018,
+      "bind": { "input": "range", "min": 1986, "max": 2025, "step": 1, "name": "Average from year: " }
+    }
+  ],
+  "data": { "url": "data/aims_ltmp_reef_year.csv" },
+  "transform": [
+    { "filter": "datum.year >= recent_from" },
+    {
+      "aggregate": [
+        { "op": "mean", "field": "hard_coral", "as": "hard_coral" },
+        { "op": "mean", "field": "soft_coral", "as": "soft_coral" },
+        { "op": "mean", "field": "dead_coral", "as": "dead_coral" },
+        { "op": "mean", "field": "cots_per_tow", "as": "cots_per_tow" }
+      ],
+      "groupby": ["reef", "sector"]
+    },
+    { "fold": ["hard_coral", "soft_coral", "dead_coral", "cots_per_tow"] },
+    {
+      "joinaggregate": [
+        { "op": "min", "field": "value", "as": "min" },
+        { "op": "max", "field": "value", "as": "max" }
+      ],
+      "groupby": ["key"]
+    },
+    { "calculate": "(datum.value - datum.min) / (datum.max - datum.min)", "as": "norm_val" }
+  ],
+  "encoding": {
+    "x": {
+      "field": "key",
+      "type": "nominal",
+      "sort": ["hard_coral", "soft_coral", "dead_coral", "cots_per_tow"],
+      "title": null,
+      "axis": {
+        "orient": "top",
+        "labelAngle": 0,
+        "labelPadding": 14,
+        "grid": false,
+        "domain": false,
+        "ticks": false,
+        "labelExpr": "{'hard_coral':'Hard coral %','soft_coral':'Soft coral %','dead_coral':'Dead coral %','cots_per_tow':'Starfish per tow'}[datum.value]"
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": { "type": "rule", "color": "#c5d3da" },
+      "encoding": { "detail": { "aggregate": "count" } }
+    },
+    {
+      "mark": { "type": "line", "strokeWidth": 1.4 },
+      "encoding": {
+        "y": { "field": "norm_val", "type": "quantitative", "axis": null },
+        "detail": { "field": "reef", "type": "nominal" },
+        "color": { "field": "sector", "type": "nominal", "title": "Sector", "scale": { "scheme": "tableau20" } },
+        "opacity": { "value": 0.45 },
+        "tooltip": [
+          { "field": "reef", "type": "nominal", "title": "Reef" },
+          { "field": "sector", "type": "nominal", "title": "Sector" },
+          { "field": "key", "type": "nominal", "title": "Measure" },
+          { "field": "value", "type": "quantitative", "title": "Value", "format": ".2f" }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "text", "baseline": "bottom", "dy": -3, "fontSize": 10, "color": "#3d4f5c" },
+      "encoding": {
+        "y": { "datum": 1, "type": "quantitative" },
+        "text": { "aggregate": "max", "field": "max", "type": "quantitative", "format": ".1f" }
+      }
+    },
+    {
+      "mark": { "type": "text", "baseline": "top", "dy": 3, "fontSize": 10, "color": "#3d4f5c" },
+      "encoding": {
+        "y": { "datum": 0, "type": "quantitative" },
+        "text": { "aggregate": "min", "field": "min", "type": "quantitative", "format": ".1f" }
+      }
+    }
+  ]
+}
