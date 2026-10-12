@@ -14,11 +14,11 @@
   },
   "title": {
     "text": "When is each species seen?",
-    "subtitle": "Share of each species' busiest month, by calendar month. Darker = closer to that species' peak."
+    "subtitle": ["Share of each species' busiest month by calendar month."]
   },
-  "width": 640,
-  "height": 220,
-  "data": { "url": "data/ala_occurrences.csv" },
+  "width": "container",
+  "height": 300,
+  "data": { "url": "data/ala_occurrences.csv", "format": { "type": "csv", "parse": { "month": "number" } } },
   "transform": [
     { "filter": "isValid(datum.month)" },
     { "aggregate": [{ "op": "count", "as": "n" }], "groupby": ["species", "month"] },
@@ -33,7 +33,7 @@
       "title": null,
       "axis": {
         "labelAngle": 0,
-        "labelExpr": "['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.value - 1]"
+        "labelExpr": "['J','F','M','A','M','J','J','A','S','O','N','D'][datum.value - 1]"
       }
     },
     "y": { "field": "species", "type": "nominal", "title": null },
@@ -42,7 +42,7 @@
       "type": "quantitative",
       "title": "Share of peak month",
       "scale": { "scheme": "teals", "domain": [0, 1] },
-      "legend": { "format": "%" }
+      "legend": { "format": "%", "orient": "bottom" }
     },
     "tooltip": [
       { "field": "species", "type": "nominal", "title": "Species" },

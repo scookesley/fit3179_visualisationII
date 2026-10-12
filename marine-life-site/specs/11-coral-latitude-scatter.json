@@ -1,0 +1,54 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 4,
+    "advanced": false,
+    "idiom": "Scatterplot with year slider (basic chart: does NOT count towards the 8 advanced)",
+    "data": ["data/aims_ltmp_reef_year.csv"],
+    "todo": [
+      "This was planned as starfish vs coral, but the AIMS download has hard coral cover only (no crown-of-thorns counts), so the x axis is now latitude. If you get the starfish data, add a cots_per_tow column in scripts/prep_aims_ltmp.py and swap the x encoding back.",
+      "One point per reef surveyed in the chosen year. Not every reef is surveyed every year, so the set of points changes as you drag.",
+      "Reefs with no coordinates in the download (all of Torres Strait and a few others) are left out.",
+      "The headline is a neutral placeholder: step through the years, see what stands out, and replace it."
+    ]
+  },
+  "title": {
+    "text": "How much coral did each reef have, from north to south?",
+    "subtitle": "Each point is a reef surveyed in the selected year (AIMS Long-term Monitoring Program)."
+  },
+  "width": 860,
+  "height": 440,
+  "params": [
+    {
+      "name": "yr",
+      "value": 2025,
+      "bind": { "input": "range", "min": 1986, "max": 2025, "step": 1, "name": "Year: " }
+    }
+  ],
+  "data": {
+    "url": "data/aims_ltmp_reef_year.csv",
+    "format": { "type": "csv", "parse": { "year": "number", "hard_coral": "number", "hard_coral_lower": "number", "hard_coral_upper": "number", "lat": "number", "lon": "number" } }
+  },
+  "transform": [{ "filter": "datum.year === yr && isValid(datum.lat)" }],
+  "mark": { "type": "point", "filled": true, "size": 70, "opacity": 0.75 },
+  "encoding": {
+    "x": {
+      "field": "lat",
+      "type": "quantitative",
+      "title": "Latitude (north on the left, south on the right)",
+      "scale": { "domain": [-10, -24.5] },
+      "axis": { "labelExpr": "abs(datum.value) + '°S'" }
+    },
+    "y": { "field": "hard_coral", "type": "quantitative", "title": "Hard coral cover (%)", "scale": { "domain": [0, 100] } },
+    "color": { "field": "sector", "type": "nominal", "title": "Sector (north to south)", "scale": { "scheme": "tableau20", "domain": ["Torres Strait", "Cape Grenville", "Princess Charlotte Bay", "Cooktown-Lizard Island", "Cairns", "Innisfail", "Townsville", "Cape Upstart", "Whitsunday", "Pompey", "Swain", "Capricorn-Bunker"] } },
+    "shape": { "field": "shelf", "type": "nominal", "title": "Shelf position", "sort": ["Inshore", "Mid-shelf", "Outer-shelf"] },
+    "tooltip": [
+      { "field": "reef", "type": "nominal", "title": "Reef" },
+      { "field": "sector", "type": "nominal", "title": "Sector" },
+      { "field": "shelf", "type": "nominal", "title": "Shelf position" },
+      { "field": "hard_coral", "type": "quantitative", "title": "Hard coral (%)", "format": ".1f" },
+      { "field": "hard_coral_lower", "type": "quantitative", "title": "95% interval, low (%)", "format": ".1f" },
+      { "field": "hard_coral_upper", "type": "quantitative", "title": "95% interval, high (%)", "format": ".1f" }
+    ]
+  }
+}

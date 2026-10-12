@@ -1,0 +1,15 @@
+group,status,n
+Birds,Vulnerable,31
+Birds,Endangered,14
+Birds,Critically Endangered,5
+Reptiles,Vulnerable,3
+Reptiles,Endangered,4
+Reptiles,Critically Endangered,2
+Mammals,Vulnerable,5
+Mammals,Endangered,4
+Sharks and sawfishes,Vulnerable,5
+Sharks and sawfishes,Endangered,2
+Sharks and sawfishes,Critically Endangered,2
+Bony fishes,Vulnerable,3
+Bony fishes,Endangered,1
+Bony fishes,Critically Endangered,2

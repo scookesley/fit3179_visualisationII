@@ -1,122 +1,104 @@
 #!/usr/bin/env python3
-"""Turn the EPBC threatened species list into the two small CSVs the charts need:
+"""Turn the EPBC species report into the two small CSVs the threatened-species charts need:
 
-    data/threatened_marine_by_state.csv   state, n_species          (chart 3, choropleth)
-    data/threatened_marine_by_group.csv   group, status, n          (chart 10, stacked bar)
+    data/threatened_marine_by_state.csv   state, n_species          (choropleth)
+    data/threatened_marine_by_group.csv   group, status, n          (stacked bar)
 
-STATUS: skeleton. I have not seen the real column layout of the download, so the
-column names below are placeholders you must fill in. Work through it like this:
+SOURCE: a report exported from the Species Profile and Threats Database (SPRAT), Department of
+Climate Change, Energy, the Environment and Water. The file has TWO header rows (a section name,
+then the column name) and one row per listed taxon. Cite SPRAT and the download date in the credits.
 
-  1. Download the "Threatened Species of National Environmental Significance" CSV from
-     data.gov.au (README step 3) into data/raw/.
-  2. Inspect it:
-         python3 scripts/prep_threatened.py --inspect data/raw/threatened_species.csv
-  3. Edit the CONFIG block so each name matches a real column / value.
-  4. Run it:
-         python3 scripts/prep_threatened.py data/raw/threatened_species.csv
-  5. Open the outputs and sanity-check the counts against the source.
+WHICH ROWS ARE COUNTED
+  - Threatened  = "EPBC Threat Status" is Vulnerable, Endangered or Critically Endangered
+                  (Extinct and Conservation Dependent are left out).
+  - Marine      = "Commonwealth Marine Area" says Present, i.e. the taxon is recorded in
+                  Commonwealth waters. This is a choice. The report also has a "Marine Status"
+                  column (the EPBC listed marine species list), but that list has no whales or
+                  sharks and includes shorebirds and a parrot, so it is not used here.
+  - In a state  = that state's column says Present or Endemic (Vagrant, Historic and
+                  Translocated are not counted). A taxon can be in several states.
+  - A row is a listed taxon, which can be a species, a subspecies or a population (for example
+    the east coast and west coast Grey Nurse Shark populations are two rows).
+
+It prints the totals so you can check them and write the captions.
+
+Standard library only.
+
+Usage (run from the project root):
+    python scripts/prep_threatened.py data/12102026-044553-report.csv
 """
 import argparse
+import csv
 import sys
+from collections import Counter
 from pathlib import Path
 
-import pandas as pd
-
-# ------------------------------- CONFIG: EDIT ME -------------------------------
-STATUS_COL = "Threatened Status"          # TODO confirm column name
-GROUP_COL = "Group"                       # TODO confirm: a taxon group such as Fish / Mammal / Reptile / Bird
-NAME_COL = "Scientific Name"              # TODO confirm
-
-# How is marine-ness recorded? Options:
-#   (a) a column with a flag, e.g. MARINE_COL = "Marine", MARINE_VALUE = "Yes"
-#   (b) the state/occurrence columns include a marine area (e.g. "Commonwealth Marine Area")
-#   (c) a hand-made list of marine species names in MARINE_NAMES
-MARINE_COL = None                         # TODO or leave None
-MARINE_VALUE = None
-MARINE_NAMES: set[str] = set()            # TODO fallback: names you know are marine
-
-# How is state occurrence recorded? Two common shapes:
-#   (a) one column per state with a Yes/blank or similar flag  -> set STATE_COLUMNS
-#   (b) one column holding a list of states                    -> set STATE_LIST_COL
-STATE_COLUMNS: dict[str, str] = {
-    # "column in file": "name exactly as in your states GeoJSON (properties.name)"
-    # "NSW": "New South Wales",
+STATUSES = ["Vulnerable", "Endangered", "Critically Endangered"]
+# names exactly as in data/aus_states.geojson (properties.STATE_NAME); they match the report's columns
+STATES = ["New South Wales", "Victoria", "Queensland", "South Australia", "Western Australia",
+          "Tasmania", "Northern Territory", "Australian Capital Territory"]
+# "Taxon Group" in the report -> label on the chart
+GROUPS = {
+    "birds": "Birds",
+    "mammals": "Mammals",
+    "reptiles": "Reptiles",
+    "sharks": "Sharks and sawfishes",
+    "ray-finned fishes": "Bony fishes",
 }
-STATE_LIST_COL = None                     # TODO e.g. "State" with values like "NSW, QLD"
-STATE_ABBREV = {
-    "NSW": "New South Wales", "VIC": "Victoria", "QLD": "Queensland", "SA": "South Australia",
-    "WA": "Western Australia", "TAS": "Tasmania", "NT": "Northern Territory",
-    "ACT": "Australian Capital Territory",
-}
-KEEP_STATUSES = ["Vulnerable", "Endangered", "Critically Endangered"]
-# -------------------------------------------------------------------------------
-
-
-def load(path: str) -> pd.DataFrame:
-    return pd.read_csv(path, dtype=str, encoding="utf-8-sig").fillna("")
-
-
-def inspect(path: str) -> None:
-    df = load(path)
-    print(f"{len(df)} rows, {len(df.columns)} columns\n")
-    for c in df.columns:
-        sample = df[c].replace("", pd.NA).dropna().unique()[:6]
-        print(f"- {c!r}: {list(sample)}")
-
-
-def is_marine(df: pd.DataFrame) -> pd.Series:
-    if MARINE_COL:
-        return df[MARINE_COL].str.strip().str.lower() == str(MARINE_VALUE).lower()
-    if MARINE_NAMES:
-        return df[NAME_COL].isin(MARINE_NAMES)
-    sys.exit("Set MARINE_COL, or MARINE_NAMES, in CONFIG so the script knows which species are marine.")
-
-
-def explode_states(df: pd.DataFrame) -> pd.DataFrame:
-    rows = []
-    if STATE_COLUMNS:
-        for col, state in STATE_COLUMNS.items():
-            hit = df[df[col].str.strip() != ""]
-            rows.append(pd.DataFrame({"species": hit[NAME_COL], "state": state}))
-    elif STATE_LIST_COL:
-        for _, r in df.iterrows():
-            for token in r[STATE_LIST_COL].replace(";", ",").split(","):
-                token = token.strip()
-                if token:
-                    rows.append(pd.DataFrame({"species": [r[NAME_COL]], "state": [STATE_ABBREV.get(token, token)]}))
-    else:
-        sys.exit("Set STATE_COLUMNS or STATE_LIST_COL in CONFIG.")
-    return pd.concat(rows, ignore_index=True).drop_duplicates()
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("csv")
-    ap.add_argument("--inspect", action="store_true", help="print columns and sample values, then exit")
+    ap = argparse.ArgumentParser(description="Build the threatened marine species CSVs from a SPRAT report.")
+    ap.add_argument("csv", help="the SPRAT report, e.g. data/12102026-044553-report.csv")
     ap.add_argument("--outdir", default="data")
     args = ap.parse_args()
 
-    if args.inspect:
-        inspect(args.csv)
-        return
+    src = Path(args.csv)
+    if not src.is_file():
+        sys.exit(f"ERROR: cannot find '{src}'. Run this from the project root.")
+    with src.open(newline="", encoding="utf-8-sig") as f:
+        rows = list(csv.reader(f))
+    header, data = rows[1], rows[2:]          # rows[0] is the section-name row
+    col = {name: i for i, name in reversed(list(enumerate(header)))}   # first column wins for repeated names
+    needed = ["EPBC Threat Status", "Taxon Group", "Commonwealth Marine Area"] + STATES
+    missing = [c for c in needed if c not in col]
+    if missing:
+        sys.exit(f"ERROR: the report has no column(s) {missing}. Is this the SPRAT report?")
 
-    df = load(args.csv)
-    df = df[df[STATUS_COL].isin(KEEP_STATUSES)]
-    df = df[is_marine(df)]
-    print(f"{len(df)} threatened marine species kept")
+    kept = [r for r in data
+            if r[col["EPBC Threat Status"]] in STATUSES and "Present" in r[col["Commonwealth Marine Area"]]]
+    if not kept:
+        sys.exit("ERROR: no threatened marine rows found.")
 
     out = Path(args.outdir)
     out.mkdir(parents=True, exist_ok=True)
 
-    by_state = explode_states(df).groupby("state")["species"].nunique().rename("n_species").reset_index()
-    by_state.to_csv(out / "threatened_marine_by_state.csv", index=False)
+    by_state = {s: sum(1 for r in kept if "Present" in r[col[s]] or "Endemic" in r[col[s]]) for s in STATES}
+    with (out / "threatened_marine_by_state.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["state", "n_species"])
+        w.writerows(by_state.items())
 
-    by_group = df.groupby([GROUP_COL, STATUS_COL]).size().rename("n").reset_index()
-    by_group.columns = ["group", "status", "n"]
-    by_group.to_csv(out / "threatened_marine_by_group.csv", index=False)
+    by_group = Counter((GROUPS.get(r[col["Taxon Group"]], r[col["Taxon Group"]]), r[col["EPBC Threat Status"]])
+                       for r in kept)
+    group_totals = Counter()
+    for (group, _), n in by_group.items():
+        group_totals[group] += n
+    with (out / "threatened_marine_by_group.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["group", "status", "n"])
+        for group, _ in group_totals.most_common():
+            for status in STATUSES:
+                if by_group[(group, status)]:
+                    w.writerow([group, status, by_group[(group, status)]])
 
-    print(by_state.to_string(index=False))
-    print(by_group.to_string(index=False))
+    print(f"{len(kept)} threatened marine taxa kept (of {len(data)} rows in the report).")
+    print("By status: " + ", ".join(f"{s} {sum(1 for r in kept if r[col['EPBC Threat Status']] == s)}" for s in STATUSES))
+    print("By group:  " + ", ".join(f"{g} {n}" for g, n in group_totals.most_common()))
+    print("By state (a taxon can count in several):")
+    for state, n in sorted(by_state.items(), key=lambda kv: -kv[1]):
+        print(f"  {n:3d}  {state}")
+    print(f"Wrote {out / 'threatened_marine_by_state.csv'} and {out / 'threatened_marine_by_group.csv'}.")
 
 
 if __name__ == "__main__":

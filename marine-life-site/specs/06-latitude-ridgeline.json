@@ -14,10 +14,10 @@
   },
   "title": {
     "text": "Warm-water and cold-water species live at different latitudes",
-    "subtitle": "Density of sightings by latitude, one ridge per species. Latitude runs from southern Tasmania to Cape York."
+    "subtitle": "Density of sightings by latitude; Latitude runs from southern Tasmania to Cape York."
   },
-  "width": 640,
-  "height": 32,
+  "width": 960,
+  "height": 44,
   "data": { "url": "data/ala_occurrences.csv" },
   "transform": [
     { "filter": "isValid(datum.lat)" },
@@ -32,7 +32,7 @@
   },
   "encoding": {
     "x": { "field": "value", "type": "quantitative", "title": "Latitude (°)", "scale": { "nice": false } },
-    "y": { "field": "density", "type": "quantitative", "scale": { "range": [32, -40] }, "axis": null },
+    "y": { "field": "density", "type": "quantitative", "scale": { "range": [44, -55] }, "axis": null },
     "fill": { "field": "species", "type": "nominal", "legend": null },
     "row": {
       "field": "species",
@@ -41,5 +41,5 @@
       "header": { "labelAngle": 0, "labelAlign": "left", "labelPadding": 8, "labelFontSize": 12 }
     }
   },
-  "config": { "view": { "stroke": null }, "facet": { "spacing": -28 } }
+  "config": { "view": { "stroke": null }, "facet": { "spacing": -38 } }
 }

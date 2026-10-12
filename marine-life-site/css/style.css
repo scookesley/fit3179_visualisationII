@@ -10,13 +10,16 @@
   --accent-deep: #0a5560;
   --warn: #b7791f;
   --radius: 10px;
-  --maxw: 920px;
+  --maxw: 1360px;
   --font: Inter, "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+
+h1, h2, h3 { font-family: "Fraunces", Georgia, serif; }
+body { font-family: "Inter", "Segoe UI", sans-serif; }
 
 body {
   margin: 0;
@@ -76,11 +79,9 @@ body {
 .chapters a:hover,
 .chapters a:focus-visible { background: #e6f2f4; outline: none; }
 
-/* ---------- Global species control ---------- */
+/* ---------- Species control (sits above the chart row it drives) ---------- */
 .species-bar {
-  max-width: var(--maxw);
-  margin: 20px auto 0;
-  padding: 0 20px;
+  margin: 0 0 12px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -96,8 +97,55 @@ body {
   color: var(--ink);
 }
 
+/* ---------- View toggle (switches between two charts in one card) ---------- */
+.view-toggle {
+  display: inline-flex;
+  margin: 0 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.view-toggle button {
+  font: inherit;
+  font-size: .88rem;
+  padding: 6px 14px;
+  border: 0;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+}
+.view-toggle button + button { border-left: 1px solid var(--line); }
+.view-toggle button:hover { background: #e6f2f4; }
+.view-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.view-toggle button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.chart[hidden] { display: none; }
+
+/* Add "centered" to a chart-card to centre its chart (and toggle) instead of left-aligning */
+.chart-card.centered .chart-wrapper { text-align: center; }
+.chart-card.centered .view-toggle { display: flex; width: fit-content; margin-inline: auto; }
+.chart-card.centered .vega-bindings { text-align: center; }   /* sliders under a centred chart */
+
+/* Add "caption-side" to a chart-card to put the chart on the left and its caption to the right */
+.chart-card.caption-side {
+  display: grid;
+  grid-template-columns: minmax(0, 660px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+.chart-card.caption-side figcaption {
+  margin-top: 0;
+  padding: 4px 0 4px 24px;
+  border-top: 0;
+  border-left: 1px solid var(--line);
+  max-width: 520px;
+}
+@media (max-width: 1000px) {
+  .chart-card.caption-side { grid-template-columns: minmax(0, 1fr); }
+  .chart-card.caption-side figcaption { padding: 10px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+}
+
 /* ---------- Layout ---------- */
-main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 80px; }
+main { max-width: var(--maxw); margin: 0 auto; padding: 0 16px 80px; }
 
 .chapter { padding-top: 48px; }
 .chapter h2 {
@@ -137,8 +185,28 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 80px; }
   max-width: 720px;
 }
 
+/* ---------- Chart row (cards side by side, stacking when there is no room) ---------- */
+.chart-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 16px;
+  margin: 0 0 28px;
+}
+.chart-row .chart-card {
+  margin: 0;
+  padding: 14px 14px 12px;
+  min-width: 0;   /* let the card shrink to its column instead of to its chart */
+}
+
+/* Two maps: the first column is sized for the 800px national map, the second gets the rest */
+.chart-row.map-pair { grid-template-columns: minmax(0, 890px) minmax(0, 1fr); }
+@media (max-width: 1240px) {
+  .chart-row.map-pair { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* Vega-embed tidy-ups */
-.vega-embed { display: block; }
+/* vega-embed's own stylesheet makes this inline-block; full width is needed for "width": "container" specs */
+.chart .vega-embed { display: block; width: 100%; }
 .vega-embed details summary { color: var(--muted); }
 
 /* ---------- Spec viewer (collapsed <details> under each chart) ---------- */

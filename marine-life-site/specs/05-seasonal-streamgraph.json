@@ -14,10 +14,10 @@
   },
   "title": {
     "text": "Seasons of sightings, species by species",
-    "subtitle": "Each band is one species' monthly share of its yearly records. Band thickness = how typical that month is for the species."
+    "subtitle": "Each band is one species' monthly share of its yearly records."
   },
-  "width": 640,
-  "height": 300,
+  "width": 960,
+  "height": 360,
   "data": { "url": "data/ala_occurrences.csv" },
   "transform": [
     { "filter": "isValid(datum.month)" },

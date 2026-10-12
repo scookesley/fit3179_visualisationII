@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Australian Marine Life</title>
+  <meta name="description" content="An interactive data story about Australia's marine parks, marine species, threatened species and the pressures on the Great Barrier Reef.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="hero">
+    <p class="eyebrow">Data Visualisation</p>
+    <h1>Australian Marine Life</h1>
+    <p class="lede">An overview of marine areas in Australia, their protections, and the diverse species that call them home.</p>
+  </header>
+
+  <nav class="chapters" aria-label="Chapters">
+    <a href="#ch1">1 · Protected Places</a>
+    <a href="#ch2">2 · Marine Life</a>
+    <a href="#ch3">3 · Endangered Species</a>
+    <a href="#ch4">4 · Coral Monitoring</a>
+    <a href="#about">Data &amp; credits</a>
+  </nav>
+
+  <main>
+
+    <!-- ============================ CHAPTER 1 ============================ -->
+    <section id="ch1" class="chapter">
+      <h2><span class="num">1</span> Protected Places</h2>
+      <p class="chapter-intro">
+        The Australian federal government maintains designated Marine Parks encompassing the waters of the Australian mainland and nearby territories. The purpose of these Parks is to help in conserving marine habitats and the species that rely on these habitats, as well as providing places for marine activities such as snorkelling, boating, fishing, and diving. 
+      </p>
+
+      <!-- National map (wide, fixed size) beside the reef zoning map (takes the space that is left). -->
+      <div class="chart-row map-pair">
+      <figure class="chart-card centered">
+        <div class="view-toggle" role="group" aria-label="Map view">
+          <button type="button" data-view="amp-network" aria-pressed="true">By Network</button>
+          <button type="button" data-view="amp-strict" aria-pressed="false">By Area & Protection Level</button>
+        </div>
+        <div class="chart" id="amp-network" data-spec="specs/01a-amp-map.json"></div>
+        <div class="chart" id="amp-strict" data-spec="specs/01b-amp-map-choro.json" hidden></div>
+        <figcaption>
+          60 total distinct Marine Park areas exist across Australia and its territories. The Parks are categorised into eight distinct Networks, 
+          which enable efficient management delegation by geographic area. Each of the 60 Parks are given a name and a Zone status. Zones dictate the
+          protection level of a particular area, which can be mapped to the categories set out by the International Union for Conservation of Nature (IUCN)
+          These Zone types include: Sanctuary Zone (IUCN Ia) and National Park Zone (IUCN II) - the two strictest levels of protection, Recreational Use Zone (IUCN IV),
+          Habitat Protection Zone (IUCN IV), Special Purpose Zone (IUCN VI) and Multiple Use Zone (IUCN VI).
+          Not shown here are non-Commonwealth-managed Parks, including the Great Barrier Reef Marine Park (Federal/QLD State Govt. managed) and other
+          state-managed coastal waters.
+        </figcaption>
+      </figure>
+
+      <figure class="chart-card">
+        <div class="chart" data-spec="specs/02-gbr-zoning-map.json"></div>
+        <figcaption>The Great Barrier Reef (GBR) Marine Park is co-managed by the Queensland State Government and the Federal State government. As an area of
+          extraordinary marine diversity, it's the subject of scientific as well as touristic interest. For that reason, the designated GBR Park area is divided into a number of complex, 
+          distinct regions, each attached to a zoning category.</figcaption>
+      </figure>
+      </div>
+    </section>
+
+    <!-- ============================ CHAPTER 2 ============================ -->
+    <section id="ch2" class="chapter">
+      <h2><span class="num">2</span> Marine Life</h2>
+      <p class="chapter-intro">Australia's waters are home to over 33,000 known marine species. Of these, over 1,500 make their home solely in the Great Barrier Reef.
+        The following section contains detailed data on four common Australian marine species of interest: The Humpack Whale, Green Turtle, White Shark, Eastern Blue Groper, 
+        and the Giant Australian Cuttlefish.
+      </p>
+
+      <div class="species-bar" id="species-bar">
+        <label for="species-select">Focus species:</label>
+        <select id="species-select"></select>
+      </div>
+
+      <div class="chart-row">
+        <figure class="chart-card">
+          <div class="chart" data-spec="specs/02-sightings-map.json"></div>
+          <figcaption>[].</figcaption>
+        </figure>
+
+        <figure class="chart-card centered">
+          <div class="chart" data-spec="specs/03-seasonal-radial.json"></div>
+          <figcaption>[].</figcaption>
+        </figure>
+
+      </div>
+
+      <figure class="chart-card">
+        <div class="chart" data-spec="specs/04-species-month-heatmap.json"></div>
+        <figcaption>[].</figcaption>
+      </figure>
+
+      <figure class="chart-card centered">
+        <div class="chart" data-spec="specs/05-seasonal-streamgraph.json"></div>
+        <figcaption>[].</figcaption>
+      </figure>
+
+      <figure class="chart-card centered">
+        <div class="chart" data-spec="specs/06-latitude-ridgeline.json"></div>
+        <figcaption>[].</figcaption>
+      </figure>
+
+      <figure class="chart-card centered">
+        <div class="chart" data-spec="specs/07-fish-boxplot.json"></div>
+        <figcaption>[].</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============================ CHAPTER 3 ============================ -->
+    <section id="ch3" class="chapter">
+      <h2><span class="num">3</span> Endangered Species</h2>
+      <p class="chapter-intro">[EPBC Endangered Categories].</p>
+
+      <!-- caption-side: chart on the left, caption in a column to its right -->
+      <figure class="chart-card caption-side">
+        <div class="chart" data-spec="specs/08-threatened-choropleth.json"></div>
+        <figcaption>[].</figcaption>
+      </figure>
+
+      <figure class="chart-card centered">
+        <div class="chart" data-spec="specs/09-threatened-stacked-bar.json"></div>
+        <figcaption>[].</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============================ CHAPTER 4 ============================ -->
+    <section id="ch4" class="chapter">
+      <h2><span class="num">4</span> Coral Monitoring</h2>
+      <p class="chapter-intro">[AIMS Monitoring].</p>
+
+      <figure class="chart-card centered">
+        <div class="chart" data-spec="specs/10-coral-cover-lines.json"></div>
+        <figcaption>[].</figcaption>
+      </figure>
+
+      <figure class="chart-card centered">
+        <div class="chart" data-spec="specs/11-coral-latitude-scatter.json"></div>
+        <figcaption>[].</figcaption>
+      </figure>
+
+      <figure class="chart-card centered">
+        <div class="chart" data-spec="specs/12-reef-parallel-coords.json"></div>
+        <figcaption>[].</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============================ ABOUT ============================ -->
+    <section id="about" class="chapter about">
+      <h2>Data &amp; credits</h2>
+      <!-- TODO: fill in exact dataset titles, access dates and licences. Keep this accurate; markers look for it. -->
+      <ul>
+        <li>Australian Marine Parks: Department of Climate Change, Energy, the Environment and Water (DCCEEW), via data.gov.au.</li>
+        <li>Great Barrier Reef Marine Park zoning: Great Barrier Reef Marine Park Authority.</li>
+        <li>Species occurrence records: Atlas of Living Australia (cite the download DOI).</li>
+        <li>Reef fish surveys: IMOS National Reef Monitoring Network (Reef Life Survey and partners).</li>
+        <li>Threatened species: Species Profile and Threats Database (SPRAT) report, Department of Climate Change, Energy, the Environment and Water (DCCEEW), downloaded 12 October 2026.</li>
+        <li>Hard coral cover: Australian Institute of Marine Science (AIMS). 2015, AIMS Long-term Monitoring Program: Crown-of-thorns starfish (Acanthaster planci) and benthos Manta Tow Data (Great Barrier Reef), https://doi.org/10.25845/5c09b0abf315a</li>
+        <li>Basemap: Natural Earth / ABS state boundaries.</li>
+      </ul>
+      <p class="small">Built with Vega-Lite and vega-embed. Add your name, unit code and the date here.</p>
+    </section>
+
+  </main>
+
+  <!-- Vega stack. Pinned major versions; check the console for version warnings. -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

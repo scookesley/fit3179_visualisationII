@@ -1,0 +1,264 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 1,
+    "advanced": true,
+    "idiom": "Proportional symbol map (circle area = park area, colour = share in strictest zones)",
+    "data": [
+      "data/aus_states.geojson",
+      "data/australian_marine_parks.geojson",
+      "data/park_summary.csv"
+    ],
+    "todo": [
+      "Run  python scripts/prep_park_summary.py  to create data/park_summary.csv (one row per park). It prints the headline numbers.",
+      "Check the title numbers against what the script printed. They were true for the file I tested (61 parks, 48.2% strict, top 3 parks hold 58% of the strict area); if you re-download the data, re-check them.",
+      "Strict = IUCN categories Ia, Ib and II (Sanctuary and National Park zones). Say that in the caption, and define it in plain words.",
+      "Circle AREA is proportional to park area (not radius). Tiny parks stay visible only because of the outline; mention that small circles are not to scale if anyone asks.",
+      "The frame is wide on purpose: it has to include Heard Island (far left) and Macquarie Island (far bottom right). If you crop it, you lose the three biggest strict parks.",
+      "Labels show the 7 largest parks, placed just above each circle. If any collide on your screen, nudge them in the lon_lbl calculation (degrees)."
+    ]
+  },
+  "title": {
+    "text": "Three remote island parks hold 58% of Australia's strictly protected marine park area",
+    "subtitle": [
+      "Each circle is a marine park: size = park area, colour = share of the park in the strictest zones (IUCN Ia/II).",
+      "Overall, 48% of the 4.2 million km² is strictly protected."
+    ]
+  },
+  "width": 800,
+  "height": 560,
+  "autosize": "none",
+  "padding": { "left": 10, "right": 10, "top": 62, "bottom": 110 },
+  "projection": {
+    "type": "mercator",
+    "center": [
+      120,
+      -36
+    ],
+    "scale": 430
+  },
+  "layer": [
+    {
+      "data": {
+        "graticule": {
+          "step": [
+            20,
+            20
+          ]
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "filled": false,
+        "stroke": "#dde3e6",
+        "strokeWidth": 0.6
+      }
+    },
+    {
+      "data": {
+        "url": "data/aus_states.geojson",
+        "format": {
+          "property": "features"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#eceae3",
+        "stroke": "#c9c6bc",
+        "strokeWidth": 0.4
+      }
+    },
+    {
+      "data": {
+        "url": "data/australian_marine_parks.geojson",
+        "format": {
+          "property": "features"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#cfe3ea",
+        "stroke": null
+      }
+    },
+    {
+      "data": {
+        "url": "data/park_summary.csv",
+        "format": {
+          "parse": {
+            "lon": "number",
+            "lat": "number",
+            "total_km2": "number",
+            "strict_km2": "number",
+            "pct_strict": "number",
+            "n_zones": "number"
+          }
+        }
+      },
+      "mark": {
+        "type": "circle",
+        "opacity": 0.82,
+        "stroke": "#0b2e3f",
+        "strokeWidth": 0.9
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "size": {
+          "field": "total_km2",
+          "type": "quantitative",
+          "title": "Park area (km²)",
+          "scale": {
+            "type": "linear",
+            "zero": true,
+            "range": [
+              0,
+              6500
+            ]
+          },
+          "legend": {
+            "values": [
+              10000,
+              100000,
+              500000,
+              1000000
+            ],
+            "format": "~s",
+            "orient": "bottom",
+            "symbolFillColor": "#ffffff",
+            "offset": 4
+          }
+        },
+        "color": {
+          "field": "pct_strict",
+          "type": "quantitative",
+          "title": "Share in strictest zones",
+          "scale": {
+            "scheme": "teals",
+            "domain": [
+              0,
+              100
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "gradientLength": 120,
+            "labelExpr": "datum.value + '%'",
+            "offset": 4
+          }
+        },
+        "order": {
+          "field": "total_km2",
+          "type": "quantitative",
+          "sort": "descending"
+        },
+        "tooltip": [
+          {
+            "field": "park",
+            "type": "nominal",
+            "title": "Park"
+          },
+          {
+            "field": "network",
+            "type": "nominal",
+            "title": "Network"
+          },
+          {
+            "field": "total_km2",
+            "type": "quantitative",
+            "title": "Area (km²)",
+            "format": ",.0f"
+          },
+          {
+            "field": "pct_strict",
+            "type": "quantitative",
+            "title": "In strictest zones (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "n_zones",
+            "type": "quantitative",
+            "title": "Zones"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/park_summary.csv",
+        "format": {
+          "parse": {
+            "lon": "number",
+            "lat": "number",
+            "total_km2": "number",
+            "strict_km2": "number",
+            "pct_strict": "number",
+            "n_zones": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "window": [
+            {
+              "op": "rank",
+              "as": "rnk"
+            }
+          ],
+          "sort": [
+            {
+              "field": "total_km2",
+              "order": "descending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.rnk <= 7"
+        },
+        {
+          "calculate": "datum.park === 'Heard Island and McDonald Islands' ? 'Heard & McDonald Is.' : (datum.park === 'Cocos (Keeling) Islands' ? 'Cocos (Keeling) Is.' : datum.park)",
+          "as": "label"
+        },
+        {
+          "calculate": "(sqrt(datum.total_km2 / 989836 * 6500 / PI) + 9) / (430 * PI / 180 / cos(datum.lat * PI / 180))",
+          "as": "dlat"
+        },
+        {
+          "calculate": "datum.lat + datum.dlat",
+          "as": "lat_lbl"
+        },
+        {
+          "calculate": "datum.lon + (datum.park === 'Cocos (Keeling) Islands' ? -5 : (datum.park === 'Christmas Island' ? 5 : (datum.park === 'Heard Island and McDonald Islands' ? 5 : 0)))",
+          "as": "lon_lbl"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#0b2e3f",
+        "baseline": "bottom"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon_lbl",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat_lbl",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

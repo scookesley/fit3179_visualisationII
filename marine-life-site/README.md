@@ -51,14 +51,14 @@ Charts 1-8 already make 8 advanced. 9 and 13 are spares.
 
 | File | Columns | Used by |
 |---|---|---|
-| `data/aus_states.geojson` | features with a `properties.name` (state name) | 01, 02, 03, 13 |
+| `data/aus_states.geojson` | features with a `properties.STATE_NAME` (state name) | 01, 02, 03, 13 |
 | `data/australian_marine_parks.geojson` | features with `NETNAME`, `RESNAME`, `ZONENAME` (**guesses: check**) | 01, 02 |
 | `data/gbr_zoning.geojson` | features with `TYPE` | 13 |
 | `data/ala_occurrences.csv` | `species, scientific, lat, lon, year, month` | 02, 04, 05, 06, 09 |
 | `data/reef_fish_transects.csv` | `region, latitude, biomass_kg` | 07 |
 | `data/threatened_marine_by_state.csv` | `state, n_species` | 03 |
 | `data/threatened_marine_by_group.csv` | `group, status, n` | 10 |
-| `data/aims_ltmp_reef_year.csv` | `reef, sector, year, hard_coral, soft_coral, dead_coral, cots_per_tow` | 08, 11, 12 |
+| `data/aims_ltmp_reef_year.csv` | `reef, sector, shelf, year, hard_coral, hard_coral_lower, hard_coral_upper, lat, lon` (hard coral only: the download has no starfish, soft or dead coral) | 08, 11, 12 |
 
 Nothing is bundled: you need to fetch the data yourself.
 
@@ -74,7 +74,8 @@ Nothing is bundled: you need to fetch the data yourself.
    `python3 scripts/prep_threatened.py --inspect <file>`, fill in the CONFIG block, then run it for real.
 4. **Reef fish.** From the AODN Portal, search "NRMN" and download the reef fish abundance and biomass dataset plus site
    information. Join on site, compute biomass per transect, keep ~6-10 regions, save as `reef_fish_transects.csv`.
-5. **Coral and starfish.** Request the AIMS Long-term Monitoring Program data (a short form), then reshape it into
+5. **Coral.** Request the AIMS Long-term Monitoring Program data (a short form), save it as
+   `data/AIMS_LTMP-GBR-manta-tow.csv`, then run `python scripts/prep_aims_ltmp.py` to reshape it into
    `aims_ltmp_reef_year.csv`.
 6. Open the site with `?dev`, work down each chart's TODO list, then write the captions in `index.html`.
 

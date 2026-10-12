@@ -9,18 +9,24 @@
       "Download the Australian Marine Parks GeoJSON to data/australian_marine_parks.geojson (README, step 1).",
       "Open the file and check the property names. NETNAME, RESNAME and ZONENAME below are GUESSES; rename to match.",
       "If the page is slow, simplify with mapshaper (-simplify 5%).",
-      "Decide: keep the sub-Antarctic/offshore parks (wide extent) or crop to mainland waters. Tune projection center/scale to frame the data.",
+      "The frame (projection center/scale, width, height, autosize, padding) is the same as 01b so the map does not jump when you toggle; change both together. Padding is fixed, so if a title or legend gets cut off, raise the top or bottom padding in BOTH specs.",
       "Replace the title with a real finding once you know the numbers."
     ]
   },
   "title": {
     "text": "Australia protects its ocean through a national network of marine parks",
-    "subtitle": "Australian Marine Parks, coloured by network. Hover for park details."
+    "subtitle": "Australian Marine Parks coloured by network categorisation."
   },
   "width": 800,
-  "height": 650,
-  "projection": { "type": "mercator", "center": [134, -27], "scale": 900 },
+  "height": 560,
+  "autosize": "none",
+  "padding": { "left": 10, "right": 10, "top": 62, "bottom": 110 },
+  "projection": { "type": "mercator", "center": [120, -36], "scale": 430 },
   "layer": [
+    {
+      "data": { "graticule": { "step": [20, 20] } },
+      "mark": { "type": "geoshape", "filled": false, "stroke": "#dde3e6", "strokeWidth": 0.6 }
+    },
     {
       "data": { "url": "data/aus_states.geojson", "format": { "property": "features" } },
       "mark": { "type": "geoshape", "fill": "#eceae3", "stroke": "#c9c6bc", "strokeWidth": 0.4 }
@@ -29,7 +35,8 @@
       "data": { "url": "data/australian_marine_parks.geojson", "format": { "property": "features" } },
       "mark": { "type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.4 },
       "encoding": {
-        "color": { "field": "properties.NETNAME", "type": "nominal", "title": "Network" },
+        "color": { "field": "properties.NETNAME", "type": "nominal", "title": "Network",  
+          "legend": {"orient": "bottom", "columns": 3, "symbolType": "square" } },
         "tooltip": [
           { "field": "properties.RESNAME", "type": "nominal", "title": "Park" },
           { "field": "properties.NETNAME", "type": "nominal", "title": "Network" },
@@ -39,3 +46,4 @@
     }
   ]
 }
+

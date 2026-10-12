@@ -1,0 +1,62 @@
+park,network,lon,lat,total_km2,strict_km2,pct_strict,n_zones
+Coral Sea,Coral Sea,152.366,-17.568,989836.0,238399.8,24.1,28
+Macquarie Island,South-east,158.65,-54.876,475465.2,442269.7,93.0,3
+Cocos (Keeling) Islands,Indian Ocean Territories,96.854,-12.033,467053.9,465845.7,99.7,4
+Heard Island and McDonald Islands,Heard Island and McDonald Islands,73.734,-53.643,380654.9,210690.0,55.3,9
+Christmas Island,Indian Ocean Territories,105.241,-11.536,277016.0,273186.3,98.6,2
+South-west Corner,South-west,116.241,-36.28,271833.3,54841.1,20.2,16
+Norfolk,Temperate East,168.221,-29.471,188443.6,41660.7,22.1,3
+Argo-Rowley Terrace,North-west,118.263,-15.765,146002.9,36050.1,24.7,4
+Lord Howe,Temperate East,159.055,-31.951,110125.6,9272.8,8.4,7
+Abrolhos,South-west,111.044,-27.174,88060.3,2547.6,2.9,9
+Gascoyne,North-west,112.026,-21.761,81766.1,9131.9,11.2,4
+Kimberley,North-west,122.997,-15.361,74468.6,6392.3,8.6,4
+Oceanic Shoals,North,128.169,-11.45,71743.1,406.2,0.6,5
+Central Eastern,Temperate East,155.831,-30.297,70054.0,8109.8,11.6,4
+Western Eyre,South-west,134.084,-35.522,57944.3,17437.4,30.1,6
+Freycinet,South-east,151.12,-42.194,57940.7,56825.2,98.1,5
+Great Australian Bight,South-west,130.779,-33.571,45822.1,7727.8,16.9,5
+Tasman Fracture,South-east,144.827,-44.808,42500.5,22535.5,53.0,3
+South Tasman Rise,South-east,149.003,-46.285,27704.3,27704.3,100.0,1
+Flinders,South-east,151.292,-39.995,27045.8,15024.9,55.6,5
+Murray,South-east,137.343,-37.735,25803.7,17167.6,66.5,5
+Gulf of Carpentaria,North,139.932,-15.889,23770.9,3623.1,15.2,3
+Arafura,North,133.348,-9.638,22924.1,0.0,0.0,3
+Eastern Recherche,South-west,123.66,-35.43,20575.2,15564.8,75.6,3
+Zeehan,South-east,142.337,-41.172,19897.0,18662.7,93.8,3
+West Cape York,North,141.298,-11.043,16012.2,3329.1,20.8,4
+Eighty Mile Beach,North-west,120.344,-19.475,10785.2,0.0,0.0,1
+Huon,South-east,147.707,-44.313,9990.8,1432.1,14.3,2
+Joseph Bonaparte Gulf,North,128.938,-14.27,8597.1,0.0,0.0,2
+Shark Bay,North-west,112.78,-24.866,7442.5,0.0,0.0,1
+Perth Canyon,South-west,114.52,-32.054,7409.2,1240.8,16.7,7
+Arnhem,North,133.921,-11.374,7124.9,0.0,0.0,1
+Hunter,Temperate East,153.192,-32.415,6257.4,0.0,0.0,2
+Carnarvon Canyon,North-west,111.0,-23.658,6176.7,0.0,0.0,1
+Nelson,South-east,139.857,-39.306,6123.1,6123.1,100.0,1
+Wessel,North,137.046,-11.433,5908.1,0.0,0.0,2
+Gifford,Temperate East,159.399,-26.622,5828.5,0.0,0.0,1
+Twilight,South-west,126.116,-32.685,4641.3,3604.9,77.7,3
+Bremer,South-west,119.842,-34.749,4472.3,3172.4,70.9,3
+East Gippsland,South-east,150.332,-38.143,4136.6,0.0,0.0,1
+Montebello,North-west,115.557,-20.256,3412.8,0.0,0.0,1
+Beagle,South-east,146.996,-39.366,2927.6,478.8,16.4,2
+Jervis,Temperate East,151.286,-35.209,2473.4,0.0,0.0,2
+Ningaloo,North-west,113.72,-22.583,2435.2,115.9,4.8,3
+Western Kangaroo Island,South-west,136.368,-36.014,2335.3,120.0,5.1,3
+Jurien,South-west,114.802,-30.447,1850.9,30.6,1.7,2
+Limmen,North,136.094,-15.128,1399.2,0.0,0.0,1
+Dampier,North-west,117.292,-20.41,1251.6,72.7,5.8,3
+Apollo,South-east,143.686,-39.189,1183.6,0.0,0.0,1
+Geographe,South-west,115.281,-33.454,976.7,15.3,1.6,4
+Murat,South-west,132.65,-32.517,937.8,937.8,100.0,1
+Two Rocks,South-west,115.388,-31.612,882.2,15.3,1.7,2
+Franklin,South-east,144.275,-40.767,670.8,123.1,18.4,2
+Southern Kangaroo Island,South-west,137.502,-36.131,629.9,0.0,0.0,1
+Ashmore Reef,North-west,123.093,-12.24,583.5,549.9,94.3,2
+Mermaid Reef,North-west,119.625,-17.092,539.9,539.9,100.0,1
+Boags,South-east,144.988,-40.229,537.5,0.0,0.0,1
+Roebuck,North-west,122.065,-18.116,303.7,0.0,0.0,1
+Cartier Island,North-west,123.555,-12.531,172.4,172.4,100.0,1
+Solitary Islands,Temperate East,153.339,-29.932,152.3,1.6,1.0,5
+Cod Grounds,Temperate East,152.91,-31.681,4.1,4.1,100.0,1

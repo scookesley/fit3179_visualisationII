@@ -6,39 +6,46 @@
     "idiom": "Parallel coordinates (fold + joinaggregate normalisation)",
     "data": ["data/aims_ltmp_reef_year.csv"],
     "todo": [
-      "Needs data/aims_ltmp_reef_year.csv with columns: reef, sector, year, hard_coral, soft_coral, dead_coral, cots_per_tow (README, step 5).",
-      "Each line is a reef, averaged over years since the slider value. Each axis is rescaled 0-1; the numbers at the top and bottom of each axis show the real max and min.",
+      "The AIMS download has hard coral cover only (no soft coral, dead coral or starfish), so the four axes are all built from hard coral: each reef's lowest, average and highest cover since the slider year, and its swing (highest minus lowest).",
+      "Only reefs with at least 3 surveys since the slider year are drawn, otherwise 'lowest' and 'highest' mean little. Move the slider right and reefs drop out.",
+      "Each axis is rescaled 0-1; the numbers at the top and bottom of each axis show the real max and min.",
+      "The headline is a neutral placeholder: replace it with what you see.",
       "If lines are too many to read, filter to one or two sectors or lower the opacity.",
       "Axis order matters in parallel coordinates. Try putting the two variables you want readers to compare next to each other.",
       "If the 'datum' y placement for min/max labels misbehaves in your Vega-Lite version, remove those two text layers and rely on tooltips."
     ]
   },
   "title": {
-    "text": "Reefs that lose coral tend to share a profile",
-    "subtitle": "One line per reef (mean since the chosen year). Axes rescaled to 0-1; labels show the real max (top) and min (bottom)."
+    "text": "Each reef's coral cover: its low point, average, high point and swing",
+    "subtitle": "One line per reef with 3 or more surveys since the chosen year. Axes rescaled to 0-1; labels show the real max (top) and min (bottom), in % cover."
   },
-  "width": 640,
-  "height": 360,
+  "width": 960,
+  "height": 440,
   "params": [
     {
       "name": "recent_from",
       "value": 2018,
-      "bind": { "input": "range", "min": 1986, "max": 2025, "step": 1, "name": "Average from year: " }
+      "bind": { "input": "range", "min": 1986, "max": 2025, "step": 1, "name": "Surveys from year: " }
     }
   ],
-  "data": { "url": "data/aims_ltmp_reef_year.csv" },
+  "data": {
+    "url": "data/aims_ltmp_reef_year.csv",
+    "format": { "type": "csv", "parse": { "year": "number", "hard_coral": "number", "hard_coral_lower": "number", "hard_coral_upper": "number", "lat": "number", "lon": "number" } }
+  },
   "transform": [
     { "filter": "datum.year >= recent_from" },
     {
       "aggregate": [
-        { "op": "mean", "field": "hard_coral", "as": "hard_coral" },
-        { "op": "mean", "field": "soft_coral", "as": "soft_coral" },
-        { "op": "mean", "field": "dead_coral", "as": "dead_coral" },
-        { "op": "mean", "field": "cots_per_tow", "as": "cots_per_tow" }
+        { "op": "min", "field": "hard_coral", "as": "lowest" },
+        { "op": "mean", "field": "hard_coral", "as": "average" },
+        { "op": "max", "field": "hard_coral", "as": "highest" },
+        { "op": "count", "as": "n_surveys" }
       ],
       "groupby": ["reef", "sector"]
     },
-    { "fold": ["hard_coral", "soft_coral", "dead_coral", "cots_per_tow"] },
+    { "filter": "datum.n_surveys >= 3" },
+    { "calculate": "datum.highest - datum.lowest", "as": "swing" },
+    { "fold": ["lowest", "average", "highest", "swing"] },
     {
       "joinaggregate": [
         { "op": "min", "field": "value", "as": "min" },
@@ -52,7 +59,7 @@
     "x": {
       "field": "key",
       "type": "nominal",
-      "sort": ["hard_coral", "soft_coral", "dead_coral", "cots_per_tow"],
+      "sort": ["lowest", "average", "highest", "swing"],
       "title": null,
       "axis": {
         "orient": "top",
@@ -61,7 +68,7 @@
         "grid": false,
         "domain": false,
         "ticks": false,
-        "labelExpr": "{'hard_coral':'Hard coral %','soft_coral':'Soft coral %','dead_coral':'Dead coral %','cots_per_tow':'Starfish per tow'}[datum.value]"
+        "labelExpr": "{'lowest':'Lowest cover','average':'Average cover','highest':'Highest cover','swing':'Swing (high - low)'}[datum.value]"
       }
     }
   },
@@ -75,13 +82,14 @@
       "encoding": {
         "y": { "field": "norm_val", "type": "quantitative", "axis": null },
         "detail": { "field": "reef", "type": "nominal" },
-        "color": { "field": "sector", "type": "nominal", "title": "Sector", "scale": { "scheme": "tableau20" } },
+        "color": { "field": "sector", "type": "nominal", "title": "Sector (north to south)", "scale": { "scheme": "tableau20", "domain": ["Torres Strait", "Cape Grenville", "Princess Charlotte Bay", "Cooktown-Lizard Island", "Cairns", "Innisfail", "Townsville", "Cape Upstart", "Whitsunday", "Pompey", "Swain", "Capricorn-Bunker"] } },
         "opacity": { "value": 0.45 },
         "tooltip": [
           { "field": "reef", "type": "nominal", "title": "Reef" },
           { "field": "sector", "type": "nominal", "title": "Sector" },
           { "field": "key", "type": "nominal", "title": "Measure" },
-          { "field": "value", "type": "quantitative", "title": "Value", "format": ".2f" }
+          { "field": "value", "type": "quantitative", "title": "Hard coral (% cover)", "format": ".1f" },
+          { "field": "n_surveys", "type": "quantitative", "title": "Surveys" }
         ]
       }
     },

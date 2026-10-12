@@ -16,8 +16,8 @@
     "text": "How much fish is there on reefs around the country?",
     "subtitle": "Reef fish biomass per survey transect, by region (log scale), regions ordered north to south."
   },
-  "width": 640,
-  "height": 320,
+  "width": 900,
+  "height": 380,
   "data": { "url": "data/reef_fish_transects.csv" },
   "transform": [{ "filter": "datum.biomass_kg > 0" }],
   "mark": { "type": "boxplot", "extent": 1.5, "median": { "color": "#0b2e3f" } },
@@ -26,12 +26,12 @@
       "field": "region",
       "type": "nominal",
       "title": null,
-      "sort": ["Great Barrier Reef", "Ningaloo", "Sydney", "Port Phillip", "Tasmania"]
+      "sort": ["Great Barrier Reef", "Coral Sea", "Ningaloo", "Jurien Bay", "Lord Howe Island", "Sydney", "Jervis Bay", "Port Phillip", "Tasmania"]
     },
     "x": {
       "field": "biomass_kg",
       "type": "quantitative",
-      "title": "Fish biomass per transect (kg, log scale)",
+      "title": "Fish biomass per transect (kg per 500 m², log scale)",
       "scale": { "type": "log" }
     },
     "color": { "field": "region", "type": "nominal", "legend": null }

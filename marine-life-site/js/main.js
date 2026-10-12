@@ -2,7 +2,8 @@
  *
  *  - Shared look & feel lives in THEME below (applied to every chart).
  *  - Add ?dev to the URL to show each spec's TODO list above its chart.
- *  - The global species dropdown sets the `species_sel` parameter in any spec that declares it.
+ *  - A .view-toggle switches between two charts in one card (see setupViewToggles).
+ *  - The species dropdown sets the `species_sel` parameter in any spec that declares it.
  */
 
 const DEV = new URLSearchParams(location.search).has("dev");
@@ -86,7 +87,25 @@ function setupSpeciesControl() {
   });
 }
 
+// A .view-toggle holds buttons with data-view="<id of a .chart in the same card>".
+// Clicking one shows that chart and hides the other charts the toggle controls.
+function setupViewToggles() {
+  document.querySelectorAll(".view-toggle").forEach(toggle => {
+    const buttons = [...toggle.querySelectorAll("button[data-view]")];
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        buttons.forEach(b => {
+          const on = b === btn;
+          b.setAttribute("aria-pressed", on);
+          document.getElementById(b.dataset.view).hidden = !on;
+        });
+      });
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   setupSpeciesControl();
+  setupViewToggles();
   document.querySelectorAll(".chart[data-spec]").forEach(embedChart);
 });

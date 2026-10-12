@@ -6,21 +6,21 @@
     "idiom": "Stacked bar (basic chart: does NOT count towards the 8 advanced)",
     "data": ["data/threatened_marine_by_group.csv"],
     "todo": [
-      "Output of scripts/prep_threatened.py: columns group, status, n.",
+      "Output of  python scripts/prep_threatened.py data/12102026-044553-report.csv : columns group, status, n. 83 taxa in total: 50 birds, 9 mammals, 9 reptiles, 9 sharks and sawfishes, 6 bony fishes.",
       "Check the status labels match the three in the colour domain below exactly (case matters). Add 'Extinct in the wild' or 'Conservation Dependent' if your data has them and you want them.",
       "Sorted so the biggest group is first. Consider horizontal bars if group names are long."
     ]
   },
   "title": {
-    "text": "Most threatened marine species are fish, birds and reptiles",
-    "subtitle": "EPBC-listed threatened marine species by group and threat category. (Placeholder headline: check it against your data.)"
+    "text": "Birds make up 50 of the 83 threatened species in Commonwealth waters",
+    "subtitle": "EPBC-listed threatened species recorded in the Commonwealth Marine Area, by group and threat category."
   },
-  "width": 560,
-  "height": 320,
-  "data": { "url": "data/threatened_marine_by_group.csv" },
+  "width": 720,
+  "height": 380,
+  "data": { "url": "data/threatened_marine_by_group.csv", "format": { "type": "csv", "parse": { "n": "number" } } },
   "mark": { "type": "bar", "stroke": "#ffffff", "strokeWidth": 0.6 },
   "encoding": {
-    "x": { "field": "group", "type": "nominal", "title": null, "sort": "-y", "axis": { "labelAngle": -30 } },
+    "x": { "field": "group", "type": "nominal", "title": null, "sort": "-y", "axis": { "labelAngle": 0 } },
     "y": { "field": "n", "type": "quantitative", "aggregate": "sum", "title": "Number of species" },
     "color": {
       "field": "status",
