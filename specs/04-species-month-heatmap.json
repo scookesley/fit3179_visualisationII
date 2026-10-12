@@ -4,13 +4,7 @@
     "chapter": 2,
     "advanced": true,
     "idiom": "Heatmap (rect marks) with per-species normalisation",
-    "data": ["data/ala_occurrences.csv"],
-    "todo": [
-      "Needs the 'species' and 'month' columns from fetch_ala.py.",
-      "Each row is scaled to that species' own peak month so rare species are readable next to common ones. Raw counts are in the tooltip.",
-      "Records are citizen-science heavy: more sightings in summer can reflect more observers, not more animals. Say that in the caption.",
-      "If a species has very few records, drop it or add more species in fetch_ala.py."
-    ]
+    "data": ["data/ala_occurrences.csv"]
   },
   "title": {
     "text": "When is each species seen?",

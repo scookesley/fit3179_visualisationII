@@ -3,15 +3,8 @@
   "usermeta": {
     "chapter": 1,
     "advanced": true,
-    "idiom": "Map: categorical polygons (required map #1)",
-    "data": ["data/aus_states.geojson", "data/australian_marine_parks.geojson"],
-    "todo": [
-      "Download the Australian Marine Parks GeoJSON to data/australian_marine_parks.geojson (README, step 1).",
-      "Open the file and check the property names. NETNAME, RESNAME and ZONENAME below are GUESSES; rename to match.",
-      "If the page is slow, simplify with mapshaper (-simplify 5%).",
-      "The frame (projection center/scale, width, height, autosize, padding) is the same as 01b so the map does not jump when you toggle; change both together. Padding is fixed, so if a title or legend gets cut off, raise the top or bottom padding in BOTH specs.",
-      "Replace the title with a real finding once you know the numbers."
-    ]
+    "idiom": "Map: categorical polygons",
+    "data": ["data/aus_states.geojson", "data/australian_marine_parks.geojson"]
   },
   "title": {
     "text": "Australia protects its ocean through a national network of marine parks",

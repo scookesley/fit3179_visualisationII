@@ -3,19 +3,11 @@
   "usermeta": {
     "chapter": 1,
     "advanced": true,
-    "idiom": "Proportional symbol map (circle area = park area, colour = share in strictest zones)",
+    "idiom": "Proportional symbol map",
     "data": [
       "data/aus_states.geojson",
       "data/australian_marine_parks.geojson",
       "data/park_summary.csv"
-    ],
-    "todo": [
-      "Run  python scripts/prep_park_summary.py  to create data/park_summary.csv (one row per park). It prints the headline numbers.",
-      "Check the title numbers against what the script printed. They were true for the file I tested (61 parks, 48.2% strict, top 3 parks hold 58% of the strict area); if you re-download the data, re-check them.",
-      "Strict = IUCN categories Ia, Ib and II (Sanctuary and National Park zones). Say that in the caption, and define it in plain words.",
-      "Circle AREA is proportional to park area (not radius). Tiny parks stay visible only because of the outline; mention that small circles are not to scale if anyone asks.",
-      "The frame is wide on purpose: it has to include Heard Island (far left) and Macquarie Island (far bottom right). If you crop it, you lose the three biggest strict parks.",
-      "Labels show the 7 largest parks, placed just above each circle. If any collide on your screen, nudge them in the lon_lbl calculation (degrees)."
     ]
   },
   "title": {

@@ -3,15 +3,8 @@
   "usermeta": {
     "chapter": 3,
     "advanced": true,
-    "idiom": "Map: choropleth with a lookup join (required map #3)",
-    "data": ["data/aus_states.geojson", "data/threatened_marine_by_state.csv"],
-    "todo": [
-      "Run  python scripts/prep_threatened.py data/12102026-044553-report.csv  to build data/threatened_marine_by_state.csv. Its docstring says exactly which rows are counted.",
-      "The lookup joins on properties.STATE_NAME in data/aus_states.geojson; the names match the 'state' column in the CSV.",
-      "'Marine' here means recorded in the Commonwealth Marine Area. The ACT still shows 3 because the report marks three of those taxa as present there; decide whether to explain that or grey the ACT out.",
-      "Counts overlap between states: a taxon can appear in several. Say so in the caption. The range is narrow (25 to 57 outside the ACT), so the map shows small differences.",
-      "Consider adding offshore territories if your states file includes them."
-    ]
+    "idiom": "Map: choropleth with a lookup join",
+    "data": ["data/aus_states.geojson", "data/threatened_marine_by_state.csv"]
   },
   "title": {
     "text": "Threatened marine species by state and territory",

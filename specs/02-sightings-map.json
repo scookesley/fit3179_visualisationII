@@ -3,16 +3,8 @@
   "usermeta": {
     "chapter": 2,
     "advanced": true,
-    "idiom": "Map: binned density grid over marine park outlines (required map #2)",
-    "data": ["data/aus_states.geojson", "data/australian_marine_parks.geojson", "data/ala_occurrences.csv"],
-    "todo": [
-      "Run scripts/fetch_ala.py to create data/ala_occurrences.csv (README, step 2).",
-      "The 'species_sel' parameter is driven by the global dropdown in index.html; the default below must be one of the names in js/main.js SPECIES.",
-      "Pick a cell size: step 0.5 degrees is a reasonable start. Smaller = finer but noisier.",
-      "Colour scale is log (1, 10, 100, 1000 records) so one hotspot does not swamp everything. Say so in the caption: each step in colour is ten times more records, not ten more.",
-      "Overlay is the story: how much of this species' range sits inside a park? Write that into the caption once you can see it.",
-      "Same projection as chart 1; keep them identical so readers can flip between the two."
-    ]
+    "idiom": "Map: binned density grid over marine park outlines",
+    "data": ["data/aus_states.geojson", "data/australian_marine_parks.geojson", "data/ala_occurrences.csv"]
   },
   "title": {
     "text": ["Where is this species seen, and how", "much of that falls inside a marine park?"],

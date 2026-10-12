@@ -3,14 +3,8 @@
   "usermeta": {
     "chapter": 4,
     "advanced": false,
-    "idiom": "Scatterplot with year slider (basic chart: does NOT count towards the 8 advanced)",
-    "data": ["data/aims_ltmp_reef_year.csv"],
-    "todo": [
-      "This was planned as starfish vs coral, but the AIMS download has hard coral cover only (no crown-of-thorns counts), so the x axis is now latitude. If you get the starfish data, add a cots_per_tow column in scripts/prep_aims_ltmp.py and swap the x encoding back.",
-      "One point per reef surveyed in the chosen year. Not every reef is surveyed every year, so the set of points changes as you drag.",
-      "Reefs with no coordinates in the download (all of Torres Strait and a few others) are left out.",
-      "The headline is a neutral placeholder: step through the years, see what stands out, and replace it."
-    ]
+    "idiom": "Scatterplot with year slider",
+    "data": ["data/aims_ltmp_reef_year.csv"]
   },
   "title": {
     "text": "How much coral did each reef have, from north to south?",

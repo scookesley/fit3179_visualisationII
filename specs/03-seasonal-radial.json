@@ -2,15 +2,9 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "usermeta": {
     "chapter": 2,
-    "advanced": "borderline: confirm with your tutor that a radial (polar) chart counts as advanced",
+    "advanced": true,
     "idiom": "Radial chart (arc marks with polar scale)",
-    "data": ["data/ala_occurrences.csv"],
-    "todo": [
-      "Driven by the global species dropdown ('species_sel').",
-      "Arc length is one month (30 degrees); arc radius is the record count on a sqrt scale. Check January sits at the top.",
-      "Month labels are a second layer generated from a sequence; adjust the label radius (value 205) if they collide with arcs.",
-      "If you decide this is too gimmicky, delete the chart and its block in index.html. The other 8 advanced charts still satisfy the brief."
-    ]
+    "data": ["data/ala_occurrences.csv"]
   },
   "title": {
     "text": "A year in sightings",

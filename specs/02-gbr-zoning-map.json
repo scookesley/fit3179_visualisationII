@@ -3,14 +3,8 @@
   "usermeta": {
     "chapter": 1,
     "advanced": true,
-    "idiom": "Map: categorical polygons, zoomed on the GBR (optional fourth map; insurance if another map is rejected)",
-    "data": ["data/aus_states.geojson", "data/gbr_zoning.geojson"],
-    "todo": [
-      "Get the GBR Marine Park Zoning layer as GeoJSON (README, step 1b). The Reef Authority's FeatureServer supports GeoJSON queries; check their data-use terms first.",
-      "The TYPE property name is taken from the layer's field list; confirm it in your download.",
-      "Zone colours follow the usual Reef Authority convention (light blue general use, dark blue habitat protection, yellow conservation park, olive buffer, orange scientific research, green marine national park, pink preservation). Compare against the official zoning map and fix any mismatch.",
-      "The chart fills its card (width: container) and the projection scale follows the width, so it fits beside chart 1. Tune center, or the two numbers in the scale expression, to frame the reef. Delete the block in index.html if you drop this chart."
-    ]
+    "idiom": "Map: categorical polygons, zoomed on the GBR",
+    "data": ["data/aus_states.geojson", "data/gbr_zoning.geojson"]
   },
   "title": {
     "text": ["The Great Barrier Reef Marine Park is", "zoned by how much activity is allowed"],

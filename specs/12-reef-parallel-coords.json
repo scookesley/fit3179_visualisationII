@@ -3,17 +3,8 @@
   "usermeta": {
     "chapter": 4,
     "advanced": true,
-    "idiom": "Parallel coordinates (fold + joinaggregate normalisation)",
-    "data": ["data/aims_ltmp_reef_year.csv"],
-    "todo": [
-      "The AIMS download has hard coral cover only (no soft coral, dead coral or starfish), so the four axes are all built from hard coral: each reef's lowest, average and highest cover since the slider year, and its swing (highest minus lowest).",
-      "Only reefs with at least 3 surveys since the slider year are drawn, otherwise 'lowest' and 'highest' mean little. Move the slider right and reefs drop out.",
-      "Each axis is rescaled 0-1; the numbers at the top and bottom of each axis show the real max and min.",
-      "The headline is a neutral placeholder: replace it with what you see.",
-      "If lines are too many to read, filter to one or two sectors or lower the opacity.",
-      "Axis order matters in parallel coordinates. Try putting the two variables you want readers to compare next to each other.",
-      "If the 'datum' y placement for min/max labels misbehaves in your Vega-Lite version, remove those two text layers and rely on tooltips."
-    ]
+    "idiom": "Parallel coordinates",
+    "data": ["data/aims_ltmp_reef_year.csv"]
   },
   "title": {
     "text": "Each reef's coral cover: its low point, average, high point and swing",

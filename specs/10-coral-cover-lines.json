@@ -3,15 +3,8 @@
   "usermeta": {
     "chapter": 4,
     "advanced": false,
-    "idiom": "Multi-line chart (basic chart: does NOT count towards the 8 advanced)",
-    "data": ["data/aims_ltmp_reef_year.csv"],
-    "todo": [
-      "Run  python scripts/prep_aims_ltmp.py  to build data/aims_ltmp_reef_year.csv from the AIMS download. Values are the mean hard coral cover across surveyed reefs in each sector and year; different reefs are surveyed in different years, so some year-to-year wobble is just a change in which reefs were visited.",
-      "Torres Strait has only 15 surveys (2013 onwards), so its line is short; drop it with a filter if it distracts.",
-      "Twelve sectors is a lot of lines. Click a legend entry to isolate a sector. If it is still spaghetti, facet by sector or pick 3-4 sectors.",
-      "Look for the dips and write down the years; they should line up with outbreaks and bleaching events in the story. Check any claim against AIMS reports before putting it in a caption.",
-      "Placeholder headline: replace with what the data actually shows."
-    ]
+    "idiom": "Multi-line chart",
+    "data": ["data/aims_ltmp_reef_year.csv"]
   },
   "title": {
     "text": "Hard coral cover has risen and fallen over four decades",

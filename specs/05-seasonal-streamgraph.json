@@ -3,14 +3,8 @@
   "usermeta": {
     "chapter": 2,
     "advanced": true,
-    "idiom": "Streamgraph (stacked area, centre offset)",
-    "data": ["data/ala_occurrences.csv"],
-    "todo": [
-      "Each species is converted to its share of its own annual total so a very common species does not drown out the rest. Say this in the caption.",
-      "The y axis is deliberately hidden (centre-offset stacks have no meaningful baseline); the tooltip carries the numbers.",
-      "Check the colours are distinguishable for all five species. Edit THEME.range.category in js/main.js if not.",
-      "Optional: add a legend selection (bind: legend) so readers can isolate one species."
-    ]
+    "idiom": "Streamgraph",
+    "data": ["data/ala_occurrences.csv"]
   },
   "title": {
     "text": "Seasons of sightings, species by species",
