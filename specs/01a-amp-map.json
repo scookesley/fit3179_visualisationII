@@ -9,18 +9,19 @@
   "title": {
     "text": "Australia protects its ocean through a national network of marine parks",
     "subtitle": "Australian Marine Parks coloured by network categorisation.",
-    "fontSize": 18
+    "fontSize": 18,
+    "offset": 40
   },
-  "width": 800,
-  "height": 820,
+  "width": 1180,
+  "height": 640,
   "autosize": "none",
-  "padding": { "left": 10, "right": 10, "top": 62, "bottom": 110 },
+  "padding": { "left": 10, "right": 10, "top": 92, "bottom": 100 },
   "projection": {
-    "type": "orthographic",
-    "rotate": [-134, 25, 0],
-    "scale": 400,
-    "translate": [400, 410]
-  },
+  "type": "orthographic",
+  "rotate": [-134, 25, 0],
+  "scale": 450,
+  "translate": [590, 318]
+},
   "datasets": {
     "states": [
       { "name": "Western Australia", "lon": 122, "lat": -26 },
@@ -79,7 +80,10 @@
       "encoding": {
         "color": {
           "field": "properties.NETNAME", "type": "nominal", "title": "Network",
-          "legend": { "orient": "bottom", "columns": 3, "symbolType": "square", "columnPadding": 30, "labelLimit": 300}
+          "legend": { "orient": "none", "direction": "horizontal", 
+          "legendX": 345, "legendY": 650,
+          "columns": 3, "symbolType": "square", "columnPadding": 30, "labelLimit": 300
+        }
         },
         "tooltip": [
           { "field": "properties.RESNAME", "type": "nominal", "title": "Park" },

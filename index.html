@@ -30,13 +30,51 @@
 
     <!-- ============================ CHAPTER 1 ============================ -->
 
-    <figure class="chart-card centered">
-      <div class="chart" id="amp-network" data-spec="specs/01a-amp-map.json"></div>
-      <figcaption>
-        60 total distinct Marine Park areas exist across Australia and its territories. The Parks are categorised into eight distinct Networks,
-        which enable efficient management delegation by geographic area. Each of the 60 Parks is given a name and a Zone status.
-        Not shown here are non-Commonwealth-managed Parks, including the Great Barrier Reef Marine Park (Federal/QLD State Govt. managed) and other
-        state-managed coastal waters.
+    <figure class="chart-card centered globe-card">
+      <div class="globe-stage">
+
+        <div class="chart" id="amp-network" data-spec="specs/01a-amp-map.json"></div>
+
+        <aside class="globe-note globe-note--coral" data-lon="154" data-lat="-14.5">
+          The Coral Sea Islands network are the waters that surround the Great Barrier Reef marine park, not the
+          Great Barrier Reef itself. The Great Barrier Reef has its own dedicated park, co-managed by the Queensland
+          State Government and the Australian Commonwealth Government.
+        </aside>
+
+        <div class="corner-card corner-tl" data-lon="96.9"   data-lat="-12.2">
+          <div class="corner-img"><img src="images/green_turtle.jpg" alt="Humpback whale" onerror="this.style.display='none'"></div>
+          <p>Seagrass habitats surrounding the <strong>Cocos (Keeling) Islands</strong> are essential for the resident green sea turtle population</p>
+        </div>
+        <div class="corner-card corner-tr" data-lon="167.95" data-lat="-29.03">
+          <div class="corner-img"><img src="images/humpback_whale.jpg" alt="Green turtle" onerror="this.style.display='none'"></div>
+          <p><strong>Norfolk Island</strong> is a biologically important area for humpback whales, minke whales, and Blainville's beaked whales </p>
+        </div>
+        <div class="corner-card corner-bl" data-lon="73.5"   data-lat="-53.1">
+          <div class="corner-img"><img src="images/antarctic_fur_seal.jpg" alt="White shark" onerror="this.style.display='none'"></div>
+          <p><strong>Heard Island</strong> is an important breeding ground for Antarctic fur seals and southern elephant seals</p>
+        </div>
+        <div class="corner-card corner-br" data-lon="148.7"  data-lat="-42.2">
+          <div class="corner-img"><img src="images/great_white.jpg" alt="Giant Australian cuttlefish" onerror="this.style.display='none'"></div>
+          <p>Great White Sharks forage amongst fish habitats in <strong>Freycinet Marine Park</strong> off the eastern Tasmanian coast</p>
+        </div>
+
+      </div>
+
+      <figcaption class="globe-caption">
+        <p>
+          60 total distinct Marine Park areas exist across Australia and its territories. The Parks are categorised into eight distinct Networks,
+          which enable efficient management delegation by geographic area. Each of the 60 Parks is given a name and a Zone status.
+          Not shown here are non-Commonwealth-managed Parks, including the Great Barrier Reef Marine Park (Federal/QLD State Govt. managed) and other
+          state-managed coastal waters.
+        </p>
+        <p>
+          Shown on this map are the marine parks solely overseen by the Australian Federal Government. These
+          Commonwealth-managed zones can start from 3 nautical miles from the mainland coastline and extend out to the
+          boundaries of the Exclusive Economic Zone (EEZ), the area in which Australia exercises sole regulation over
+          all maritime activities conducted. State and Local Governments are responsible for managing waters up to
+          three nautical miles from the coastline. In addition to the fact that many areas within Australia's EEZ are
+          simply not designated marine parks, this creates the 'blank' spaces you can see on the map.
+        </p>
       </figcaption>
     </figure>
 
@@ -148,6 +186,10 @@
         <li>Threatened species: Species Profile and Threats Database (SPRAT) report, Department of Climate Change, Energy, the Environment and Water (DCCEEW), downloaded 12 October 2026.</li>
         <li>Hard coral cover: Australian Institute of Marine Science (AIMS). 2015, AIMS Long-term Monitoring Program: Crown-of-thorns starfish (Acanthaster planci) and benthos Manta Tow Data (Great Barrier Reef), https://doi.org/10.25845/5c09b0abf315a</li>
         <li>Basemap: Natural Earth / ABS state boundaries.</li>
+        <li>Humpback Whale: By Juan Cruzado Cortés - https://www.inaturalist.org/photos/344677883, CC BY 4.0, https://commons.wikimedia.org/w/index.php?curid=197915789</li>
+        <li>Green Sea Turtle: By Charles J. Sharp - Own work, from Sharp Photography, sharpphotography.co.uk, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=155815572</li>
+        <li>Seals: By Brocken Inaglory, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=4373747</li>
+        <li>Great white: By Terry Goss, CC BY 2.5, https://commons.wikimedia.org/w/index.php?curid=1561215</li>
       </ul>
       <p class="small">Built with Vega-Lite and vega-embed. Saffron Cookesley | FIT3179 | 2026.</p>
     </section>

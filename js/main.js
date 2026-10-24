@@ -58,6 +58,8 @@ async function embedChart(el) {
       renderer: "svg"
     });
     views.push({ view: result.view, el });
+    const stage = el.closest(".globe-stage");
+    if (stage) document.fonts.ready.then(() => drawGlobeLeaders(stage, spec));
 
     // "View Vega-Lite spec" disclosure (nice for markers; delete if you don't want it)
     const details = document.createElement("details");
@@ -100,6 +102,58 @@ function setupViewToggles() {
           document.getElementById(b.dataset.view).hidden = !on;
         });
       });
+    });
+  });
+}
+/* Leader lines: every element inside .globe-stage with data-lon / data-lat gets a line from its
+   nearest edge to that point on the globe. Positions come from the spec's own projection and
+   padding, so they follow any change to scale / translate / rotate (rotate's roll is ignored). */
+function drawGlobeLeaders(stage, spec) {
+  const { rotate, scale, translate } = spec.projection;
+  const pad = spec.padding;
+  const padL = typeof pad === "number" ? pad : (pad && pad.left) || 0;
+  const padT = typeof pad === "number" ? pad : (pad && pad.top) || 0;
+  const rad = Math.PI / 180;
+  const lon0 = -rotate[0] * rad, lat0 = -rotate[1] * rad;      // centre of the view
+
+  const project = (lon, lat) => {
+    const dl = lon * rad - lon0, p = lat * rad;
+    const x = Math.cos(p) * Math.sin(dl);
+    const y = Math.cos(lat0) * Math.sin(p) - Math.sin(lat0) * Math.cos(p) * Math.cos(dl);
+    return [padL + translate[0] + scale * x, padT + translate[1] - scale * y];
+  };
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+  const NS = "http://www.w3.org/2000/svg";
+  stage.querySelector(".globe-leaders")?.remove();
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("class", "globe-leaders");
+  svg.setAttribute("width", stage.offsetWidth);
+  svg.setAttribute("height", stage.offsetHeight);
+  stage.appendChild(svg);
+
+  const box = stage.getBoundingClientRect();
+  const inset = 16;                                            // keep lines off the corners
+
+  stage.querySelectorAll("[data-lon][data-lat]").forEach(el => {
+    const r = el.getBoundingClientRect();
+    const left = r.left - box.left, right = r.right - box.left;
+    const top = r.top - box.top, bottom = r.bottom - box.top;
+    const [tx, ty] = project(+el.dataset.lon, +el.dataset.lat);
+
+    // nearest point on the element's edge
+    const dx = tx < left ? left - tx : tx > right ? tx - right : 0;
+    const dy = ty < top ? top - ty : ty > bottom ? ty - bottom : 0;
+    let ax, ay;
+    if (dx >= dy) { ax = tx < left ? left : right; ay = clamp(ty, top + inset, bottom - inset); }
+    else          { ay = ty < top ? top : bottom;  ax = clamp(tx, left + inset, right - inset); }
+
+    ["halo", "core"].forEach(cls => {                          // white halo keeps it legible over the map
+      const line = document.createElementNS(NS, "line");
+      line.setAttribute("class", cls);
+      line.setAttribute("x1", ax); line.setAttribute("y1", ay);
+      line.setAttribute("x2", tx); line.setAttribute("y2", ty);
+      svg.appendChild(line);
     });
   });
 }
