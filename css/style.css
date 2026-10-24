@@ -72,7 +72,7 @@ body {
 .chapters a {
   color: var(--ink);
   text-decoration: none;
-  font-size: .9rem;
+  font-size: 1rem;
   padding: 6px 12px;
   border-radius: 999px;
 }
@@ -185,6 +185,13 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 16px 80px; }
   max-width: 720px;
 }
 
+.chart-card.centered figcaption { margin-inline: auto; }
+
+.chart-row.map-pair { grid-template-columns: minmax(0, 890px) minmax(0, 1fr); }
+@media (max-width: 1240px) {
+  .chart-row.map-pair { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* ---------- Chart row (cards side by side, stacking when there is no room) ---------- */
 .chart-row {
   display: grid;
@@ -196,12 +203,6 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 16px 80px; }
   margin: 0;
   padding: 14px 14px 12px;
   min-width: 0;   /* let the card shrink to its column instead of to its chart */
-}
-
-/* Two maps: the first column is sized for the 800px national map, the second gets the rest */
-.chart-row.map-pair { grid-template-columns: minmax(0, 890px) minmax(0, 1fr); }
-@media (max-width: 1240px) {
-  .chart-row.map-pair { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* Vega-embed tidy-ups */

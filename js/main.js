@@ -20,7 +20,7 @@ const SPECIES = [
 const THEME = {
   background: null,
   font: "Inter, 'Segoe UI', system-ui, sans-serif",
-  title: { anchor: "start", fontSize: 15, fontWeight: 600, color: "#0b2e3f", subtitleColor: "#6b7f8c", subtitleFontSize: 12 },
+  title: { anchor: "start", fontSize: 18, fontWeight: 600, color: "#0C616E", subtitleColor: "#6b7f8c", subtitleFontSize: 12 },
   axis: {
     labelColor: "#3d4f5c", titleColor: "#3d4f5c", labelFontSize: 11, titleFontSize: 12,
     gridColor: "#e3ebef", domainColor: "#9fb3bf", tickColor: "#9fb3bf"

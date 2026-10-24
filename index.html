@@ -13,7 +13,7 @@
 <body>
 
   <header class="hero">
-    <p class="eyebrow">Data Visualisation</p>
+    <p class="eyebrow">FIT3179 | Data Visualisation II</p>
     <h1>Australian Marine Life</h1>
     <p class="lede">An overview of marine areas in Australia, their protections, and the diverse species that call them home.</p>
   </header>
@@ -23,46 +23,40 @@
     <a href="#ch2">2 · Marine Life</a>
     <a href="#ch3">3 · Endangered Species</a>
     <a href="#ch4">4 · Coral Monitoring</a>
-    <a href="#about">Data &amp; credits</a>
+    <a href="#about">Data &amp; Credits</a>
   </nav>
 
   <main>
 
     <!-- ============================ CHAPTER 1 ============================ -->
-    <section id="ch1" class="chapter">
-      <h2><span class="num">1</span> Protected Places</h2>
-      <p class="chapter-intro">
-        The Australian federal government maintains designated Marine Parks encompassing the waters of the Australian mainland and nearby territories. The purpose of these Parks is to help in conserving marine habitats and the species that rely on these habitats, as well as providing places for marine activities such as snorkelling, boating, fishing, and diving. 
-      </p>
 
-      <!-- National map (wide, fixed size) beside the reef zoning map (takes the space that is left). -->
-      <div class="chart-row map-pair">
+    <figure class="chart-card centered">
+      <div class="chart" id="amp-network" data-spec="specs/01a-amp-map.json"></div>
+      <figcaption>
+        60 total distinct Marine Park areas exist across Australia and its territories. The Parks are categorised into eight distinct Networks,
+        which enable efficient management delegation by geographic area. Each of the 60 Parks is given a name and a Zone status.
+        Not shown here are non-Commonwealth-managed Parks, including the Great Barrier Reef Marine Park (Federal/QLD State Govt. managed) and other
+        state-managed coastal waters.
+      </figcaption>
+    </figure>
+
+    <div class="chart-row map-pair">
       <figure class="chart-card centered">
-        <div class="view-toggle" role="group" aria-label="Map view">
-          <button type="button" data-view="amp-network" aria-pressed="true">By Network</button>
-          <button type="button" data-view="amp-strict" aria-pressed="false">By Area & Protection Level</button>
-        </div>
-        <div class="chart" id="amp-network" data-spec="specs/01a-amp-map.json"></div>
-        <div class="chart" id="amp-strict" data-spec="specs/01b-amp-map-choro.json" hidden></div>
+        <div class="chart" id="amp-strict" data-spec="specs/01b-amp-map-choro.json"></div>
         <figcaption>
-          60 total distinct Marine Park areas exist across Australia and its territories. The Parks are categorised into eight distinct Networks, 
-          which enable efficient management delegation by geographic area. Each of the 60 Parks are given a name and a Zone status. Zones dictate the
-          protection level of a particular area, which can be mapped to the categories set out by the International Union for Conservation of Nature (IUCN)
-          These Zone types include: Sanctuary Zone (IUCN Ia) and National Park Zone (IUCN II) - the two strictest levels of protection, Recreational Use Zone (IUCN IV),
-          Habitat Protection Zone (IUCN IV), Special Purpose Zone (IUCN VI) and Multiple Use Zone (IUCN VI).
-          Not shown here are non-Commonwealth-managed Parks, including the Great Barrier Reef Marine Park (Federal/QLD State Govt. managed) and other
-          state-managed coastal waters.
+          Zones dictate the protection level of a particular area, which can be mapped to the categories set out by the International Union for
+          Conservation of Nature (IUCN). These Zone types include: Sanctuary Zone (IUCN Ia) and National Park Zone (IUCN II), the two strictest levels
+          of protection, Recreational Use Zone (IUCN IV), Habitat Protection Zone (IUCN IV), Special Purpose Zone (IUCN VI) and Multiple Use Zone (IUCN VI).
         </figcaption>
       </figure>
 
       <figure class="chart-card">
         <div class="chart" data-spec="specs/02-gbr-zoning-map.json"></div>
         <figcaption>The Great Barrier Reef (GBR) Marine Park is co-managed by the Queensland State Government and the Federal State government. As an area of
-          extraordinary marine diversity, it's the subject of scientific as well as touristic interest. For that reason, the designated GBR Park area is divided into a number of complex, 
+          extraordinary marine diversity, it's the subject of scientific as well as touristic interest. For that reason, the designated GBR Park area is divided into a number of complex,
           distinct regions, each attached to a zoning category.</figcaption>
       </figure>
-      </div>
-    </section>
+    </div>
 
     <!-- ============================ CHAPTER 2 ============================ -->
     <section id="ch2" class="chapter">
@@ -143,16 +137,9 @@
         <figcaption>[].</figcaption>
       </figure>
 
-      <figure class="chart-card centered">
-        <div class="chart" data-spec="specs/12-reef-parallel-coords.json"></div>
-        <figcaption>[].</figcaption>
-      </figure>
-    </section>
-
     <!-- ============================ ABOUT ============================ -->
     <section id="about" class="chapter about">
       <h2>Data &amp; credits</h2>
-      <!-- TODO: fill in exact dataset titles, access dates and licences. Keep this accurate; markers look for it. -->
       <ul>
         <li>Australian Marine Parks: Department of Climate Change, Energy, the Environment and Water (DCCEEW), via data.gov.au.</li>
         <li>Great Barrier Reef Marine Park zoning: Great Barrier Reef Marine Park Authority.</li>
@@ -167,7 +154,6 @@
 
   </main>
 
-  <!-- Vega stack. Pinned major versions; check the console for version warnings. -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>

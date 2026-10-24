@@ -8,17 +8,66 @@
   },
   "title": {
     "text": "Australia protects its ocean through a national network of marine parks",
-    "subtitle": "Australian Marine Parks coloured by network categorisation."
+    "subtitle": "Australian Marine Parks coloured by network categorisation.",
+    "fontSize": 18
   },
   "width": 800,
-  "height": 560,
+  "height": 820,
   "autosize": "none",
   "padding": { "left": 10, "right": 10, "top": 62, "bottom": 110 },
-  "projection": { "type": "mercator", "center": [120, -36], "scale": 430 },
+  "projection": {
+    "type": "orthographic",
+    "rotate": [-134, 25, 0],
+    "scale": 400,
+    "translate": [400, 410]
+  },
+  "datasets": {
+    "states": [
+      { "name": "Western Australia", "lon": 122, "lat": -26 },
+      { "name": "Northern Territory", "lon": 133.5, "lat": -19.5 },
+      { "name": "South Australia", "lon": 135, "lat": -30 },
+      { "name": "Queensland", "lon": 144, "lat": -22.5 },
+      { "name": "New South Wales", "lon": 146.5, "lat": -32.5 },
+      { "name": "Victoria", "lon": 144.5, "lat": -37 },
+      { "name": "Tasmania", "lon": 147, "lat": -49 }
+    ],
+    "islands": [
+      { "name": "Christmas Island",        "lon": 105.7, "lat": -10.5, "lx": 107,   "ly": -16,   "align": "center" },
+      { "name": "Cocos (Keeling) Islands", "lon": 96.9,  "lat": -12.2, "lx": 96.9,  "ly": -16.5, "align": "center" },
+      { "name": "Ashmore and Cartier Islands", "lon": 123, "lat": -12.3, "lx": 122, "ly": -11.3, "align": "right" },
+      { "name": "Coral Sea Islands",       "lon": 154,   "lat": -18,   "lx": 163,   "ly": -14,   "align": "left" },
+      { "name": "Norfolk Island",          "lon": 167.95,"lat": -29.03,"lx": 172,   "ly": -28,   "align": "left" },
+      { "name": "Macquarie Island",        "lon": 158.9, "lat": -54.6, "lx": 167.5, "ly": -54.6, "align": "left" },
+      { "name": "Heard and McDonald Islands", "lon": 73.5, "lat": -53.1, "lx": 81.5, "ly": -53.1, "align": "left" }
+    ]
+  },
   "layer": [
     {
-      "data": { "graticule": { "step": [20, 20] } },
+      "data": { "sphere": true },
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#aab2b8",
+        "strokeWidth": 1.5,
+        "fill": {
+          "gradient": "radial",
+          "stops": [
+            { "offset": 0, "color": "#ffffff" },
+            { "offset": 0.75, "color": "#f6f8f9" },
+            { "offset": 1, "color": "#dfe5e8" }
+          ]
+        }
+      }
+    },
+    {
+      "data": { "graticule": { "step": [30, 30] } },
       "mark": { "type": "geoshape", "filled": false, "stroke": "#dde3e6", "strokeWidth": 0.6 }
+    },
+    {
+      "data": {
+        "url": "https://cdn.jsdelivr.net/npm/vega-datasets@2/data/world-110m.json",
+        "format": { "type": "topojson", "feature": "land" }
+      },
+      "mark": { "type": "geoshape", "fill": "#d4d4d4", "stroke": "none" }
     },
     {
       "data": { "url": "data/aus_states.geojson", "format": { "property": "features" } },
@@ -28,13 +77,91 @@
       "data": { "url": "data/australian_marine_parks.geojson", "format": { "property": "features" } },
       "mark": { "type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.4 },
       "encoding": {
-        "color": { "field": "properties.NETNAME", "type": "nominal", "title": "Network",  
-          "legend": {"orient": "bottom", "columns": 3, "symbolType": "square" } },
+        "color": {
+          "field": "properties.NETNAME", "type": "nominal", "title": "Network",
+          "legend": { "orient": "bottom", "columns": 3, "symbolType": "square", "columnPadding": 30, "labelLimit": 300}
+        },
         "tooltip": [
           { "field": "properties.RESNAME", "type": "nominal", "title": "Park" },
           { "field": "properties.NETNAME", "type": "nominal", "title": "Network" },
           { "field": "properties.ZONENAME", "type": "nominal", "title": "Zone" }
         ]
+      }
+    },
+
+    {
+      "data": { "name": "islands" },
+      "mark": { "type": "rule", "stroke": "#555", "strokeWidth": 0.7 },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "longitude2": { "field": "lx" },
+        "latitude2": { "field": "ly" }
+      }
+    },
+    {
+      "data": { "name": "islands" },
+      "mark": { "type": "point", "filled": true, "size": 22, "color": "#222", "stroke": "#fff", "strokeWidth": 1 },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" }
+      }
+    },
+
+    {
+      "data": { "name": "states" },
+      "layer": [
+        {
+          "mark": { "type": "text", "fontSize": 10, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 }
+        },
+        {
+          "mark": { "type": "text", "fontSize": 10, "color": "#333" }
+        }
+      ],
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "text": { "field": "name", "type": "nominal" }
+      }
+    },
+
+    {
+      "data": { "name": "islands" },
+      "transform": [{ "filter": "datum.align === 'left'" }],
+      "layer": [
+        { "mark": { "type": "text", "align": "left", "dx": 4, "fontSize": 10, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+        { "mark": { "type": "text", "align": "left", "dx": 4, "fontSize": 10, "color": "#222" } }
+      ],
+      "encoding": {
+        "longitude": { "field": "lx", "type": "quantitative" },
+        "latitude": { "field": "ly", "type": "quantitative" },
+        "text": { "field": "name", "type": "nominal" }
+      }
+    },
+    {
+      "data": { "name": "islands" },
+      "transform": [{ "filter": "datum.align === 'right'" }],
+      "layer": [
+        { "mark": { "type": "text", "align": "right", "dx": -4, "fontSize": 10, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+        { "mark": { "type": "text", "align": "right", "dx": -4, "fontSize": 10, "color": "#222" } }
+      ],
+      "encoding": {
+        "longitude": { "field": "lx", "type": "quantitative" },
+        "latitude": { "field": "ly", "type": "quantitative" },
+        "text": { "field": "name", "type": "nominal" }
+      }
+    },
+    {
+      "data": { "name": "islands" },
+      "transform": [{ "filter": "datum.align === 'center'" }],
+      "layer": [
+        { "mark": { "type": "text", "align": "center", "baseline": "top", "dy": 3, "fontSize": 10, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+        { "mark": { "type": "text", "align": "center", "baseline": "top", "dy": 3, "fontSize": 10, "color": "#222" } }
+      ],
+      "encoding": {
+        "longitude": { "field": "lx", "type": "quantitative" },
+        "latitude": { "field": "ly", "type": "quantitative" },
+        "text": { "field": "name", "type": "nominal" }
       }
     }
   ]
