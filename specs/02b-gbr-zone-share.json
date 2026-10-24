@@ -8,30 +8,29 @@
   },
   "title": {
     "text": ["A third of the Great Barrier Reef", "Marine Park is closed to fishing"],
-    "subtitle": "Share of zoned area (about 345,000 km²) by zone type, most to least restrictive from the top."
+    "subtitle": "Share of total zoned area by zone"
   },
-  "width": 140,
-  "height": 460,
-  "autosize": { "type": "pad" },
+  "width": "container",
+  "height": 540,
+  "padding": { "left": 0, "right": 0, "top": 5, "bottom": 0 },
+  "autosize": { "type": "fit-x", "contains": "padding" },
   "data": {
     "values": [
-      { "rank": 1, "zone": "Preservation",                 "area_km2": 709 },
-      { "rank": 2, "zone": "Scientific Research",          "area_km2": 154 },
-      { "rank": 3, "zone": "Marine National Park",         "area_km2": 114597 },
-      { "rank": 4, "zone": "Conservation Park",            "area_km2": 5155 },
-      { "rank": 5, "zone": "Habitat Protection",           "area_km2": 97575 },
-      { "rank": 6, "zone": "Buffer",                       "area_km2": 9915 },
-      { "rank": 7, "zone": "General Use",                  "area_km2": 116858 },
-      { "rank": 8, "zone": "Commonwealth Islands",         "area_km2": 107 }
+      { "rank": 1, "zone": "General Use",          "area_km2": 116858 },
+      { "rank": 2, "zone": "Marine National Park", "area_km2": 114597 },
+      { "rank": 3, "zone": "Habitat Protection",   "area_km2": 97575 },
+      { "rank": 4, "zone": "Buffer",               "area_km2": 9915 },
+      { "rank": 5, "zone": "Conservation Park",    "area_km2": 5155 },
+      { "rank": 6, "zone": "Other (<1%)",          "area_km2": 970 }
     ]
   },
   "transform": [
     { "joinaggregate": [{ "op": "sum", "field": "area_km2", "as": "total" }] },
     { "calculate": "datum.area_km2 / datum.total", "as": "pct" },
     { "window": [{ "op": "sum", "field": "pct", "as": "cum" }], "sort": [{ "field": "rank", "order": "ascending" }], "frame": [null, 0] },
-    { "calculate": "1 - (datum.cum - datum.pct)", "as": "top" },
-    { "calculate": "1 - datum.cum", "as": "bottom" },
-    { "calculate": "1 - (datum.cum - datum.pct / 2)", "as": "mid" }
+    { "calculate": "datum.cum - datum.pct", "as": "bottom" },
+    { "calculate": "datum.cum", "as": "top" },
+    { "calculate": "datum.cum - datum.pct / 2", "as": "mid" }
   ],
   "layer": [
     {
@@ -44,14 +43,21 @@
         },
         "y2": { "field": "top" },
         "color": {
-          "field": "zone", "type": "nominal", "title": "Zone (share of area)",
+          "field": "zone", "type": "nominal", "title": "Zone",
           "scale": {
-            "domain": ["Preservation", "Scientific Research", "Marine National Park", "Conservation Park", "Habitat Protection", "Buffer", "General Use", "Commonwealth Islands"],
-            "range":  ["#e07aa5", "#e8913a", "#4a9d5b", "#f4d35e", "#2a6fb0", "#8a9a3b", "#9fd4ee", "#bdbdbd"]
+            "domain": ["Other", "Conservation Park", "Buffer", "Habitat Protection", "Marine National Park", "General Use"],
+            "range":  ["#bdbdbd", "#f4d35e", "#8a9a3b", "#2a6fb0", "#4a9d5b", "#9fd4ee"]
           },
           "legend": {
             "orient": "right", "symbolType": "square", "labelLimit": 260,
-            "labelExpr": "datum.value + '  ·  ' + {'Preservation':'0.2%','Scientific Research':'<0.1%','Marine National Park':'33.2%','Conservation Park':'1.5%','Habitat Protection':'28.3%','Buffer':'2.9%','General Use':'33.9%','Commonwealth Islands':'<0.1%'}[datum.value]"
+            "values": [
+              "Other",
+              "Conservation Park",
+              "Buffer",
+              "Habitat Protection",
+              "Marine National Park",
+              "General Use"
+            ]
           }
         },
         "tooltip": [

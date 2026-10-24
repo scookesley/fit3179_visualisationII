@@ -7,15 +7,27 @@
     "data": ["data/aus_states.geojson", "data/australian_marine_parks.geojson", "data/ala_occurrences.csv"]
   },
   "title": {
-    "text": ["Where is this species seen, and how", "much of that falls inside a marine park?"],
-    "subtitle": ["Records per 0.5° cell (Atlas of Living Australia).", "Marine Park outlines are overlaid for visual comparison; Change species with the dropdown above."]
+    "text": "Locations across Australia of reported sightings",
+    "subtitle": "Records per 0.5° cell (Atlas of Living Australia)"
   },
   "width": "container",
-  "height": 380,
+  "height": 820,
   "params": [{ "name": "species_sel", "value": "Humpback Whale" }],
-  "projection": { "type": "mercator", "center": [134, -28], "scale": { "expr": "min(width, height) * 1.2" } },
+  "datasets": {
+    "capitals": [
+      { "city": "Perth",     "lon": 115.86, "lat": -31.95, "pos": "right" },
+      { "city": "Adelaide",  "lon": 138.60, "lat": -34.93, "pos": "above" },
+      { "city": "Melbourne", "lon": 144.96, "lat": -37.81, "pos": "above" },
+      { "city": "Hobart",    "lon": 147.33, "lat": -42.88, "pos": "left" },
+      { "city": "Canberra",  "lon": 149.13, "lat": -35.28, "pos": "left" },
+      { "city": "Sydney",    "lon": 151.21, "lat": -33.87, "pos": "left" },
+      { "city": "Brisbane",  "lon": 153.03, "lat": -27.47, "pos": "left" },
+      { "city": "Darwin",    "lon": 130.84, "lat": -12.46, "pos": "below" }
+    ]
+  },
+  "projection": { "type": "mercator", "center": [134, -28], "scale": 1100 },
   "layer": [
-    {
+    { 
       "data": { "url": "data/aus_states.geojson", "format": { "property": "features" } },
       "mark": { "type": "geoshape", "fill": "#eceae3", "stroke": "#c9c6bc", "strokeWidth": 0.4 }
     },
@@ -44,8 +56,64 @@
       }
     },
     {
-      "data": { "url": "data/australian_marine_parks.geojson", "format": { "property": "features" } },
-      "mark": { "type": "geoshape", "fill": null, "stroke": "#0b2e3f", "strokeWidth": 0.6, "strokeOpacity": 0.55 }
+      "data": { "name": "capitals" },
+      "mark": { "type": "point", "filled": true, "size": 28, "color": "#0b2e3f", "stroke": "#ffffff", "strokeWidth": 1 },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" }
+      }
+    },
+    {
+      "data": { "name": "capitals" },
+      "transform": [{ "filter": "datum.pos === 'right'" }],
+      "layer": [
+        { "mark": { "type": "text", "align": "left", "baseline": "middle", "dx": 6, "fontSize": 11, "fontWeight": 600, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+        { "mark": { "type": "text", "align": "left", "baseline": "middle", "dx": 6, "fontSize": 11, "fontWeight": 600, "color": "#0b2e3f" } }
+      ],
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "text": { "field": "city", "type": "nominal" }
+      }
+    },
+    {
+      "data": { "name": "capitals" },
+      "transform": [{ "filter": "datum.pos === 'left'" }],
+      "layer": [
+        { "mark": { "type": "text", "align": "right", "baseline": "middle", "dx": -6, "fontSize": 11, "fontWeight": 600, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+        { "mark": { "type": "text", "align": "right", "baseline": "middle", "dx": -6, "fontSize": 11, "fontWeight": 600, "color": "#0b2e3f" } }
+      ],
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "text": { "field": "city", "type": "nominal" }
+      }
+    },
+    {
+      "data": { "name": "capitals" },
+      "transform": [{ "filter": "datum.pos === 'above'" }],
+      "layer": [
+        { "mark": { "type": "text", "align": "center", "baseline": "bottom", "dy": -6, "fontSize": 11, "fontWeight": 600, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+        { "mark": { "type": "text", "align": "center", "baseline": "bottom", "dy": -6, "fontSize": 11, "fontWeight": 600, "color": "#0b2e3f" } }
+      ],
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "text": { "field": "city", "type": "nominal" }
+      }
+    },
+    {
+      "data": { "name": "capitals" },
+      "transform": [{ "filter": "datum.pos === 'below'" }],
+      "layer": [
+        { "mark": { "type": "text", "align": "center", "baseline": "top", "dy": 6, "fontSize": 11, "fontWeight": 600, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+        { "mark": { "type": "text", "align": "center", "baseline": "top", "dy": 6, "fontSize": 11, "fontWeight": 600, "color": "#0b2e3f" } }
+      ],
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "text": { "field": "city", "type": "nominal" }
+      }
     }
   ]
 }

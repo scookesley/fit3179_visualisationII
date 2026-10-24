@@ -79,22 +79,86 @@ body {
 .chapters a:hover,
 .chapters a:focus-visible { background: #e6f2f4; outline: none; }
 
-/* ---------- Species control (sits above the chart row it drives) ---------- */
-.species-bar {
-  margin: 0 0 12px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  font-size: .9rem;
+/* ---------- Species panel: tinted card with intro + charts ---------- */
+.species-panel {
+  --sp: #81b29a;                                                  /* set from JS per species */
+  margin: 0 0 28px;
+  padding: 24px;
+  border-radius: calc(var(--radius) + 4px);
+  background: color-mix(in srgb, var(--sp) 22%, #fff);
+  border: 1px solid color-mix(in srgb, var(--sp) 38%, #fff);
+  transition: background .3s, border-color .3s;
 }
-.species-bar select {
-  font: inherit;
-  padding: 6px 10px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+.species-panel > .chart-card { margin: 0 0 16px; }
+.species-panel .chart-row { margin-bottom: 0; gap: 16px; }
+
+.species-intro { display: flex; align-items: flex-start; gap: 28px; margin: 0 0 24px; }
+
+.chart-placeholder {
+  display: grid; place-items: center;
+  min-height: 440px;
+  border: 1px dashed var(--line); border-radius: 8px;
+  color: var(--muted); font-size: .9rem;
+}
+
+/* photo card */
+.species-photo {
+  flex: none;
+  width: 270px;
+  margin: 0;
+  padding: 6px;
   background: #fff;
-  color: var(--ink);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(11, 46, 63, .14);
+}
+.species-photo-img {
+  height: 190px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #cfe3e7, #9fc3ca);        /* placeholder until the image exists */
+}
+.species-photo-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* dropdown styled as a subheading */
+.species-text { min-width: 0; }
+.species-select-wrap { position: relative; display: inline-block; max-width: 100%; }
+.species-select-wrap select {
+  appearance: none; -webkit-appearance: none;
+  max-width: 100%;
+  padding: 6px 46px 6px 14px;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--sp) 45%, #0b2e3f);
+  background: color-mix(in srgb, var(--sp) 10%, #fff);           /* lighter than the card */
+  border: 1px solid color-mix(in srgb, var(--sp) 32%, #fff);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .3s, border-color .3s, color .3s;
+}
+.species-select-wrap select:hover { border-color: color-mix(in srgb, var(--sp) 60%, #fff); }
+.species-select-wrap select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.species-select-wrap::after {                                    /* chevron */
+  content: "";
+  position: absolute; right: 18px; top: 50%;
+  width: 9px; height: 9px;
+  border-right: 2.5px solid color-mix(in srgb, var(--sp) 45%, #0b2e3f);
+  border-bottom: 2.5px solid color-mix(in srgb, var(--sp) 45%, #0b2e3f);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.species-desc { margin: 12px 0 0; max-width: 56ch; color: var(--ink-soft); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .species-intro { flex-direction: column; align-items: stretch; }
+  .species-photo { width: 100%; }
 }
 
 /* ---------- View toggle (switches between two charts in one card) ---------- */
@@ -317,10 +381,38 @@ body {
 .bar-card .chart {
   flex: 1;
   display: flex; flex-direction: column;
-  justify-content: center; align-items: center;
+  justify-content: center;
 }
-.bar-card .chart .vega-embed { width: auto; }
 .bar-card .spec-view { align-self: flex-start; }
+
+/* ---------- Row of thirds ---------- */
+/* map + bar share the left column of the map-pair grid, the table takes the right column */
+.chart-row.thirds .pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  min-width: 0;
+}
+@media (max-width: 700px) {
+  .chart-row.thirds .pair { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* hides the stray sideways scrollbars under the two charts */
+.chart-row.thirds .chart { overflow-x: hidden; }
+
+/* let the charts run to the card edge (vega-embed reserves 38px for the "..." menu) */
+.chart-row.thirds .vega-embed.has-actions { padding-right: 0; }
+
+/* captions sit along the bottom of each card */
+.chart-row.thirds .chart-card { display: flex; flex-direction: column; }
+.chart-row.thirds .chart { margin-bottom: 10px; }
+.chart-row.thirds figcaption { margin-top: auto; }
+
+/* zone table: colour-coded rows */
+.zone-table { font-size: .8rem; }
+.zone-table tbody th { width: 38%; padding-left: 14px; }
+.zone-table tbody tr > * { background: color-mix(in srgb, var(--zc) 14%, #fff); }
+.zone-table tbody tr > :first-child { box-shadow: inset 5px 0 0 var(--zc); }
 
 /* ---------- Layout ---------- */
 main { max-width: var(--maxw); margin: 0 auto; padding: 0 16px 80px; }
@@ -438,4 +530,10 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 16px 80px; }
   .hero { padding: 48px 16px 40px; }
   .chart-card { padding: 12px; }
   .chapter h2 { font-size: 1.4rem; }
+}
+
+/* reef row: identical grid to the proportional-map / IUCN row above */
+.chart-row.thirds { grid-template-columns: minmax(0, 890px) minmax(0, 1fr); }
+@media (max-width: 1240px) {
+  .chart-row.thirds { grid-template-columns: minmax(0, 1fr); }
 }

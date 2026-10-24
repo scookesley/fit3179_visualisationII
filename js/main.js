@@ -17,6 +17,28 @@ const SPECIES = [
   "Giant Australian Cuttlefish"
 ];
 
+// Colours match the ridgeline (THEME.range.category, in the order the species appear there)
+const SPECIES_INFO = {
+  "Humpback Whale":              { colour: "#81b29a", image: "images/humpback_whale.jpg" },
+  "Green Turtle":                { colour: "#3d5a80", image: "images/green_turtle.jpg" },
+  "White Shark":                 { colour: "#f2cc8f", image: "images/great_white.jpg" },
+  "Eastern Blue Groper":         { colour: "#0e7c86", image: "images/eastern_blue_groper.jpg" },
+  "Giant Australian Cuttlefish": { colour: "#e07a5f", image: "images/giant_cuttlefish.jpg" }
+};
+
+function applySpeciesPanel(name) {
+  const info = SPECIES_INFO[name];
+  if (!info) return;
+  document.getElementById("species-panel").style.setProperty("--sp", info.colour);
+  const img = document.getElementById("species-photo");
+  img.style.display = "";
+  img.onerror = () => { img.style.display = "none"; };   // fall back to the gradient placeholder
+  img.src = info.image;
+  img.alt = name;
+  document.getElementById("species-desc").textContent =
+    `[Placeholder: two or three sentences about the ${name.toLowerCase()}, where it lives and why it matters for Australia's marine parks.]`;
+}
+
 const THEME = {
   background: null,
   font: "Inter, 'Segoe UI', system-ui, sans-serif",
@@ -58,6 +80,8 @@ async function embedChart(el) {
       renderer: "svg"
     });
     views.push({ view: result.view, el });
+    const sel = document.getElementById("species-select");
+    if (sel) { try { result.view.signal("species_sel", sel.value).run(); } catch (_) {} }
     const stage = el.closest(".globe-stage");
     if (stage) document.fonts.ready.then(() => drawGlobeLeaders(stage, spec));
 
@@ -82,7 +106,9 @@ function setupSpeciesControl() {
   const select = document.getElementById("species-select");
   if (!select) return;
   select.innerHTML = SPECIES.map(s => `<option>${s}</option>`).join("");
+  applySpeciesPanel(select.value);
   select.addEventListener("change", () => {
+    applySpeciesPanel(select.value);
     views.forEach(({ view }) => {
       try { view.signal("species_sel", select.value).run(); } catch (_) { /* spec has no species_sel */ }
     });

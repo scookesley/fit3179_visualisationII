@@ -7,12 +7,14 @@
     "data": ["data/aus_states.geojson", "data/gbr_zoning.geojson"]
   },
   "title": {
-    "text": ["The Great Barrier Reef Marine Park is", "zoned by how much activity is allowed"],
+    "text": ["The Great Barrier Reef is zoned", "by how much activity is allowed"],
     "subtitle": "Marine Park zones"
   },
   "width": "container",
-  "height": 600,
-  "projection": { "type": "mercator", "center": [148.2, -17.6], "scale": { "expr": "min(width * 4.6, height * 3.3)" } },
+  "height": 540,
+  "padding": { "left": 0, "right": 0, "top": 5, "bottom": 5 },
+  "autosize": { "type": "fit-x", "contains": "padding" },
+  "projection": { "type": "mercator", "center": [148.2, -17.6], "scale": { "expr": "min(width * 4.6, height * 3.6)" } },
   "layer": [
     {
       "data": { "url": "data/aus_states.geojson", "format": { "property": "features" } },
@@ -26,21 +28,36 @@
           "field": "properties.TYPE",
           "type": "nominal",
           "title": "Zone",
-          "legend": { "orient": "right", "columns": 1, "labelLimit": 320 },
+          "legend": {
+            "orient": "top-right",
+            "offset": 0,
+            "symbolType": "square",
+            "values": [
+              "Preservation",
+              "Scientific Research",
+              "Marine National Park",
+              "Buffer",
+              "Conservation Park",
+              "Habitat Protection",
+              "General Use",
+              "Commonwealth Islands (GBRMPA)"
+            ],
+            "labelExpr": "datum.value === 'Commonwealth Islands (GBRMPA)' ? 'Commonwealth Islands' : datum.value"
+          },
           "scale": {
             "domain": [
-              "General Use",
-              "Habitat Protection",
-              "Conservation Park",
-              "Buffer",
+              "Preservation",
               "Scientific Research",
               "Scientific Research (closed to public access)",
               "Marine National Park",
-              "Preservation",
+              "Buffer",
+              "Conservation Park",
+              "Habitat Protection",
+              "General Use",
               "Commonwealth Islands (GBRMPA)",
               "Commonwealth Islands (Other)"
             ],
-            "range": ["#9fd4ee", "#2a6fb0", "#f4d35e", "#8a9a3b", "#e8913a", "#e8913a", "#4a9d5b", "#e07aa5", "#bdbdbd", "#bdbdbd"]
+            "range": ["#e07aa5", "#e8913a", "#e8913a", "#4a9d5b", "#8a9a3b", "#f4d35e", "#2a6fb0", "#9fd4ee", "#bdbdbd", "#bdbdbd"]
           }
         },
         "tooltip": [{ "field": "properties.TYPE", "type": "nominal", "title": "Zone" }]
