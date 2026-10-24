@@ -11,7 +11,7 @@
     "subtitle": "Marine Park zones"
   },
   "width": "container",
-  "height": 520,
+  "height": 600,
   "projection": { "type": "mercator", "center": [148.2, -17.6], "scale": { "expr": "min(width * 4.6, height * 3.3)" } },
   "layer": [
     {
@@ -26,7 +26,7 @@
           "field": "properties.TYPE",
           "type": "nominal",
           "title": "Zone",
-          "legend": { "orient": "bottom", "columns": 1, "labelLimit": 320 },
+          "legend": { "orient": "right", "columns": 1, "labelLimit": 320 },
           "scale": {
             "domain": [
               "General Use",

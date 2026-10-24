@@ -80,7 +80,22 @@
 
     <div class="chart-row map-pair">
       <figure class="chart-card centered">
-        <div class="chart" id="amp-strict" data-spec="specs/01b-amp-map-choro.json"></div>
+        <div class="map-stage">
+        
+          <div class="chart" id="amp-strict" data-spec="specs/01b-amp-map-choro.json"></div>
+
+          <aside class="map-note map-note--overall">
+            Overall, 48% of the 4.2 million km² of Australian Marine Parks is strictly protected.
+          </aside>
+
+          <aside class="map-note map-note--island">
+            Cocos (Keeling) Islands and Christmas Island parks have some of the highest proportions of strictly
+            protected areas at 99.7% and 98.6% respectively. Small areas close to the island territories are
+            designated Habitat Protection Zones (IUCN IV); not as strict as IUCN Ia and II zones, but still
+            disallow fishing activities that may damage local marine habitats.
+          </aside>
+
+        </div>
         <figcaption>
           Zones dictate the protection level of a particular area, which can be mapped to the categories set out by the International Union for
           Conservation of Nature (IUCN). These Zone types include: Sanctuary Zone (IUCN Ia) and National Park Zone (IUCN II), the two strictest levels
@@ -88,11 +103,55 @@
         </figcaption>
       </figure>
 
+      <figure class="chart-card iucn-card">
+        <div class="iucn-title">IUCN Status Types</div>
+        <div class="iucn-subtitle">Australian Marine Park zones, from strictest to least strict</div>
+
+        <table class="iucn-table">
+          <thead>
+            <tr><th scope="col">Zone (IUCN category)</th><th scope="col">Description</th></tr>
+          </thead>
+          <tbody>
+            <tr class="strict">
+              <th scope="row">Sanctuary Zone<span>IUCN Ia</span></th>
+              <td>Strict nature reserve. Extractive uses such as fishing and mining are not allowed, and human use is tightly limited, mainly to research.</td>
+            </tr>
+            <tr class="strict">
+              <th scope="row">National Park Zone<span>IUCN II</span></th>
+              <td>Protects whole ecosystems. Fishing and mining are not allowed, but low-impact visitor activities such as diving and boating are generally permitted.</td>
+            </tr>
+            <tr>
+              <th scope="row">Recreational Use Zone<span>IUCN IV</span></th>
+              <td>Managed to protect habitats and species while allowing recreational fishing. Commercial fishing is generally not allowed.</td>
+            </tr>
+            <tr>
+              <th scope="row">Habitat Protection Zone<span>IUCN IV</span></th>
+              <td>Managed to protect seafloor habitats. Activities that damage the seabed are restricted, while some lower-impact fishing is permitted.</td>
+            </tr>
+            <tr>
+              <th scope="row">Special Purpose Zone<span>IUCN VI</span></th>
+              <td>Allows sustainable use, with extra management for a specific purpose, such as limits on particular fishing methods.</td>
+            </tr>
+            <tr>
+              <th scope="row">Multiple Use Zone<span>IUCN VI</span></th>
+              <td>Sustainable use of marine resources, including commercial fishing, alongside conservation of the park's values.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="iucn-key"><i></i>Strictest zones (IUCN Ia and II), the ones used to colour the circles on the map.</p>
+      </figure>
+    </div>
+
+    <div class="chart-row">
       <figure class="chart-card">
-        <div class="chart" data-spec="specs/02-gbr-zoning-map.json"></div>
-        <figcaption>The Great Barrier Reef (GBR) Marine Park is co-managed by the Queensland State Government and the Federal State government. As an area of
-          extraordinary marine diversity, it's the subject of scientific as well as touristic interest. For that reason, the designated GBR Park area is divided into a number of complex,
-          distinct regions, each attached to a zoning category.</figcaption>
+        <div class="chart" data-spec="specs/02a-gbr-zoning-map.json"></div>
+        <figcaption>…</figcaption>
+      </figure>
+
+      <figure class="chart-card bar-card">
+        <div class="chart" data-spec="specs/02b-gbr-zone-share.json"></div>
+        <figcaption>…</figcaption>
       </figure>
     </div>
 

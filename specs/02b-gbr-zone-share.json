@@ -1,0 +1,74 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "usermeta": {
+    "chapter": 1,
+    "advanced": true,
+    "idiom": "Normalised stacked bar",
+    "data": ["data/gbr_zoning.geojson"]
+  },
+  "title": {
+    "text": ["A third of the Great Barrier Reef", "Marine Park is closed to fishing"],
+    "subtitle": "Share of zoned area (about 345,000 km²) by zone type, most to least restrictive from the top."
+  },
+  "width": 140,
+  "height": 460,
+  "autosize": { "type": "pad" },
+  "data": {
+    "values": [
+      { "rank": 1, "zone": "Preservation",                 "area_km2": 709 },
+      { "rank": 2, "zone": "Scientific Research",          "area_km2": 154 },
+      { "rank": 3, "zone": "Marine National Park",         "area_km2": 114597 },
+      { "rank": 4, "zone": "Conservation Park",            "area_km2": 5155 },
+      { "rank": 5, "zone": "Habitat Protection",           "area_km2": 97575 },
+      { "rank": 6, "zone": "Buffer",                       "area_km2": 9915 },
+      { "rank": 7, "zone": "General Use",                  "area_km2": 116858 },
+      { "rank": 8, "zone": "Commonwealth Islands",         "area_km2": 107 }
+    ]
+  },
+  "transform": [
+    { "joinaggregate": [{ "op": "sum", "field": "area_km2", "as": "total" }] },
+    { "calculate": "datum.area_km2 / datum.total", "as": "pct" },
+    { "window": [{ "op": "sum", "field": "pct", "as": "cum" }], "sort": [{ "field": "rank", "order": "ascending" }], "frame": [null, 0] },
+    { "calculate": "1 - (datum.cum - datum.pct)", "as": "top" },
+    { "calculate": "1 - datum.cum", "as": "bottom" },
+    { "calculate": "1 - (datum.cum - datum.pct / 2)", "as": "mid" }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "bar", "stroke": "#ffffff", "strokeWidth": 0.8 },
+      "encoding": {
+        "y": {
+          "field": "bottom", "type": "quantitative", "title": null,
+          "scale": { "domain": [0, 1], "nice": false },
+          "axis": { "format": "%", "values": [0, 0.25, 0.5, 0.75, 1] }
+        },
+        "y2": { "field": "top" },
+        "color": {
+          "field": "zone", "type": "nominal", "title": "Zone (share of area)",
+          "scale": {
+            "domain": ["Preservation", "Scientific Research", "Marine National Park", "Conservation Park", "Habitat Protection", "Buffer", "General Use", "Commonwealth Islands"],
+            "range":  ["#e07aa5", "#e8913a", "#4a9d5b", "#f4d35e", "#2a6fb0", "#8a9a3b", "#9fd4ee", "#bdbdbd"]
+          },
+          "legend": {
+            "orient": "right", "symbolType": "square", "labelLimit": 260,
+            "labelExpr": "datum.value + '  ·  ' + {'Preservation':'0.2%','Scientific Research':'<0.1%','Marine National Park':'33.2%','Conservation Park':'1.5%','Habitat Protection':'28.3%','Buffer':'2.9%','General Use':'33.9%','Commonwealth Islands':'<0.1%'}[datum.value]"
+          }
+        },
+        "tooltip": [
+          { "field": "zone", "type": "nominal", "title": "Zone" },
+          { "field": "area_km2", "type": "quantitative", "title": "Area (km²)", "format": ",.0f" },
+          { "field": "pct", "type": "quantitative", "title": "Share of park", "format": ".1%" }
+        ]
+      }
+    },
+    {
+      "transform": [{ "filter": "datum.pct >= 0.08" }],
+      "mark": { "type": "text", "fontSize": 12, "fontWeight": 600 },
+      "encoding": {
+        "y": { "field": "mid", "type": "quantitative", "axis": null, "scale": { "domain": [0, 1], "nice": false } },
+        "text": { "field": "pct", "type": "quantitative", "format": ".0%" },
+        "color": { "condition": { "test": "datum.zone === 'General Use'", "value": "#0b2e3f" }, "value": "#ffffff" }
+      }
+    }
+  ]
+}

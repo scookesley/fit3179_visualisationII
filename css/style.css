@@ -143,6 +143,50 @@ body {
   .chart-card.caption-side { grid-template-columns: minmax(0, 1fr); }
   .chart-card.caption-side figcaption { padding: 10px 0 0; border-left: 0; border-top: 1px solid var(--line); }
 }
+/* ---------- IUCN zone table ---------- */
+
+.iucn-table { flex: 1; }
+.iucn-key { margin-top: auto; }
+
+.iucn-card { display: flex; flex-direction: column; }
+.iucn-title {
+  font-size: 18px; font-weight: 600; line-height: 1.25;
+  color: #0C616E;
+}
+.iucn-subtitle { margin: 2px 0 14px; font-size: 12px; color: #6b7f8c; }
+
+.iucn-table { width: 100%; border-collapse: collapse; font-size: .85rem; line-height: 1.4; }
+.iucn-table thead th {
+  text-align: left; padding: 6px 10px;
+  font-size: .75rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 2px solid var(--line);
+}
+.iucn-table tbody th,
+.iucn-table tbody td {
+  padding: 10px; vertical-align: top; text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.iucn-table tbody th { width: 36%; font-weight: 600; color: var(--ink); }
+.iucn-table tbody th span {
+  display: block; margin-top: 2px;
+  font-size: .75rem; font-weight: 500; color: var(--muted);
+}
+
+/* Strictest zones (IUCN Ia / II) */
+.iucn-table tr.strict > * { background: #fbe1de; }
+.iucn-table tr.strict > :first-child { box-shadow: inset 3px 0 0 #d9534f; }
+.iucn-table tr.strict th span { color: #9b3a33; }
+
+.iucn-key {
+  display: flex; align-items: center; gap: 8px;
+  margin: 12px 0 0; font-size: .8rem; color: var(--muted);
+}
+.iucn-key i {
+  flex: none; width: 14px; height: 14px; border-radius: 3px;
+  background: #fbe1de; box-shadow: inset 3px 0 0 #d9534f;
+}
+
 /* ---------- Globe stage: map + floating cards + annotations ---------- */
 .chart-card.globe-card { overflow-x: auto; }
 
@@ -229,6 +273,54 @@ body {
 .globe-leaders line { stroke-linecap: round; }
 .globe-leaders .halo { stroke: #fff; stroke-width: 3; opacity: .8; }
 .globe-leaders .core { stroke: #333; stroke-width: 1; }
+
+/* ---------- Proportional symbol map: stage + notes ---------- */
+.chart-card.map-card { overflow-x: auto; }
+
+.map-stage {
+  position: relative;
+  width: 820px;           /* = spec width 800 + 10 + 10 padding */
+  min-width: 820px;
+  margin: 0 auto;
+  text-align: left;
+}
+.map-stage .chart { overflow: visible; }
+.map-stage .vega-embed.has-actions { padding-right: 0; }
+
+/* Same look as the Coral Sea note on the globe */
+.map-note {
+  position: absolute;
+  z-index: 2;
+  padding: 10px 12px;
+  background: #fff;
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: .75rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+/* Positions are in stage px (plot area starts at x 10, y 62) */
+.map-note--overall {          /* between Heard and Macquarie, centred on 120°E */
+  left: 295px;
+  top: 507px;
+  width: 230px;               /* same width as the Coral Sea note */
+}
+.map-note--island {           /* top edge meets the two leader lines */
+  left: 20px;
+  top: 222px;
+  width: 280px;
+}
+
+/* ---------- GBR zone-share bar card ---------- */
+.bar-card { display: flex; flex-direction: column; }
+.bar-card .chart {
+  flex: 1;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+}
+.bar-card .chart .vega-embed { width: auto; }
+.bar-card .spec-view { align-self: flex-start; }
 
 /* ---------- Layout ---------- */
 main { max-width: var(--maxw); margin: 0 auto; padding: 0 16px 80px; }

@@ -11,16 +11,16 @@
     ]
   },
   "title": {
-    "text": "Three remote island parks hold 58% of Australia's strictly protected marine park area",
+    "text": ["Australian Marine Parks receive a formal International Union for Conservation of Nature", "(IUCN) protection rating"],
     "subtitle": [
-      "Each circle is a marine park: size = park area, colour = share of the park in the strictest zones (IUCN Ia/II).",
-      "Overall, 48% of the 4.2 million km² is strictly protected."
-    ]
+      "Each circle is a marine park: size = park area, colour = share of the park in the strictest zones (IUCN Ia/II)."
+    ],
+    "offset":40
   },
   "width": 800,
   "height": 560,
   "autosize": "none",
-  "padding": { "left": 10, "right": 10, "top": 62, "bottom": 110 },
+  "padding": { "left": 10, "right": 10, "top": 90, "bottom": 110 },
   "projection": {
     "type": "mercator",
     "center": [
@@ -69,8 +69,23 @@
       },
       "mark": {
         "type": "geoshape",
-        "fill": "#cfe3ea",
+        "fill": null,
         "stroke": null
+      }
+    },
+    {
+      "data": {
+        "values": [
+          { "lon": 96.9,   "lat": -22.1, "lon2": 96.9,  "lat2": -15.5 },
+          { "lon": 100.68, "lat": -22.1, "lon2": 104.7, "lat2": -14.3 }
+        ]
+      },
+      "mark": { "type": "rule", "stroke": "#333", "strokeWidth": 1 },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "longitude2": { "field": "lon2" },
+        "latitude2": { "field": "lat2" }
       }
     },
     {
@@ -89,7 +104,7 @@
       },
       "mark": {
         "type": "circle",
-        "opacity": 0.82,
+        "opacity": 0.80,
         "stroke": "#0b2e3f",
         "strokeWidth": 0.9
       },
@@ -110,7 +125,7 @@
             "type": "linear",
             "zero": true,
             "range": [
-              0,
+              50,
               6500
             ]
           },
@@ -186,71 +201,70 @@
         "url": "data/park_summary.csv",
         "format": {
           "parse": {
-            "lon": "number",
-            "lat": "number",
-            "total_km2": "number",
-            "strict_km2": "number",
-            "pct_strict": "number",
-            "n_zones": "number"
+            "lon": "number", "lat": "number", "total_km2": "number",
+            "strict_km2": "number", "pct_strict": "number", "n_zones": "number"
           }
         }
       },
       "transform": [
-        {
-          "window": [
-            {
-              "op": "rank",
-              "as": "rnk"
-            }
-          ],
-          "sort": [
-            {
-              "field": "total_km2",
-              "order": "descending"
-            }
-          ]
-        },
-        {
-          "filter": "datum.rnk <= 7"
-        },
+        { "window": [{ "op": "rank", "as": "rnk" }], "sort": [{ "field": "total_km2", "order": "descending" }] },
+        { "filter": "datum.rnk <= 7" },
         {
           "calculate": "datum.park === 'Heard Island and McDonald Islands' ? 'Heard & McDonald Is.' : (datum.park === 'Cocos (Keeling) Islands' ? 'Cocos (Keeling) Is.' : datum.park)",
           "as": "label"
         },
         {
-          "calculate": "(sqrt(datum.total_km2 / 989836 * 6500 / PI) + 9) / (430 * PI / 180 / cos(datum.lat * PI / 180))",
-          "as": "dlat"
+          "calculate": "datum.park === 'Cocos (Keeling) Islands' ? 'left' : (datum.park === 'South-west Corner' ? 'below' : (datum.park === 'Heard Island and McDonald Islands' ? 'above-left' : 'above'))",
+          "as": "pos"
         },
         {
-          "calculate": "datum.lat + datum.dlat",
+          "calculate": "datum.park === 'Coral Sea' ? 39 : (datum.park === 'Cocos (Keeling) Islands' ? 27 : (datum.park === 'Macquarie Island' ? 27 : (datum.park === 'Heard Island and McDonald Islands' ? 24.5 : (datum.park === 'Christmas Island' ? 21 : (datum.park === 'South-west Corner' ? 20.5 : 17.5)))))",
+          "as": "r"
+        },
+        {
+          "calculate": "datum.lat + (datum.pos === 'below' ? -1 : (datum.pos === 'left' ? 0 : 1)) * (datum.r + 6) * cos(datum.lat * PI / 180) / 7.5049",
           "as": "lat_lbl"
         },
         {
-          "calculate": "datum.lon + (datum.park === 'Cocos (Keeling) Islands' ? -5 : (datum.park === 'Christmas Island' ? 5 : (datum.park === 'Heard Island and McDonald Islands' ? 5 : 0)))",
+          "calculate": "datum.lon - (datum.pos === 'left' ? (datum.r + 6) / 7.5049 : (datum.pos === 'above-left' ? datum.r / 7.5049 : 0))",
           "as": "lon_lbl"
         }
       ],
-      "mark": {
-        "type": "text",
-        "fontSize": 11,
-        "fontWeight": 600,
-        "color": "#0b2e3f",
-        "baseline": "bottom"
-      },
       "encoding": {
-        "longitude": {
-          "field": "lon_lbl",
-          "type": "quantitative"
+        "longitude": { "field": "lon_lbl", "type": "quantitative" },
+        "latitude": { "field": "lat_lbl", "type": "quantitative" },
+        "text": { "field": "label", "type": "nominal" }
+      },
+      "layer": [
+        {
+          "transform": [{ "filter": "datum.pos === 'above'" }],
+          "layer": [
+            { "mark": { "type": "text", "align": "center", "baseline": "bottom", "fontSize": 11, "fontWeight": 600, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+            { "mark": { "type": "text", "align": "center", "baseline": "bottom", "fontSize": 11, "fontWeight": 600, "color": "#0b2e3f" } }
+          ]
         },
-        "latitude": {
-          "field": "lat_lbl",
-          "type": "quantitative"
+        {
+          "transform": [{ "filter": "datum.pos === 'below'" }],
+          "layer": [
+            { "mark": { "type": "text", "align": "center", "baseline": "top", "fontSize": 11, "fontWeight": 600, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+            { "mark": { "type": "text", "align": "center", "baseline": "top", "fontSize": 11, "fontWeight": 600, "color": "#0b2e3f" } }
+          ]
         },
-        "text": {
-          "field": "label",
-          "type": "nominal"
+        {
+          "transform": [{ "filter": "datum.pos === 'left'" }],
+          "layer": [
+            { "mark": { "type": "text", "align": "right", "baseline": "middle", "fontSize": 11, "fontWeight": 600, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+            { "mark": { "type": "text", "align": "right", "baseline": "middle", "fontSize": 11, "fontWeight": 600, "color": "#0b2e3f" } }
+          ]
+        },
+        {
+          "transform": [{ "filter": "datum.pos === 'above-left'" }],
+          "layer": [
+            { "mark": { "type": "text", "align": "left", "baseline": "bottom", "fontSize": 11, "fontWeight": 600, "color": "#fff", "stroke": "#fff", "strokeWidth": 3, "strokeJoin": "round", "strokeOpacity": 0.9 } },
+            { "mark": { "type": "text", "align": "left", "baseline": "bottom", "fontSize": 11, "fontWeight": 600, "color": "#0b2e3f" } }
+          ]
         }
-      }
+      ]
     }
   ]
 }
