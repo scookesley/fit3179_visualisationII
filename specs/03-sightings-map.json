@@ -10,7 +10,7 @@
     "text": "Locations across Australia of reported sightings",
     "subtitle": "Records per 0.5° cell (Atlas of Living Australia)"
   },
-  "width": "container",
+  "width": 900,
   "height": 820,
   "params": [{ "name": "species_sel", "value": "Humpback Whale" }],
   "datasets": {
@@ -25,7 +25,7 @@
       { "city": "Darwin",    "lon": 130.84, "lat": -12.46, "pos": "below" }
     ]
   },
-  "projection": { "type": "mercator", "center": [134, -28], "scale": 1100 },
+  "projection": { "type": "mercator", "center": [137, -28], "scale": 1050 },
   "layer": [
     { 
       "data": { "url": "data/aus_states.geojson", "format": { "property": "features" } },
@@ -114,6 +114,107 @@
         "latitude": { "field": "lat", "type": "quantitative" },
         "text": { "field": "city", "type": "nominal" }
       }
+    },  
+    {
+      "data": {
+        "url": "data/sua_sightings.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "records": "number",
+            "lon": "number",
+            "lat": "number",
+            "is_capital": "boolean"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.species === species_sel && !datum.is_capital && isValid(datum.records) && isValid(datum.lon) && isValid(datum.lat)"
+        },
+        {
+          "window": [
+            {
+              "op": "row_number",
+              "as": "sua_rank"
+            }
+          ],
+          "sort": [
+            {
+              "field": "records",
+              "order": "descending"
+            },
+            {
+              "field": "sua_code",
+              "order": "ascending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.sua_rank <= 3"
+        }
+      ],
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "size": 28,
+            "color": "#0b2e3f",
+            "stroke": "white",
+            "strokeWidth": 1
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#fff",
+            "stroke": "#fff",
+            "strokeWidth": 3,
+            "strokeJoin": "round",
+            "strokeOpacity": 0.9,
+            "dx": 10,
+            "align": "left",
+            "baseline":"middle"
+          },
+          "encoding": {
+            "text": {
+              "field": "label",
+              "type": "nominal"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#0b2e3f",
+            "dx":10,
+            "align": "left",
+            "baseline": "middle"
+          },
+          "encoding": {
+            "text": {
+              "field": "label",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
     }
+
   ]
 }

@@ -7,12 +7,12 @@
     "data": ["data/aus_states.geojson", "data/threatened_marine_by_state.csv"]
   },
   "title": {
-    "text": "Threatened marine species by state and territory",
-    "subtitle": ["EPBC-listed threatened species found in Commonwealth waters, counted", "in each jurisdiction where they are present. A species can count in more than one."]
+    "text": "Threatened marine species by state and territory (2025)",
+    "subtitle": ["EPBC-listed threatened species found in Commonwealth waters, counted", "in each jurisdiction where they are present."]
   },
   "width": "container",
-  "height": 600,
-  "projection": { "type": "mercator", "center": [134, -28], "scale": { "expr": "min(width, height) * 1.3" } },
+  "height": 740,
+  "projection": { "type": "mercator", "center": [126, -27.5], "scale": { "expr": "min(width, height) * 1.42" } },
   "data": { "url": "data/aus_states.geojson", "format": { "property": "features" } },
   "transform": [
     {
@@ -31,7 +31,10 @@
       "type": "quantitative",
       "title": "Threatened marine species",
       "scale": { "scheme": "oranges" },
-      "legend": { "orient": "bottom" }
+      "legend": { "orient": "none",
+                  "legendX": 550,
+                  "legendY": 550,
+                  "direction": "horizontal"}
     },
     "tooltip": [
       { "field": "properties.STATE_NAME", "type": "nominal", "title": "State" },

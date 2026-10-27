@@ -3,161 +3,462 @@
   "usermeta": {
     "chapter": 2,
     "advanced": true,
-    "idiom": "Butterfly chart (population vs sightings), segmented by capital / non-capital",
-    "data": ["data/sua_sightings.csv"]
+    "idiom": "Butterfly chart (population vs sightings), capital / non-capital",
+    "data": [
+      "data/sua_sightings.csv"
+    ]
   },
   "title": {
-    "text": ["Where people live shapes where", "sightings are recorded"],
+    "text": [
+      "Comparing population size against sighting counts within",
+      "Australian significant urban areas (SUAs)"
+    ],
     "subtitle": [
       "Urban area population, 2025 (left) against sightings within 25 km, 2000–2026 (right),",
       "for the selected species. Square-root scales; bar-end labels show the actual values."
-    ]
+    ],
+    "offset": 16
   },
-  "params": [{ "name": "species_sel", "value": "Humpback Whale" }],
+  "params": [
+    {
+      "name": "species_sel",
+      "value": "Humpback Whale"
+    }
+  ],
   "data": {
     "url": "data/sua_sightings.csv",
-    "format": { "type": "csv", "parse": { "sua_code": "string", "is_capital": "number", "pop_2025": "number", "records": "number", "per_100k": "number" } }
+    "format": {
+      "type": "csv",
+      "parse": {
+        "sua_code": "string",
+        "is_capital": "number",
+        "pop_2025": "number",
+        "records": "number",
+        "per_100k": "number"
+      }
+    }
   },
   "transform": [
-    { "filter": "datum.species === species_sel" },
-    { "window": [{ "op": "row_number", "as": "rk" }], "groupby": ["is_capital"], "sort": [{ "field": "records", "order": "descending" }] },
-    { "filter": "datum.is_capital === 1 || (datum.rk <= 3 && datum.records > 0)" },
-    { "calculate": "datum.is_capital === 1 ? 'Capital city' : 'Top 3 non-capital areas'", "as": "group" },
-    { "calculate": "datum.is_capital === 1 ? -datum.pop_2025 : 1000000000 - datum.records", "as": "sortkey" },
-    { "calculate": "datum.pop_2025 * 1.45", "as": "pop_pad" },
-    { "calculate": "datum.records * 1.45", "as": "rec_pad" },
-    { "calculate": "0", "as": "tint0" },
-    { "calculate": "190", "as": "tint190" },
-    { "calculate": "120", "as": "tint120" }
+    {
+      "filter": "datum.species === species_sel"
+    },
+    {
+      "window": [
+        {
+          "op": "row_number",
+          "as": "rk"
+        }
+      ],
+      "groupby": [
+        "is_capital"
+      ],
+      "sort": [
+        {
+          "field": "records",
+          "order": "descending"
+        }
+      ]
+    },
+    {
+      "filter": "datum.is_capital === 1 || (datum.rk <= 3 && datum.records > 0)"
+    },
+    {
+      "calculate": "datum.is_capital === 1 ? 'Capital city' : 'Top 3 non-capital areas'",
+      "as": "group"
+    },
+    {
+      "calculate": "datum.is_capital === 1 ? -datum.pop_2025 : 1000000000 - datum.records",
+      "as": "sortkey"
+    },
+    {
+      "calculate": "datum.pop_2025 * 1.45",
+      "as": "pop_pad"
+    },
+    {
+      "calculate": "datum.records * 1.45",
+      "as": "rec_pad"
+    }
   ],
-  "padding": { "left": 5, "right": 14, "top": 5, "bottom": 5 },
+  "padding": {
+    "left": 0,
+    "right": 14,
+    "top": 10,
+    "bottom": 5
+  },
   "spacing": 0,
-  "resolve": { "scale": { "y": "shared" } },
+  "resolve": {
+    "scale": {
+      "y": "shared"
+    }
+  },
   "hconcat": [
     {
       "width": 190,
-      "height": { "step": 32 },
+      "height": {
+        "step": 50
+      },
       "layer": [
         {
-          "mark": { "type": "bar", "size": 32, "opacity": 0.1, "tooltip": null },
+          "mark": {
+            "type": "bar",
+            "opacity": 0.6
+          },
           "encoding": {
-            "y": { "field": "sua_code", "type": "nominal", "sort": { "field": "sortkey", "op": "min" }, "axis": null, "scale": { "paddingInner": 0.3, "paddingOuter": 0.15 } },
-            "x": { "field": "tint0", "type": "quantitative", "scale": null, "axis": null },
-            "x2": { "field": "tint190" },
-            "color": {
-              "field": "group", "type": "nominal", "title": null,
-              "scale": { "domain": ["Capital city", "Top 3 non-capital areas"], "range": ["#2f4858", "#7b5ea7"] },
-              "legend": { "orient": "top", "symbolType": "square", "labelFontSize": 11, "labelLimit": 300, "symbolOpacity": 1, "offset": 8 }
-            }
-          }
-        },
-        {
-          "mark": { "type": "bar", "opacity": 0.6 },
-          "encoding": {
-            "y": { "field": "sua_code", "type": "nominal", "sort": { "field": "sortkey", "op": "min" }, "axis": null, "scale": { "paddingInner": 0.3, "paddingOuter": 0.15 } },
-            "x": {
-              "field": "pop_2025", "type": "quantitative", "title": "Population, 2025",
-              "scale": { "type": "sqrt", "zero": true, "reverse": true },
-              "axis": { "values": [0, 500000, 1000000, 2000000, 4000000], "labelExpr": "datum.value >= 1000000 ? (datum.value / 1000000) + 'M' : (datum.value >= 1000 ? (datum.value / 1000) + 'k' : datum.value)", "grid": false }
+            "y": {
+              "field": "sua_code",
+              "type": "nominal",
+              "sort": {
+                "field": "sortkey",
+                "op": "min"
+              },
+              "axis": null,
+              "scale": {
+                "paddingInner": 0.3,
+                "paddingOuter": 0.15
+              }
             },
-            "color": { "field": "group", "type": "nominal", "scale": { "domain": ["Capital city", "Top 3 non-capital areas"], "range": ["#2f4858", "#7b5ea7"] } },
+            "x": {
+              "field": "pop_2025",
+              "type": "quantitative",
+              "title": "Population, 2025",
+              "scale": {
+                "type": "sqrt",
+                "zero": true,
+                "reverse": true
+              },
+              "axis": {
+                "values": [
+                  0,
+                  500000,
+                  1000000,
+                  2000000,
+                  4000000
+                ],
+                "labelExpr": "datum.value >= 1000000 ? (datum.value / 1000000) + 'M' : (datum.value >= 1000 ? (datum.value / 1000) + 'k' : datum.value)",
+                "grid": false
+              }
+            },
+            "color": {
+              "field": "group",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Capital city",
+                  "Top 3 non-capital areas"
+                ],
+                "range": [
+                  "#2f4858",
+                  "#7b5ea7"
+                ]
+              }
+            },
             "tooltip": [
-              { "field": "sua_name", "type": "nominal", "title": "Urban area" },
-              { "field": "group", "type": "nominal", "title": "Type" },
-              { "field": "pop_2025", "type": "quantitative", "title": "Population, 2025", "format": ",d" },
-              { "field": "records", "type": "quantitative", "title": "Sightings", "format": ",d" },
-              { "field": "per_100k", "type": "quantitative", "title": "Sightings per 100k residents", "format": ",.1f" }
+              {
+                "field": "sua_name",
+                "type": "nominal",
+                "title": "Urban area"
+              },
+              {
+                "field": "group",
+                "type": "nominal",
+                "title": "Type"
+              },
+              {
+                "field": "pop_2025",
+                "type": "quantitative",
+                "title": "Population, 2025",
+                "format": ",d"
+              },
+              {
+                "field": "records",
+                "type": "quantitative",
+                "title": "Sightings",
+                "format": ",d"
+              },
+              {
+                "field": "per_100k",
+                "type": "quantitative",
+                "title": "Sightings per 100k residents",
+                "format": ",.1f"
+              }
             ]
           }
         },
         {
-          "mark": { "type": "text", "align": "right", "baseline": "middle", "dx": -4, "fontSize": 10, "color": "#0b2e3f" },
+          "mark": {
+            "type": "text",
+            "align": "right",
+            "baseline": "middle",
+            "dx": -4,
+            "fontSize": 10,
+            "color": "#0b2e3f"
+          },
           "encoding": {
-            "y": { "field": "sua_code", "type": "nominal", "sort": { "field": "sortkey", "op": "min" }, "axis": null, "scale": { "paddingInner": 0.3, "paddingOuter": 0.15 } },
-            "x": { "field": "pop_2025", "type": "quantitative", "scale": { "type": "sqrt", "zero": true, "reverse": true } },
-            "text": { "field": "pop_2025", "type": "quantitative", "format": ".2~s" }
+            "y": {
+              "field": "sua_code",
+              "type": "nominal",
+              "sort": {
+                "field": "sortkey",
+                "op": "min"
+              },
+              "axis": null,
+              "scale": {
+                "paddingInner": 0.3,
+                "paddingOuter": 0.15
+              }
+            },
+            "x": {
+              "field": "pop_2025",
+              "type": "quantitative",
+              "scale": {
+                "type": "sqrt",
+                "zero": true,
+                "reverse": true
+              }
+            },
+            "text": {
+              "field": "pop_2025",
+              "type": "quantitative",
+              "format": ".2~s"
+            }
           }
         },
         {
-          "mark": { "type": "point", "opacity": 0, "tooltip": null },
+          "mark": {
+            "type": "point",
+            "opacity": 0,
+            "tooltip": null
+          },
           "encoding": {
-            "y": { "field": "sua_code", "type": "nominal", "sort": { "field": "sortkey", "op": "min" }, "axis": null, "scale": { "paddingInner": 0.3, "paddingOuter": 0.15 } },
-            "x": { "field": "pop_pad", "type": "quantitative", "scale": { "type": "sqrt", "zero": true, "reverse": true } }
+            "y": {
+              "field": "sua_code",
+              "type": "nominal",
+              "sort": {
+                "field": "sortkey",
+                "op": "min"
+              },
+              "axis": null,
+              "scale": {
+                "paddingInner": 0.3,
+                "paddingOuter": 0.15
+              }
+            },
+            "x": {
+              "field": "pop_pad",
+              "type": "quantitative",
+              "scale": {
+                "type": "sqrt",
+                "zero": true,
+                "reverse": true
+              }
+            }
           }
         }
       ]
     },
     {
       "width": 120,
-      "height": { "step": 32 },
+      "height": {
+        "step": 32
+      },
       "layer": [
         {
-          "mark": { "type": "bar", "size": 32, "opacity": 0.1, "tooltip": null },
+          "mark": {
+            "type": "text",
+            "align": "center",
+            "baseline": "middle",
+            "fontSize": 11,
+            "fontWeight": 600,
+            "color": "#0b2e3f"
+          },
           "encoding": {
-            "y": { "field": "sua_code", "type": "nominal", "sort": { "field": "sortkey", "op": "min" }, "axis": null, "scale": { "paddingInner": 0.3, "paddingOuter": 0.15 } },
-            "x": { "field": "tint0", "type": "quantitative", "scale": null, "axis": null },
-            "x2": { "field": "tint120" },
-            "color": { "field": "group", "type": "nominal", "scale": { "domain": ["Capital city", "Top 3 non-capital areas"], "range": ["#2f4858", "#7b5ea7"] } }
-          }
-        },
-        {
-          "mark": { "type": "text", "align": "center", "baseline": "middle", "fontSize": 11, "fontWeight": 600, "color": "#0b2e3f" },
-          "encoding": {
-            "y": { "field": "sua_code", "type": "nominal", "sort": { "field": "sortkey", "op": "min" }, "axis": null, "scale": { "paddingInner": 0.3, "paddingOuter": 0.15 } },
-            "x": { "value": 60 },
-            "text": { "field": "label", "type": "nominal" }
+            "y": {
+              "field": "sua_code",
+              "type": "nominal",
+              "sort": {
+                "field": "sortkey",
+                "op": "min"
+              },
+              "axis": null,
+              "scale": {
+                "paddingInner": 0.3,
+                "paddingOuter": 0.15
+              }
+            },
+            "x": {
+              "value": 60
+            },
+            "text": {
+              "field": "label",
+              "type": "nominal"
+            }
           }
         }
       ]
     },
     {
       "width": 190,
-      "height": { "step": 32 },
+      "height": {
+        "step": 32
+      },
       "layer": [
         {
-          "mark": { "type": "bar", "size": 32, "opacity": 0.1, "tooltip": null },
+          "mark": {
+            "type": "bar"
+          },
           "encoding": {
-            "y": { "field": "sua_code", "type": "nominal", "sort": { "field": "sortkey", "op": "min" }, "axis": null, "scale": { "paddingInner": 0.3, "paddingOuter": 0.15 } },
-            "x": { "field": "tint0", "type": "quantitative", "scale": null, "axis": null },
-            "x2": { "field": "tint190" },
-            "color": { "field": "group", "type": "nominal", "scale": { "domain": ["Capital city", "Top 3 non-capital areas"], "range": ["#2f4858", "#7b5ea7"] } }
-          }
-        },
-        {
-          "mark": { "type": "bar" },
-          "encoding": {
-            "y": { "field": "sua_code", "type": "nominal", "sort": { "field": "sortkey", "op": "min" }, "axis": null, "scale": { "paddingInner": 0.3, "paddingOuter": 0.15 } },
-            "x": {
-              "field": "records", "type": "quantitative", "title": "Sightings within 25 km",
-              "scale": { "type": "sqrt", "zero": true },
-              "axis": { "tickCount": 4, "labelExpr": "datum.value >= 1000000 ? (datum.value / 1000000) + 'M' : (datum.value >= 1000 ? (datum.value / 1000) + 'k' : datum.value)", "grid": false }
+            "y": {
+              "field": "sua_code",
+              "type": "nominal",
+              "sort": {
+                "field": "sortkey",
+                "op": "min"
+              },
+              "axis": null,
+              "scale": {
+                "paddingInner": 0.3,
+                "paddingOuter": 0.15
+              }
             },
-            "color": { "field": "group", "type": "nominal", "scale": { "domain": ["Capital city", "Top 3 non-capital areas"], "range": ["#2f4858", "#7b5ea7"] } },
+            "x": {
+              "field": "records",
+              "type": "quantitative",
+              "title": "Sightings within 25 km",
+              "scale": {
+                "type": "sqrt",
+                "zero": true
+              },
+              "axis": {
+                "tickCount": 4,
+                "labelExpr": "datum.value >= 1000000 ? (datum.value / 1000000) + 'M' : (datum.value >= 1000 ? (datum.value / 1000) + 'k' : datum.value)",
+                "grid": false
+              }
+            },
+            "color": {
+              "field": "group",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Capital city",
+                  "Top 3 non-capital areas"
+                ],
+                "range": [
+                  "#2f4858",
+                  "#7b5ea7"
+                ]
+              },
+              "title": null,
+              "legend": {
+                "orient": "top",
+                "symbolType": "square",
+                "labelFontSize": 11,
+                "labelLimit": 300,
+                "symbolOpacity": 1,
+                "offset": 8
+              }
+            },
             "tooltip": [
-              { "field": "sua_name", "type": "nominal", "title": "Urban area" },
-              { "field": "group", "type": "nominal", "title": "Type" },
-              { "field": "records", "type": "quantitative", "title": "Sightings", "format": ",d" },
-              { "field": "pop_2025", "type": "quantitative", "title": "Population, 2025", "format": ",d" },
-              { "field": "per_100k", "type": "quantitative", "title": "Sightings per 100k residents", "format": ",.1f" }
+              {
+                "field": "sua_name",
+                "type": "nominal",
+                "title": "Urban area"
+              },
+              {
+                "field": "group",
+                "type": "nominal",
+                "title": "Type"
+              },
+              {
+                "field": "records",
+                "type": "quantitative",
+                "title": "Sightings",
+                "format": ",d"
+              },
+              {
+                "field": "pop_2025",
+                "type": "quantitative",
+                "title": "Population, 2025",
+                "format": ",d"
+              },
+              {
+                "field": "per_100k",
+                "type": "quantitative",
+                "title": "Sightings per 100k residents",
+                "format": ",.1f"
+              }
             ]
           }
         },
         {
-          "mark": { "type": "text", "align": "left", "baseline": "middle", "dx": 4, "fontSize": 10, "color": "#0b2e3f" },
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "dx": 4,
+            "fontSize": 10,
+            "color": "#0b2e3f"
+          },
           "encoding": {
-            "y": { "field": "sua_code", "type": "nominal", "sort": { "field": "sortkey", "op": "min" }, "axis": null, "scale": { "paddingInner": 0.3, "paddingOuter": 0.15 } },
-            "x": { "field": "records", "type": "quantitative", "scale": { "type": "sqrt", "zero": true } },
-            "text": { "field": "records", "type": "quantitative", "format": ".2~s" }
+            "y": {
+              "field": "sua_code",
+              "type": "nominal",
+              "sort": {
+                "field": "sortkey",
+                "op": "min"
+              },
+              "axis": null,
+              "scale": {
+                "paddingInner": 0.3,
+                "paddingOuter": 0.15
+              }
+            },
+            "x": {
+              "field": "records",
+              "type": "quantitative",
+              "scale": {
+                "type": "sqrt",
+                "zero": true
+              }
+            },
+            "text": {
+              "field": "records",
+              "type": "quantitative",
+              "format": ".2~s"
+            }
           }
         },
         {
-          "mark": { "type": "point", "opacity": 0, "tooltip": null },
+          "mark": {
+            "type": "point",
+            "opacity": 0,
+            "tooltip": null
+          },
           "encoding": {
-            "y": { "field": "sua_code", "type": "nominal", "sort": { "field": "sortkey", "op": "min" }, "axis": null, "scale": { "paddingInner": 0.3, "paddingOuter": 0.15 } },
-            "x": { "field": "rec_pad", "type": "quantitative", "scale": { "type": "sqrt", "zero": true } }
+            "y": {
+              "field": "sua_code",
+              "type": "nominal",
+              "sort": {
+                "field": "sortkey",
+                "op": "min"
+              },
+              "axis": null,
+              "scale": {
+                "paddingInner": 0.3,
+                "paddingOuter": 0.15
+              }
+            },
+            "x": {
+              "field": "rec_pad",
+              "type": "quantitative",
+              "scale": {
+                "type": "sqrt",
+                "zero": true
+              }
+            }
           }
         }
       ]
     }
-  ]
+  ],
+  "bounds": "flush"
 }

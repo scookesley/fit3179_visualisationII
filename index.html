@@ -20,9 +20,9 @@
 
   <nav class="chapters" aria-label="Chapters">
     <a href="#ch1">1 · Protected Places</a>
-    <a href="#ch2">2 · Marine Life</a>
-    <a href="#ch3">3 · Endangered Species</a>
-    <a href="#ch4">4 · Coral Monitoring</a>
+    <a href="#ch2">2 · Great Barrier Reef</a>
+    <a href="#ch3">3 · Marine Life</a>
+    <a href="#ch4">4 · Endangered Species</a>
     <a href="#about">Data &amp; Credits</a>
   </nav>
 
@@ -42,7 +42,7 @@
 
           <div class="chart" id="amp-network" data-spec="specs/01a-amp-map.json"></div>
 
-          <aside class="globe-note globe-note--coral" data-lon="154" data-lat="-14.5">
+          <aside class="globe-note globe-note--coral" data-lon="154" data-lat="-15.5">
             The Coral Sea Islands network are the waters that surround the Great Barrier Reef marine park, not the
             Great Barrier Reef itself. The Great Barrier Reef has its own dedicated park, co-managed by the Queensland
             State Government and the Australian Commonwealth Government.
@@ -107,8 +107,10 @@
           </div>
           <figcaption>
             Zones dictate the protection level of a particular area, which can be mapped to the categories set out by the International Union for
-            Conservation of Nature (IUCN). These Zone types include: Sanctuary Zone (IUCN Ia) and National Park Zone (IUCN II), the two strictest levels
-            of protection, Recreational Use Zone (IUCN IV), Habitat Protection Zone (IUCN IV), Special Purpose Zone (IUCN VI) and Multiple Use Zone (IUCN VI).
+            Conservation of Nature (IUCN). Many of Australia's remote territories carry strict (IUCN Ia/II) restrictions on activities that may cause damage
+            to local marine habits, including large-scale tourism and commercial fishing. Other large marine parks off the mainland coast are composed of many
+            carefully segmented zones. This segmentation and assignment of zoned protection laws allow for necessary marine activities to take place while ensuring
+            the safety of local marine life. Darker circles above indicate a higher proportion of restrictive zones within the marine park area. 
           </figcaption>
         </figure>
 
@@ -152,24 +154,56 @@
         </figure>
 
       </div>
-
-      <!-- ---------- Great Barrier Reef: map + bar, and zone table ---------- -->
+    </section>
+    <!-- ============================ CHAPTER 2 ============================ -->
+    <section id="ch2" class="chapter">
+      <h2><span class="num">2</span> Great Barrier Reef</h2>
+      <p class="chapter-intro">Add text. 
+      </p>
       <div class="chart-row map-pair thirds">
 
         <div class="pair">
 
-          <figure class="chart-card">
-            <div class="chart" data-spec="specs/02a-gbr-zoning-map.json"></div>
-            <figcaption>
-              [Placeholder caption: describe the pattern in the zoning, for example where the strictest zones
-              (Preservation and Marine National Park) cluster along the outer reef, and where General Use zones dominate.]
-            </figcaption>
+          <figure class="chart-card annot-card">
+              <div class="annot-stage">
+
+                <div class="chart" data-spec="specs/02a-gbr-zoning-map.json"></div>
+
+                <aside class="map-note map-note--gbr1" data-lon="145.58" data-lat="-14.89">
+                  Habitat protection zones tend to cluster around offshore reef areas.
+                </aside>
+
+                <aside class="map-note map-note--gbr2" data-lon="148.80" data-lat="-20.30">
+                  Conservation park zones are scattered in small, select areas, generally closer to the coastline.
+                </aside>
+
+              </div>
+              <figcaption>
+                There are eight distinct zoning categories that comprise the Great Barrier Reef (GBR) Marine Park. These zones are carefully
+                designated and managed by a specialised government body, the Great Barrier Reef Marine Park Authority (GBRMPA). Zones are enforced with
+                the best interests of the rich, diverse, and potentially threatened creatures that make their homes in the GBR in mind; Violation
+                of zoning rules can result in hefty punitive fines. 
+              </figcaption>
           </figure>
 
-          <figure class="chart-card bar-card">
-            <div class="chart" data-spec="specs/02b-gbr-zone-share.json"></div>
+          <figure class="chart-card annot-card">
+            <div class="annot-stage">
+
+              <div class="chart" data-spec="specs/02b-gbr-zone-share.json"></div>
+
+              <aside class="map-note map-note--bar1" data-bar="0.865" data-bar-x="0.25">
+                Only a tiny proportion - around 0.3% of the Park's area - is composed of
+                Preservation, Scientific Research, and Commonwealth Islands
+              </aside>
+
+              <aside class="map-note map-note--bar2" data-bar="0.04" data-bar-x="0.49">
+                Most of the Park's area is for General Use, the most lenient category
+              </aside>
+
+            </div>
+
             <figcaption>
-              Shares are calculated from the zone polygon areas in the GBRMPA zoning data. Zones under 1% of the park
+              Shares of the total park area are calculated from the zone polygon areas in the GBRMPA zoning data. Zones under 1% of the park
               (Preservation, Scientific Research and Commonwealth Islands) are grouped as Other.
             </figcaption>
           </figure>
@@ -177,7 +211,7 @@
         </div>
 
         <figure class="chart-card iucn-card">
-          <div class="iucn-title">Reef zones run from no-go areas to open for most uses</div>
+          <div class="iucn-title">Reef Zones</div>
           <div class="iucn-subtitle">Great Barrier Reef Marine Park zones, most to least restrictive</div>
 
           <table class="iucn-table zone-table">
@@ -224,9 +258,9 @@
       </div>
     </section>
 
-    <!-- ============================ CHAPTER 2 ============================ -->
-    <section id="ch2" class="chapter">
-      <h2><span class="num">2</span> Marine Life</h2>
+    <!-- ============================ CHAPTER 3 ============================ -->
+    <section id="ch3" class="chapter">
+      <h2><span class="num">3</span> Marine Life</h2>
       <p class="chapter-intro">Australia's waters are home to over 33,000 known marine species. Of these, over 1,500 make their home solely in the Great Barrier Reef.
         The following section contains detailed data on five common Australian marine species of interest: The Humpack Whale, Green Turtle, White Shark, Eastern Blue Groper,
         and the Giant Australian Cuttlefish.
@@ -248,96 +282,177 @@
           </div>
         </div>
 
-        <figure class="chart-card sightings-card">
-          <div class="chart" data-spec="specs/03-sightings-map.json"></div>
-          <figcaption>[].</figcaption>
+        
+        <figure class="chart-card sightings-card species-map-card">
+          <div class="species-map-stage" data-annotations="map">
+            <div class="chart" data-spec="specs/03-sightings-map.json"></div>
+          </div>
+
+          <figcaption>The Atlas of Living Australia (ALA) is a collaborative and open-source repository of biodiversity data in Australia. Importantly,
+            ALA collects data on species occurrences, reported by the general public, biology hobbyists and scientists. Collecting these occurrence/sighting records into local bounded zones enables the 
+            visualisation of 'hot spots' and trends in reported sightings of particular species. A log scale is used to ensure that extreme ('hot spot') areas don't drown out areas with 
+            lower sighting counts. Compare the map above with the radial chart below to get a sense of the time as well as the place at which these sightings are being reported across the country.
+          </figcaption>
         </figure>
-
+        
         <div class="chart-row">
-          <figure class="chart-card centered">
-            <div class="chart" data-spec="specs/03c-sightings-vs-population.json"></div>
-            <figcaption>[].</figcaption>
+
+          <figure class="chart-card centered annot-card">
+            <div class="annot-stage annot-stage--butterfly" data-annotations="butterfly">
+              <div class="chart" data-spec="specs/03c-sightings-vs-population.json"></div>
+            </div>
+            <figcaption> For this visualisation, an occurrence/sighting is considered to be 'belonging' to a particular urban area if it is within a 25km radius of the city centre.
+              Species occurrences are plotted against each Australian capital city, almost all of which are situated on a coastline. That, and high population density in these
+              urban areas, are important factors that contribute to the location of reported occurrences - people need to be where the marine life is in order to see it! The Australian Bureau of
+              Statistics also publishes population data for all Australian SUAs (any city or town with a population of 10,000 or more). Of these cities and towns outside of the capitals, the three with the
+              highest sighting count are included for comparison, sorted from most to least sightings. </figcaption>
           </figure>
 
-          <figure class="chart-card">
-            <figure class="chart-card centered">
-            <div class="chart" data-spec="specs/03-seasonal-radial.json"></div>
-            <figcaption>[].</figcaption>
+          <figure class="chart-card centered annot-card">
+            <div class="annot-stage annot-stage--radial" data-annotations="radial">
+              <div class="chart" data-spec="specs/03-seasonal-radial.json"></div>
+            </div>
+            <figcaption> Each wedge is one calendar month. The only thing that differs between wedges is how far it reaches from the centre, which shows that month's records relative to the
+              busiest month: the busiest month always reaches the outer ring, and the dashed rings mark 25%, 50% and 100% of that peak, labelled with the actual record counts. The radius uses
+              a square-root scale so that wedge area, not length, is proportional to the number of records. Each species is scaled to its own busiest month, so wedge sizes cannot be compared
+              between species. All occurrence data is attached to the date of the reported sighting, so the plot shows the seasonal element of trends in occurrence reports for the selected species. </figcaption>
           </figure>
-            
-        </div>
       </section>
 
-      <figure class="chart-card">
-        <div class="chart" data-spec="specs/04-species-month-heatmap.json"></div>
-        <figcaption>[].</figcaption>
+      
+      <figure class="chart-card centered streamgraph-card">
+        <div class="streamgraph-stage">
+          <div class="chart" data-spec="specs/05-seasonal-streamgraph.json"></div>
+
+          <aside class="streamgraph-note" data-bar="0.865" data-bar-x="0.1">
+            Humpback whales' migratory behaviour heavily influences their sighting report patterns; Almost 30% of all average yearly 
+            sightings occur just in September
+          </aside>
+        </div>
+
+        <figcaption>
+          Vast differences exist between the patterns and behaviours of the five common species selected for analysis. 
+          Sighting patterns are influenced by a range of varied and intriguing factors, including mating periods, migration routes and seasons, 
+          and seasonal temperature. The band sizes in the streamgraph above are influenced by how much the corresponding month contributes to that species' 
+          average yearly sightings — the thicker the band, the higher prominence for that month relative to all other months in the year.
+        </figcaption>
       </figure>
 
       <figure class="chart-card centered">
-        <div class="chart" data-spec="specs/05-seasonal-streamgraph.json"></div>
-        <figcaption>[].</figcaption>
-      </figure>
+        <div class="ridgeline-stage">
+          <div class="chart" data-spec="specs/06-latitude-ridgeline.json"></div>
+          
+          <aside class="map-note ridgeline-note-1" data-x="522" data-y="118"></aside>
+          <aside class="map-note ridgeline-note-1" data-x="522" data-y="176">
+            Density peaks at a latitude of approximately -34° for cuttlefish and Eastern blue gropers -
+            the latitude of Sydney is approximately -33.9°
+          </aside>
+          
 
-      <figure class="chart-card centered">
-        <div class="chart" data-spec="specs/06-latitude-ridgeline.json"></div>
-        <figcaption>[].</figcaption>
-      </figure>
+          <aside class="map-note ridgeline-note-2">
+            Humpback whales and green turtles frequent a broader range of the Australian coastline, but tend to peak at slightly
+            higher latitudes where the temperature is warmer
+          </aside>
+        </div>
 
-      <figure class="chart-card centered">
-        <div class="chart" data-spec="specs/07-fish-boxplot.json"></div>
-        <figcaption>[].</figcaption>
+        <figcaption>As latitude increases from South to North, the change in sighting prevalence at different latitudes can provide information about species' temperature and habitat preferences.
+          For example, species that prefer warmer climates are more likely to have sightings recorded at higher latitudes. The ridgeline plot above represents the density of sightings by latitude
+          using the relative height of the horizontal coloured areas. </figcaption>
       </figure>
-    
-
-    <!-- ============================ CHAPTER 3 ============================ -->
-    <section id="ch3" class="chapter">
-      <h2><span class="num">3</span> Endangered Species</h2>
-      <p class="chapter-intro">[EPBC Endangered Categories].</p>
-
-      <!-- caption-side: chart on the left, caption in a column to its right -->
-      <figure class="chart-card caption-side">
-        <div class="chart" data-spec="specs/08-threatened-choropleth.json"></div>
-        <figcaption>[].</figcaption>
-      </figure>
-
-      <figure class="chart-card centered">
-        <div class="chart" data-spec="specs/09-threatened-stacked-bar.json"></div>
-        <figcaption>[].</figcaption>
-      </figure>
-    </section>
 
     <!-- ============================ CHAPTER 4 ============================ -->
     <section id="ch4" class="chapter">
-      <h2><span class="num">4</span> Coral Monitoring</h2>
-      <p class="chapter-intro">[AIMS Monitoring].</p>
+      <h2><span class="num">4</span> Endangered Species</h2>
+      <p class="chapter-intro">The Environmental Protection and Biodiversity Conservation (EPBC) Act was legislated in 1999 with the intention of implementing protective measures
+      and frameworks for the protection and conservation of Australia's flora and fauna. 
+      Australian marine life faces a unique set of threats to their habitats, populations and survival. This includes damaging commercial fishing activities such as
+  seafloor trawling, habitat loss and degradation, climate change and ocean pollution.</p>
 
-      <figure class="chart-card centered">
-        <div class="chart" data-spec="specs/10-coral-cover-lines.json"></div>
-        <figcaption>[].</figcaption>
+      <figure class="chart-card centered globe-card">
+        <div class="globe-stage">
+          
+          <aside class="map-note choropleth-note-1" data-x="950" data-y="370">
+          </aside>
+
+          <aside class="map-note choropleth-note-2" data-x="490" data-y="430">
+          </aside>
+
+          <aside class="map-note choropleth-note-3" data-x="700" data-y="460">
+          </aside>
+
+          <div class="chart" data-spec="specs/08-threatened-choropleth.json"></div>
+
+          <div class="corner-card corner-l1">
+            <div class="corner-img"><img src="images/sea_lion.jpg" alt="Green sea turtle" onerror="this.style.display='none'"></div>
+            <p><strong>Australian sea lions</strong> are listed as Endangered. They can become engtangled in commercial fishing
+              nets and marine debris.
+          </div>
+          <div class="corner-card corner-l2">
+            <div class="corner-img"><img src="images/nurse_shark.jpg" alt="Antarctic fur seals" onerror="this.style.display='none'"></div>
+            <p>Historical hunting and accidental capture in commercial fishing nets have degraded the <strong>Grey nurse shark</strong>
+              population.</p>
+          </div>
+          <div class="corner-card corner-l3">
+            <div class="corner-img"><img src="images/stingaree.jpg" alt="Antarctic fur seals" onerror="this.style.display='none'"></div>
+            <p><strong>Coastal stingarees</strong> are an Endangered species found exclusively in South Australia's Great Australian Bight. 
+            </p>
+          </div>
+
+        </div>
+        <figcaption class="globe-caption">
+          <p>
+            As part of this framework, species are assigned an 
+            endangerment rating based on their
+            present threat level. This map summarises the count of threatened species according 
+            to their native state/territory jurisdiction.
+          </p>
+          <p>
+            A very high proportion of threatened species are found in Western Australia, 
+            followed closely by Queensland and New South Wales. 
+          </p>
+        </figcaption>
       </figure>
 
       <figure class="chart-card centered">
-        <div class="chart" data-spec="specs/11-coral-latitude-scatter.json"></div>
-        <figcaption>[].</figcaption>
+        <div class="stacked-stage">
+          <div class="chart" data-spec="specs/09-threatened-stacked-bar.json"></div>
+
+          <aside class="map-note stacked-note-1">
+            50 out of the 83 total threatened species in Commonwealth waters are Birds.
+          </aside>
+
+          <aside class="map-note stacked-note-2" data-x="760" data-y="420">
+            Two out of the six endangered bony fishes species are categorised as critically endangered.
+          </aside>
+        </div>
+
+        <figcaption>
+        The federal Department of Climate Change, Energy, the Environment and Water keeps threat-level databases up-to-date and organised by species, migratory status, ecological community and more.
+        The visualisation above organises counts of threatened species by species group.
+        </figcaption>
       </figure>
     </section>
+
 
     <!-- ============================ ABOUT ============================ -->
     <section id="about" class="chapter about">
       <h2>Data &amp; credits</h2>
-      <ul>
-        <li>Australian Marine Parks: Department of Climate Change, Energy, the Environment and Water (DCCEEW), via data.gov.au.</li>
-        <li>Great Barrier Reef Marine Park zoning: Great Barrier Reef Marine Park Authority.</li>
-        <li>Species occurrence records: Atlas of Living Australia (cite the download DOI).</li>
-        <li>Reef fish surveys: IMOS National Reef Monitoring Network (Reef Life Survey and partners).</li>
-        <li>Threatened species: Species Profile and Threats Database (SPRAT) report, Department of Climate Change, Energy, the Environment and Water (DCCEEW), downloaded 12 October 2026.</li>
-        <li>Hard coral cover: Australian Institute of Marine Science (AIMS). 2015, AIMS Long-term Monitoring Program: Crown-of-thorns starfish (Acanthaster planci) and benthos Manta Tow Data (Great Barrier Reef), https://doi.org/10.25845/5c09b0abf315a</li>
-        <li>Basemap: Natural Earth / ABS state boundaries.</li>
-        <li>Humpback Whale: By Juan Cruzado Cortés - https://www.inaturalist.org/photos/344677883, CC BY 4.0, https://commons.wikimedia.org/w/index.php?curid=197915789</li>
-        <li>Green Sea Turtle: By Charles J. Sharp - Own work, from Sharp Photography, sharpphotography.co.uk, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=155815572</li>
-        <li>Seals: By Brocken Inaglory, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=4373747</li>
-        <li>Great white: By Terry Goss, CC BY 2.5, https://commons.wikimedia.org/w/index.php?curid=1561215</li>
-        <li>Cuttlefish: By Richard Ling from NSW, Australia - Australian Giant Cuttlefish, CC BY-SA 2.0, https://commons.wikimedia.org/w/index.php?curid=3153812</li>
+      <ul class="references">
+        <li>Atlas of Living Australia (2026) Occurrence records for Eastern Blue Groper, Humpback Whale, Giant Cuttlefish, White Shark, Green Turtle [dataset]. Available at: https://doi.org/[download DOI] (Accessed: 17 Oct 2026).</li>
+        <li>Australian Bureau of Statistics (2021) States and Territories Digital Boundary Lines[dataset]. Available at: https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-3-july-2021-june-2026/access-and-downloads/digital-boundary-files (Accessed: 14 Oct 2026).</li>
+        <li>Australian Institute of Marine Science (2015) AIMS Long-term Monitoring Program: Crown-of-thorns starfish (Acanthaster planci) and benthos Manta Tow Data (Great Barrier Reef) [dataset]. Available at: https://doi.org/10.25845/5c09b0abf315a (Accessed: 14 Oct 2026).</li>
+        <li>Cruzado Cortés, J. (n.d.) Humpback whale [photograph]. Available at: https://commons.wikimedia.org/w/index.php?curid=197915789 (Accessed: 25 Oct 2026). Licensed under CC BY 4.0. Original: https://www.inaturalist.org/photos/344677883.</li>
+        <li>Department of Climate Change, Energy, the Environment and Water (n.d.) Australian Marine Parks [dataset]. data.gov.au. Available at: https://australianmarineparks.gov.au/maps/ (Accessed: 10 Oct 2026).</li>
+        <li>Department of Climate Change, Energy, the Environment and Water (n.d.) Our role [EPBC Act]. Available at: https://www.dcceew.gov.au/environment/epbc/our-role (Accessed: 13 Oct 2026).</li>
+        <li>Department of Climate Change, Energy, the Environment and Water (n.d.) Threatened species. Available at: https://www.dcceew.gov.au/environment/biodiversity/threatened/species (Accessed: 14 Oct 2026).</li>
+        <li>Department of Climate Change, Energy, the Environment and Water (2026) Species Profile and Threats Database (SPRAT) report [dataset]. (Accessed: 12 October 2026).</li>
+        <li>Goss, T. (n.d.) Great white shark [photograph]. Available at: https://commons.wikimedia.org/w/index.php?curid=1561215 (Accessed: 25 Oct 2026). Licensed under CC BY 2.5.</li>
+        <li>Great Barrier Reef Marine Park Authority 2025 Great Barrier Reef Marine Park zoning [dataset]. Available at: https://www.arcgis.com/home/item.html?id=2638411eb4f048d5a164a6cf14781d7b#overview (Accessed: 20 Oct 2026).</li>
+        <li>Hunt, B.M. (n.d.) Australian Sea location [photograph]. Available at: https://commons.wikimedia.org/w/index.php?curid=227477 (Accessed: 25 Oct 2026). Licensed under CC BY-SA 3.0. Uploaded by Wikipedia user Bmh ca.</li>
+        <li>Inaglory, B. (n.d.) Antarctic fur seals [photograph]. Available at: https://commons.wikimedia.org/w/index.php?curid=4373747 (Accessed: 22 Oct 2026). Licensed under CC BY-SA 3.0.</li>
+        <li>Integrated Marine Observing System 2019 National Reef Monitoring Network: reef fish surveys [dataset]. Reef Life Survey and partners. (Accessed: 15 Oct 2026).</li>
+        <li>Ling, R. (n.d.) Australian giant cuttlefish [photograph]. Available at: https://commons.wikimedia.org/w/index.php?curid=3153812 (Accessed: 22 Oct 2026). Licensed under CC BY-SA 2.0.</li>
+        <li>Sharp, C.J. (n.d.) Green sea turtle [photograph]. Sharp Photography. Available at: https://commons.wikimedia.org/w/index.php?curid=155815572 (Accessed: 24 Oct 2026). Licensed under CC BY-SA 4.0.</li>
       </ul>
       <p class="small">Built with Vega-Lite and vega-embed. Saffron Cookesley | FIT3179 | 2026.</p>
     </section>

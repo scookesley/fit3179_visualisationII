@@ -3,65 +3,315 @@
   "usermeta": {
     "chapter": 2,
     "advanced": true,
-    "idiom": "Radial chart (arc marks with polar scale)",
-    "data": ["data/ala_occurrences.csv"]
+    "idiom": "Radial chart (arc marks, area-proportional radius)",
+    "data": [
+      "data/ala_occurrences.csv"
+    ]
   },
   "title": {
-    "text": "A year in sightings",
-    "subtitle": "Records by month for the selected species."
+    "text": [
+      "A year in sightings:",
+      "records by calendar month"
+    ],
+    "subtitle": [
+      "Wedge area = a month's records relative to the busiest month.",
+      "Dashed rings mark 25%, 50% and 100% of that peak."
+    ],
+    "offset": 16
   },
-  "width": 440,
-  "height": 440,
-  "params": [{ "name": "species_sel", "value": "Humpback Whale" }],
+  "width": "container",
+  "height": 600,
+  "padding": {
+    "left": 0,
+    "right": 0,
+    "top": 10,
+    "bottom": 5
+  },
+  "autosize": {
+    "type": "fit-x",
+    "contains": "padding"
+  },
+  "params": [
+    {
+      "name": "species_sel",
+      "value": "Humpback Whale"
+    }
+  ],
   "layer": [
     {
-      "data": { "url": "data/ala_occurrences.csv" },
+      "data": {
+        "values": [
+          {
+            "f": 0.25
+          },
+          {
+            "f": 0.5
+          },
+          {
+            "f": 1
+          }
+        ]
+      },
       "transform": [
-        { "filter": "datum.species === species_sel && isValid(datum.month)" },
-        { "aggregate": [{ "op": "count", "as": "n" }], "groupby": ["month"] },
-        { "calculate": "datum.month - 1", "as": "m0" },
-        { "calculate": "datum.month", "as": "m1" }
+        {
+          "calculate": "sqrt(324 + 26901 * datum.f)",
+          "as": "r"
+        }
       ],
-      "mark": { "type": "arc", "innerRadius": 20, "stroke": "#ffffff", "strokeWidth": 1 },
+      "mark": {
+        "type": "arc",
+        "innerRadius": 18,
+        "fill": null,
+        "stroke": "#8aa0ad",
+        "strokeWidth": 0.8,
+        "strokeDash": [
+          3,
+          3
+        ]
+      },
+      "encoding": {
+        "theta": {
+          "value": 0
+        },
+        "theta2": {
+          "value": 6.283185307179586
+        },
+        "radius": {
+          "field": "r",
+          "type": "quantitative",
+          "scale": null,
+          "stack": null
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/ala_occurrences.csv"
+      },
+      "transform": [
+        {
+          "filter": "datum.species === species_sel && isValid(datum.month)"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "as": "n"
+            }
+          ],
+          "groupby": [
+            "month"
+          ]
+        },
+        {
+          "joinaggregate": [
+            {
+              "op": "max",
+              "field": "n",
+              "as": "max_n"
+            }
+          ]
+        },
+        {
+          "calculate": "sqrt(324 + 26901 * datum.n / datum.max_n)",
+          "as": "r"
+        },
+        {
+          "calculate": "datum.n / datum.max_n",
+          "as": "share_of_peak"
+        },
+        {
+          "calculate": "datum.month - 1",
+          "as": "m0"
+        },
+        {
+          "calculate": "datum.month",
+          "as": "m1"
+        }
+      ],
+      "mark": {
+        "type": "arc",
+        "innerRadius": 18,
+        "fill": "#0e7c86",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      },
       "encoding": {
         "theta": {
           "field": "m0",
           "type": "quantitative",
-          "scale": { "domain": [0, 12], "range": [0, 6.283185307179586] }
+          "scale": {
+            "domain": [
+              0,
+              12
+            ],
+            "range": [
+              0,
+              6.283185307179586
+            ]
+          }
         },
-        "theta2": { "field": "m1" },
+        "theta2": {
+          "field": "m1"
+        },
         "radius": {
-          "field": "n",
+          "field": "r",
           "type": "quantitative",
-          "scale": { "type": "sqrt", "zero": true, "range": [20, 180] }
-        },
-        "color": {
-          "field": "n",
-          "type": "quantitative",
-          "legend": null,
-          "scale": { "scheme": "teals" }
+          "scale": null
         },
         "tooltip": [
-          { "field": "month", "type": "ordinal", "title": "Month" },
-          { "field": "n", "type": "quantitative", "title": "Records" }
+          {
+            "field": "month",
+            "type": "ordinal",
+            "title": "Month"
+          },
+          {
+            "field": "n",
+            "type": "quantitative",
+            "title": "Records",
+            "format": ",d"
+          },
+          {
+            "field": "share_of_peak",
+            "type": "quantitative",
+            "title": "Share of busiest month",
+            "format": ".0%"
+          }
         ]
       }
     },
     {
-      "data": { "sequence": { "start": 0, "stop": 12, "as": "m0" } },
+      "data": {
+        "url": "data/ala_occurrences.csv"
+      },
       "transform": [
-        { "calculate": "datum.m0 + 0.5", "as": "mc" },
-        { "calculate": "['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.m0]", "as": "label" }
+        {
+          "filter": "datum.species === species_sel && isValid(datum.month)"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "as": "n"
+            }
+          ],
+          "groupby": [
+            "month"
+          ]
+        },
+        {
+          "aggregate": [
+            {
+              "op": "max",
+              "field": "n",
+              "as": "max_n"
+            }
+          ]
+        },
+        {
+          "calculate": "[0.25, 0.5, 1]",
+          "as": "f"
+        },
+        {
+          "flatten": [
+            "f"
+          ]
+        },
+        {
+          "calculate": "sqrt(324 + 26901 * datum.f)",
+          "as": "r"
+        },
+        {
+          "calculate": "format(datum.f * datum.max_n, ',.0f') + (datum.f === 1 ? ' (peak)' : '')",
+          "as": "lab"
+        }
       ],
-      "mark": { "type": "text", "fontSize": 11, "color": "#3d4f5c" },
+      "layer": [
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 10,
+            "dy": -5,
+            "color": "#ffffff",
+            "stroke": "#ffffff",
+            "strokeWidth": 3,
+            "strokeJoin": "round",
+            "strokeOpacity": 0.9,
+            "align": "left",
+            "dx": 4
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 10,
+            "dy": -5,
+            "color": "#51656f",
+            "align": "left",
+            "dx": 4
+          }
+        }
+      ],
+      "encoding": {
+        "theta": {
+          "value": 0
+        },
+        "radius": {
+          "field": "r",
+          "type": "quantitative",
+          "scale": null
+        },
+        "text": {
+          "field": "lab",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "sequence": {
+          "start": 0,
+          "stop": 12,
+          "as": "m0"
+        }
+      },
+      "transform": [
+        {
+          "calculate": "datum.m0 + 0.5",
+          "as": "mc"
+        },
+        {
+          "calculate": "['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.m0]",
+          "as": "label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "color": "#3d4f5c"
+      },
       "encoding": {
         "theta": {
           "field": "mc",
           "type": "quantitative",
-          "scale": { "domain": [0, 12], "range": [0, 6.283185307179586] }
+          "scale": {
+            "domain": [
+              0,
+              12
+            ],
+            "range": [
+              0,
+              6.283185307179586
+            ]
+          }
         },
-        "radius": { "value": 205 },
-        "text": { "field": "label", "type": "nominal" }
+        "radius": {
+          "value": 191
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
       }
     }
   ]

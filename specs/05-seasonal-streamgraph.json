@@ -33,7 +33,8 @@
       }
     },
     "y": { "field": "share", "type": "quantitative", "stack": "center", "axis": null },
-    "color": { "field": "species", "type": "nominal", "title": "Species" },
+    "color": { "field": "species", "type": "nominal", "title": "Species", 
+    "scale": {"range": ["#7DC7B0","#FA9C75", "#99AACF","#E699C7", "#9966CB"]}},
     "tooltip": [
       { "field": "species", "type": "nominal", "title": "Species" },
       { "field": "month", "type": "ordinal", "title": "Month" },

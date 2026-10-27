@@ -11,7 +11,7 @@
     "subtitle": "Density of sightings by latitude; Latitude runs from southern Tasmania to Cape York."
   },
   "width": 960,
-  "height": 44,
+  "height": 65,
   "data": { "url": "data/ala_occurrences.csv" },
   "transform": [
     { "filter": "isValid(datum.lat)" },
@@ -22,12 +22,12 @@
     "interpolate": "monotone",
     "fillOpacity": 0.85,
     "stroke": "#ffffff",
-    "strokeWidth": 0.8
+    "strokeWidth": 0.8,
+    "fill": "#0e7c86"
   },
   "encoding": {
     "x": { "field": "value", "type": "quantitative", "title": "Latitude (°)", "scale": { "nice": false } },
     "y": { "field": "density", "type": "quantitative", "scale": { "range": [44, -55] }, "axis": null },
-    "fill": { "field": "species", "type": "nominal", "legend": null },
     "row": {
       "field": "species",
       "type": "nominal",

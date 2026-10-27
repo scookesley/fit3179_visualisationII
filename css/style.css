@@ -89,17 +89,18 @@ body {
   border: 1px solid color-mix(in srgb, var(--sp) 38%, #fff);
   transition: background .3s, border-color .3s;
 }
-.species-panel > .chart-card { margin: 0 0 16px; }
-.species-panel .chart-row { margin-bottom: 0; gap: 16px; }
+.species-panel > .chart-card,
+.species-panel .chart-row .chart-card {
+  background: color-mix(in srgb, var(--sp) 32%, #fff);
+  border-color: color-mix(in srgb, var(--sp) 45%, #fff);
+}
+
+.species-panel > .chart-card {
+  margin: 0 0 16px;
+}
 
 .species-intro { display: flex; align-items: flex-start; gap: 28px; margin: 0 0 24px; }
 
-.chart-placeholder {
-  display: grid; place-items: center;
-  min-height: 440px;
-  border: 1px dashed var(--line); border-radius: 8px;
-  color: var(--muted); font-size: .9rem;
-}
 
 /* photo card */
 .species-photo {
@@ -285,6 +286,9 @@ body {
 .corner-bl, .corner-br { top: calc(var(--cy) + var(--r) - var(--card-h)); }
 .corner-tl, .corner-bl { left: 0; }
 .corner-tr, .corner-br { right: 0; }
+.corner-l1 { top: calc(var(--cy) - var(--r) + 10px); left: 50px}
+.corner-l2 { top: calc(var(--cy) - var(--r) + 230px); left: 50px}
+.corner-l3 { top: calc(var(--cy) - var(--r) + 450px); left: 50px}
 
 .corner-img {
   height: 120px;
@@ -368,12 +372,14 @@ body {
 .map-note--overall {          /* between Heard and Macquarie, centred on 120°E */
   left: 295px;
   top: 507px;
-  width: 230px;               /* same width as the Coral Sea note */
+  width: 230px;   /* same width as the Coral Sea note */
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);            
 }
 .map-note--island {           /* top edge meets the two leader lines */
   left: 20px;
   top: 222px;
-  width: 280px;
+  width: 280px; 
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);
 }
 
 /* ---------- GBR zone-share bar card ---------- */
@@ -384,6 +390,35 @@ body {
   justify-content: center;
 }
 .bar-card .spec-view { align-self: flex-start; }
+
+/* ---------- GBR map: stage + notes ---------- */
+.annot-card { overflow-x: auto; }
+
+.annot-stage {
+  position: relative;
+  width: 400px;           /* = spec width 400 + 0 + 0 padding */
+  min-width: 400px;
+  margin: 0 auto;
+  text-align: left;
+}
+.annot-stage .vega-embed.has-actions { padding-right: 0; }
+
+/* ---------- Species annotation stages (butterfly + radial) ---------- */
+/* Set each width to the spec's "width" + its left/right padding */
+.annot-stage.annot-stage--butterfly { width: 560px; min-width: 560px; }
+.annot-stage.annot-stage--radial    { width: 480px; min-width: 480px; }
+
+.annot-stage--butterfly .chart,
+.annot-stage--radial .chart { overflow: visible; }
+
+.annot-stage--butterfly .map-note,
+.annot-stage--radial .map-note {
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);   /* matches the other notes */
+}
+
+/* positions are in stage px (the plot area starts 80px down) */
+.map-note--gbr1 { left: 105px; top: 120px; width: 150px; box-shadow: 0 4px 14px rgba(11, 46, 63, .12);}
+.map-note--gbr2 { left: 245px; top: 280px; width: 150px; box-shadow: 0 4px 14px rgba(11, 46, 63, .12);}
 
 /* ---------- Row of thirds ---------- */
 /* map + bar share the left column of the map-pair grid, the table takes the right column */
@@ -408,11 +443,31 @@ body {
 .chart-row.thirds .chart { margin-bottom: 10px; }
 .chart-row.thirds figcaption { margin-top: auto; }
 
+/* captions start straight under the stage instead of sitting at the bottom of the card */
+.chart-row.thirds .annot-card figcaption { margin-top: 10px; }
+
+/* notes beside the stacked bar (stage px; the legend occupies the top right) */
+.map-note--bar1 { left: 175px; top: 250px; width: 160px; box-shadow: 0 4px 14px rgba(11, 46, 63, .12);}
+.map-note--bar2 { left: 175px; top: 400px; width: 160px; box-shadow: 0 4px 14px rgba(11, 46, 63, .12);}
+
 /* zone table: colour-coded rows */
 .zone-table { font-size: .8rem; }
 .zone-table tbody th { width: 38%; padding-left: 14px; }
 .zone-table tbody tr > * { background: color-mix(in srgb, var(--zc) 14%, #fff); }
 .zone-table tbody tr > :first-child { box-shadow: inset 5px 0 0 var(--zc); }
+
+/* ---------- Annotation stages (latitude ridgeline) ---------- */
+/* Set each width to the spec's "width" + its left/right padding */
+.annot-stage.annot-stage--butterfly { width: 560px; min-width: 560px; }
+.annot-stage.annot-stage--radial    { width: 480px; min-width: 480px; }
+
+.annot-stage--butterfly .chart,
+.annot-stage--radial .chart { overflow: visible; }
+
+.annot-stage--butterfly .map-note,
+.annot-stage--radial .map-note {
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);   /* matches the other notes */
+}
 
 /* ---------- Layout ---------- */
 main { max-width: var(--maxw); margin: 0 auto; padding: 0 16px 80px; }
@@ -453,9 +508,11 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 16px 80px; }
   border-top: 1px solid var(--line);
   font-size: .95rem;
   max-width: 720px;
+  text-align: justify;
+  hyphens: auto;
 }
 
-.chart-card.centered figcaption { margin-inline: auto; }
+.chart-card.centered figcaption { margin-inline: auto; text-align: justify; hyphens: auto;}
 
 .chart-row.map-pair { grid-template-columns: minmax(0, 890px) minmax(0, 1fr); }
 @media (max-width: 1240px) {
@@ -479,6 +536,167 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 16px 80px; }
 /* vega-embed's own stylesheet makes this inline-block; full width is needed for "width": "container" specs */
 .chart .vega-embed { display: block; width: 100%; }
 .vega-embed details summary { color: var(--muted); }
+
+
+/* ---------- Streamgraph annotation ---------- */
+
+.streamgraph-stage {
+  position: relative;
+  width: 100%;
+  min-width: 960px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.streamgraph-stage .chart {
+  overflow: visible;
+}
+
+.streamgraph-note {
+  position: absolute;
+  z-index: 2;
+  right: 20px;
+  top: 185px;
+  width: 220px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.96);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(11, 46, 63, 0.12);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+/* Leader line extending left from underneath the annotation */
+.streamgraph-note::after {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 1.3px;
+  background: #3d3d3d;
+
+  /* Attach to the bottom-left area of the card */
+  left: -280px;
+  top: 85%;
+
+  transform: none;
+}
+
+
+/* ---------- Ridgeline annotation ---------- */
+.ridgeline-stage {
+  position: relative;
+  width: 100%;
+  min-width: 960px;
+  margin: 0 auto;
+  text-align: left;
+}
+.ridgeline-stage .chart { overflow: visible; }
+
+.ridgeline-stage .map-note {
+  width: 220px;
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);
+}
+
+/* Positions in stage px, so edit these freely */
+.ridgeline-note-1 { left: 690px; top: 100px; }
+.ridgeline-note-2 { right: 20px; top: 240px; }
+
+/* ---------- Choropleth ---------- */
+
+.ghost-note {
+  position: absolute;
+  width: var(--card-w);
+  height: var(--card-h);
+  visibility: hidden;      /* still measurable by getBoundingClientRect */
+  pointer-events: none;
+}
+
+.globe-stage .choropleth-note-1 {
+  left: 210px; top: 170px;
+  width: 50px;
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);
+}
+
+.globe-stage .choropleth-note-2 {
+  left: 210px; top: 400px;
+  width: 30px;
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);
+}
+
+.globe-stage .choropleth-note-3 {
+  left: 210px; top: 600px;
+  width: 30px;
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);
+}
+
+/* ---------- Stacked bar annotation ---------- */
+.stacked-stage {
+  position: relative;
+  width: 960px;            /* set to the spec's width + padding */
+  min-width: 960px;
+  margin: 0 auto;
+  text-align: left;
+}
+.stacked-stage .chart { overflow: visible; }
+
+.stacked-stage .map-note {
+  width: 220px;
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);
+}
+
+/* positions in stage px, so edit freely */
+.stacked-note-1 { left: 210px; top: 170px; }
+.stacked-note-2 { left: 800px; top: 370px; }
+
+/* ---------- Dynamic species-map annotations ---------- */
+
+.species-map-card {
+  overflow-x: auto;
+}
+
+.species-map-stage {
+  position: relative;
+  width: 820px;
+  min-width: 820px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.species-map-stage .chart {
+  overflow: visible;
+}
+
+.species-map-stage .vega-embed.has-actions {
+  padding-right: 0;
+}
+
+/* Uses the existing .map-note styling */
+.species-map-note {
+  width: 220px;
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);
+}
+
+/* Adjust these values to move the boxes */
+.species-map-note--1 {
+  left: 200px;
+  top: 180px;
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);
+}
+
+.species-map-note--2 {
+  left: 555px;
+  top: 480px;
+  box-shadow: 0 4px 14px rgba(11, 46, 63, .12);
+}
+
+.species-map-card figcaption {
+  margin-inline: auto;      /* centres the 720px caption block under the map */
+  text-align: justify;
+  hyphens: auto;
+}
+
 
 /* ---------- Spec viewer (collapsed <details> under each chart) ---------- */
 .spec-view {
