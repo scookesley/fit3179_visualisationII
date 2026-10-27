@@ -7,7 +7,7 @@
     "data": ["data/threatened_marine_by_group.csv"]
   },
   "title": {
-    "text": "Birds make up 50 of the 83 threatened species in Commonwealth waters",
+    "text": "Threat Status by Species",
     "subtitle": "EPBC-listed threatened species recorded in the Commonwealth Marine Area, by group and threat category."
   },
   "width": 720,
